@@ -1,0 +1,35 @@
+server:
+  port: 9090
+spring:
+  application.name: job
+  profiles.active: dev
+
+  #在实现了 implements WebMvcConfigurer接口时，此配置是无效的
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+#优雅停机 访问： /actuator/shutdown
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include: shutdown
+---
+spring.profiles: dev
+
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    accessToken:
+    executor:
+      appname: magic-xxl
+      address: http://127.0.0.1:9090
+#      ip:
+#      port:
+      logpath:
+#      logretentiondays:
