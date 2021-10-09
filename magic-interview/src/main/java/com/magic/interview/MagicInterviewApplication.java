@@ -14,9 +14,11 @@ import com.magic.interview.Config.GsonIgnore;
 import com.sankuai.inf.leaf.plugin.annotation.EnableLeafServer;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
@@ -46,7 +48,9 @@ public class MagicInterviewApplication {
     private String saltValue;
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(MagicInterviewApplication.class).run(args);
+
+        SpringApplication.run(MagicInterviewApplication.class, args);
+        //new SpringApplicationBuilder(MagicInterviewApplication.class).run(args);
     }
 
     /**

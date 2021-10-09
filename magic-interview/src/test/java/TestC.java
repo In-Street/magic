@@ -1,16 +1,18 @@
-import cn.hutool.core.date.DateTime;
 import cn.hutool.core.text.UnicodeUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.gson.internal.bind.util.ISO8601Utils;
+import com.google.common.primitives.Ints;
 import com.magic.interview.service.validated.LombokDto;
 import jodd.template.StringTemplateParser;
-import jodd.util.PropertiesUtil;
+import jodd.util.CharUtil;
+import jodd.util.StringUtil;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.functors.AnyPredicate;
@@ -20,7 +22,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.text.StringEscapeUtils;
@@ -32,12 +33,12 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import org.junit.Test;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.w3c.dom.Node;
 
-import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -48,41 +49,28 @@ import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
-import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
-import java.time.format.ResolverStyle;
-import java.time.format.SignStyle;
-import java.time.temporal.TemporalAccessor;
 import java.util.*;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkElementIndex;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkPositionIndex;
-import static java.time.temporal.ChronoField.DAY_OF_MONTH;
-import static java.time.temporal.ChronoField.DAY_OF_WEEK;
-import static java.time.temporal.ChronoField.HOUR_OF_DAY;
-import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
-import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
-import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
-import static java.time.temporal.ChronoField.YEAR;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * @author Cheng Yufei
@@ -577,8 +565,147 @@ public class TestC {
         //b2.add(2000);
         System.out.println(map1.get("B") + "---" + map1.get("C"));
 
+    }
+
+    @Test
+    public void guava() {
+        String s = "a,b,,c,  ,d,null";
+        System.out.println(Splitter.on(",").splitToList(s));
+        //去除空格
+        System.out.println(Splitter.on(",").trimResults().splitToList(s));
+        //去除空串
+        System.out.println(Splitter.on(",").omitEmptyStrings().splitToList(s));
+        //此时的null 是字符串 "null"
+        List<String> strings = Splitter.on(",").trimResults().omitEmptyStrings().splitToList(s);
+        System.out.println(strings);
+
+        //去除null
+        System.out.println(Joiner.on("-").skipNulls().join(strings));
+
+        System.out.println(CharMatcher.inRange('0', '9').retainFrom("abc12306df"));
+
+        System.out.println(Ints.join("=", new int[]{0, 1, 2, 3}));
+
+        ArrayList<Integer> integers = Lists.newArrayList(1, 2, 3);
+        List<Integer> unmodifiableList = Collections.unmodifiableList(integers);
+        System.out.println(unmodifiableList);
+        ImmutableList<Integer> immutableList = ImmutableList.copyOf(integers);
+        System.out.println(immutableList);
+        integers.remove(0);
+        System.out.println(unmodifiableList);
+        System.out.println(immutableList);
+
+        HashBiMap<Object, Object> hashBiMap = HashBiMap.create();
+        hashBiMap.put("A", 1);
+        hashBiMap.put("A", 2);
+        hashBiMap.put("B", 3);
+        //相同value：IllegalArgumentException
+        //hashBiMap.put("C", 3);
+        System.out.println(">>BiMap:" + hashBiMap.get("A") + ">inverse<" + hashBiMap.inverse().get(3));
+
+        String mobile = "18235011372";
+        //StringUtils.center(mobile,)
+        System.out.println(StringUtils.replace("18235011372", "3501", "****"));
+        System.out.println(StringUtil.replace("18235011372", "3501", "****"));
+        String html = "<p><b>1、什么是Vue?</b></p><p>vue真的太好用了，是前后段分离必不可少的开发框架之一……</p><p><br></p><p><i><u>2、Vue能干什么？</u></i></p><p>模拟数据</p><p><br></p>";
+        System.out.println(HtmlUtils.htmlEscapeHex(html));
+        System.out.println(StringEscapeUtils.escapeHtml4(html));
+
+        //System.out.println(HtmlUtils.htmlUnescape("&#x3c;p&#x3e;&#x3c;b&#x3e;1、什么是Vue?&#x3c;/b&#x3e;&#x3c;/p&#x3e;&#x3c;p&#x3e;vue真的太好用了，是前后段分离必不可少的开发框架之一&#x2026;&#x2026;&#x3c;/p&#x3e;&#x3c;p&#x3e;&#x3c;br&#x3e;&#x3c;/p&#x3e;&#x3c;p&#x3e;&#x3c;i&#x3e;&#x3c;u&#x3e;2、Vue能干什么？&#x3c;/u&#x3e;&#x3c;/i&#x3e;&#x3c;/p&#x3e;&#x3c;p&#x3e;模拟数据&#x3c;/p&#x3e;&#x3c;p&#x3e;&#x3c;br&#x3e;&#x3c;/p&#x3e;"));
+    }
+
+    @Test
+    public void reverse() {
+        String s = "qwerty";
+        Stack<Character> stack = new Stack<>();
+
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            stack.push(chars[i]);
+        }
+        for (int i = 0; i < chars.length; i++) {
+            System.out.print(stack.pop());
+        }
 
     }
 
+    /*@Test
+    public void reverse2() {
+        Node head = new Node(0);
+        Node node1 = new Node(1);
+        Node node2 = new Node(2);
+        Node node3 = new Node(3);
+            if (head == null || head.next == null)
+                return head;
+            ListNode next = head.next;
+            ListNode new_head = reverseList(next);
+            next.next = head;
+            head.next = null;
+    }*/
+
+    @Test
+    public void print() throws InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+        for (int i = 0; i < 3; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                System.out.print(finalI);
+                countDownLatch.countDown();
+            }).start();
+        }
+        countDownLatch.await();
+        System.out.println("完成");
+
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(3, () -> {
+            System.out.println("完成2");
+        });
+        for (int i = 0; i < 3; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                System.out.print(finalI);
+                try {
+                    cyclicBarrier.await();
+                } catch (InterruptedException | BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+
+    @Test
+    public void th() {
+        SortPrint sortPrint = new SortPrint();
+        for (int j = 0; j < 3; j++) {
+            int finalJ = j;
+            new Thread(()->{
+                try {
+                    sortPrint.pri(finalJ);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
+    }
+
+    class SortPrint {
+        ReentrantLock lock = new ReentrantLock();
+        Condition[] conditions = {lock.newCondition(), lock.newCondition(), lock.newCondition()};
+        private volatile int stat;
+
+        public void pri(int para) throws InterruptedException {
+            int next = para % 3 + 1;
+            while (true) {
+                lock.lock();
+                while (para!=stat) {
+                    conditions[para].await();
+                }
+                System.out.println(para);
+                this.stat = next;
+                conditions[next].signal();
+                lock.unlock();
+            }
+        }
+    }
 
 }
