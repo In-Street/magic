@@ -238,7 +238,7 @@ public class TestC {
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
         textEncryptor.setPassword("");
 
-        String res = textEncryptor.decrypt("HWuWGiatmGzF41wYyrsF482iEVWGrfmf");
+        String res = textEncryptor.encrypt("123456");
         System.out.println(res);
     }
 

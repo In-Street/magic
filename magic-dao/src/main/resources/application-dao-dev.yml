@@ -8,12 +8,12 @@ spring:
         filters: stat
         driver-class-name: com.mysql.cj.jdbc.Driver
         #基本属性
-        url: jdbc:mysql://39.106.118.71:3306/sharding?characterEncoding=utf-8
+        url: jdbc:mysql://127.0.0.1:3309/test?characterEncoding=utf-8
         #docker mysql 容器地址
 #        url: jdbc:mysql://172.18.0.2:3306/sharding?characterEncoding=utf-8
         #jasypt加密
-        username: ENC(3RS678xyF+OMSsvPhk/Jog==)
-        password: ENC(ZSbSDPMfbQpDqKwJvcoTR/vaEBBEF1ew)
+        username: ENC(0qsQtSnXgMCITbHWJ15Nkg==)
+        password: ENC(sivbANn4558zpnd87WSaAA==)
         #配置初始化大小/最小/最大
         initial-size: 5
         min-idle: 5
@@ -36,12 +36,12 @@ spring:
         filters: stat
         driver-class-name: com.mysql.cj.jdbc.Driver
         #基本属性
-        url: jdbc:mysql://39.106.118.71:3306/ds_0?characterEncoding=utf-8
+        url: jdbc:mysql://127.0.0.1:3309/leaf?characterEncoding=utf-8
         #docker mysql 容器地址
 #        url: jdbc:mysql://172.18.0.2:3306/ds_0?characterEncoding=utf-8
         #jasypt加密
-        username: ENC(3RS678xyF+OMSsvPhk/Jog==)
-        password: ENC(ZSbSDPMfbQpDqKwJvcoTR/vaEBBEF1ew)
+        username: ENC(0qsQtSnXgMCITbHWJ15Nkg==)
+        password: ENC(sivbANn4558zpnd87WSaAA==)
         #配置初始化大小/最小/最大
         initial-size: 5
         min-idle: 5
