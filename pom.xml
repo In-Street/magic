@@ -15,6 +15,7 @@
         <module>magic-dao</module>
         <module>magic-rabbit</module>
         <module>magic-xxl</module>
+        <module>magic-time</module>
     </modules>
     <packaging>pom</packaging>
 
