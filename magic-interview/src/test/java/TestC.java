@@ -68,6 +68,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.*;
@@ -706,6 +707,12 @@ public class TestC {
                 lock.unlock();
             }
         }
+    }
+
+    @Test
+    public void bx() {
+        ThreadLocal<Object> objectThreadLocal = ThreadLocal.withInitial(() -> null);
+
     }
 
 }

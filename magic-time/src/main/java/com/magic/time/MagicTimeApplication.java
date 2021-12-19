@@ -3,6 +3,7 @@ package com.magic.time;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
@@ -15,11 +16,12 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  */
 @SpringBootApplication(scanBasePackages = {"com.magic.time"}, exclude = {RabbitAutoConfiguration.class})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@Slf4j
 public class MagicTimeApplication {
 
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         SpringApplication.run(MagicTimeApplication.class, args);
     }
 

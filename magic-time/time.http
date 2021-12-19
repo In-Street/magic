@@ -1,0 +1,9 @@
+###
+GET {{url}}/userInfo/getUser?id=64
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/userInfo/insertUser
+Accept: */*
+Cache-Control: no-cache
