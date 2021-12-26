@@ -1,5 +1,15 @@
+POST {{url}}/userInfo/rest3?username=转发上传文件
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="fileParam"; filename="jokerx-wallpaper.jpeg"
+
+< /Users/chengyufei/Downloads/dmg/common/pictures/jokerx-wallpaper.jpeg
+--WebAppBoundary--
+
 ###
-GET {{url}}/userInfo/getUser?id=64
+###
+GET {{url}}/userInfo/getUser?id=285
 Accept: */*
 Cache-Control: no-cache
 
@@ -7,3 +17,9 @@ Cache-Control: no-cache
 GET {{url}}/userInfo/insertUser
 Accept: */*
 Cache-Control: no-cache
+
+###
+POST {{url}}/userInfo/rest2
+Accept: */*
+Cache-Control: no-cache
+

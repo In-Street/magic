@@ -2,10 +2,11 @@ package com.magic.time.service.business_development_100.pool_04;
 
 import com.magic.time.dao.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  *
@@ -18,6 +19,8 @@ public class UserInfoController {
 
     @Autowired
     private DatabaseService databaseService;
+    @Autowired
+    private HttpSerivce httpSerivce;
 
     @GetMapping("/getUser")
     public UserInfo getUser(@RequestParam Integer id) {
@@ -27,5 +30,26 @@ public class UserInfoController {
     @GetMapping("/insertUser")
     public UserInfo insertUser() {
         return databaseService.insertUser();
+    }
+
+    @PostMapping("/insertUser2")
+    public String insertUser2(MultipartFile file, String username) throws IOException {
+        databaseService.insertUser(username, file);
+        return "success";
+    }
+
+    @GetMapping("/rest")
+    public void rest() throws URISyntaxException {
+        httpSerivce.rest1();
+    }
+
+    @PostMapping("/rest2")
+    public void rest2() {
+        httpSerivce.rest2();
+    }
+
+    @PostMapping("/rest3")
+    public void rest3(MultipartFile fileParam, String username) {
+        httpSerivce.rest3(fileParam, username);
     }
 }
