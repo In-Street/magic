@@ -18,8 +18,8 @@ public class LeafService {
 
     @Autowired
     private SegmentService segmentService;
-    @Autowired
-    private SnowflakeService snowflakeService;
+   /* @Autowired
+    private SnowflakeService snowflakeService;*/
 
     public Long generatorSegment(String type, String key) {
         Result result = new Result();
@@ -28,7 +28,7 @@ public class LeafService {
                 result = segmentService.getId(key);
                 break;
             case "snowflake":
-                result = snowflakeService.getId(key);
+                //result = snowflakeService.getId(key);
                 break;
             default:
                 break;

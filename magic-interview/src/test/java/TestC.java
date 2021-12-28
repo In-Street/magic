@@ -72,6 +72,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.*;
@@ -242,7 +243,7 @@ public class TestC {
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
         textEncryptor.setPassword("");
 
-        String res = textEncryptor.decrypt("HWuWGiatmGzF41wYyrsF482iEVWGrfmf");
+        String res = textEncryptor.encrypt("123456");
         System.out.println(res);
         System.out.println(textEncryptor.encrypt("123456"));
     }
@@ -729,7 +730,11 @@ public class TestC {
             }
         }
     }
+    @Test
+    public void bx() {
+        ThreadLocal<Object> objectThreadLocal = ThreadLocal.withInitial(() -> null);
 
+    }
     @Test
     public void pdfHandler() throws IOException {
         PdfDocument document = new PdfDocument("/Users/chengyufei/Downloads/logo.pdf");
