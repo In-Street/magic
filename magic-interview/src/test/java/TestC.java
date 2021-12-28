@@ -1,5 +1,7 @@
 import cn.hutool.core.text.UnicodeUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -8,7 +10,10 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
+import com.google.gson.JsonObject;
 import com.magic.interview.service.validated.LombokDto;
+import com.spire.pdf.PdfDocument;
+import com.spire.pdf.PdfPageBase;
 import jodd.template.StringTemplateParser;
 import jodd.util.CharUtil;
 import jodd.util.StringUtil;
@@ -39,10 +44,9 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.w3c.dom.Node;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
@@ -240,6 +244,7 @@ public class TestC {
 
         String res = textEncryptor.decrypt("HWuWGiatmGzF41wYyrsF482iEVWGrfmf");
         System.out.println(res);
+        System.out.println(textEncryptor.encrypt("123456"));
     }
 
     @Test
@@ -677,7 +682,7 @@ public class TestC {
         SortPrint sortPrint = new SortPrint();
         for (int j = 0; j < 3; j++) {
             int finalJ = j;
-            new Thread(()->{
+            new Thread(() -> {
                 try {
                     sortPrint.pri(finalJ);
                 } catch (InterruptedException e) {
@@ -686,6 +691,23 @@ public class TestC {
             }).start();
         }
 
+    }
+
+    @Test
+    public void sss() {
+        JSONArray array = new JSONArray();
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("A", 1);
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.put("B", 2);
+
+        array.add(jsonObject);
+        array.add(jsonObject2);
+        System.out.println(array);
+
+        List<JSONObject> strings = array.toJavaList(JSONObject.class);
+        System.out.println(strings.get(0));
     }
 
     class SortPrint {
@@ -697,7 +719,7 @@ public class TestC {
             int next = para % 3 + 1;
             while (true) {
                 lock.lock();
-                while (para!=stat) {
+                while (para != stat) {
                     conditions[para].await();
                 }
                 System.out.println(para);
@@ -706,6 +728,34 @@ public class TestC {
                 lock.unlock();
             }
         }
+    }
+
+    @Test
+    public void pdfHandler() throws IOException {
+        PdfDocument document = new PdfDocument("/Users/chengyufei/Downloads/logo.pdf");
+        int count = document.getPages().getCount();
+        PdfPageBase page;
+        ArrayList<String> list = null;
+        int name = 0;
+        for (int i= 22; i<23;i++) {
+            ArrayList<String> strings = new ArrayList<>();
+            page = document.getPages().get(i);
+            String text = page.extractText(false);
+             list = Lists.newArrayList(text.split("\r\n"));
+            System.out.println(list);
+
+            page = document.getPages().get(i);
+            BufferedImage[] bufferedImages = page.extractImages();
+            for (int j = 0; j < bufferedImages.length; j++) {
+
+                //System.out.println(list.get(j));
+                //File output = new File("/Users/chengyufei/Downloads/dmg/logo/"+name+++".png");
+
+                File output = new File("/Users/chengyufei/Downloads/dmg/logo/"+list.get(j+2)+".png");
+                ImageIO.write(bufferedImages[j], "PNG", output);
+            }
+        }
+        document.close();
     }
 
 }
