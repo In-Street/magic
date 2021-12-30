@@ -23,3 +23,7 @@ POST {{url}}/userInfo/rest2
 Accept: */*
 Cache-Control: no-cache
 
+###
+GET {{url}}/clientReadTimeout/clientRead
+Accept: */*
+Cache-Control: no-cache
