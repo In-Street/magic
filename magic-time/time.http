@@ -24,6 +24,6 @@ Accept: */*
 Cache-Control: no-cache
 
 ###
-GET {{url}}/clientReadTimeout/clientRead
+GET {{url}}/clientReadTimeout/clientReadConcurrent?count=100
 Accept: */*
 Cache-Control: no-cache
