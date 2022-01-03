@@ -40,6 +40,15 @@ public class ClientReadTimeoutController {
 
     @GetMapping("/clientRead")
     public void  clientRead(){
-        client.server();
+        //client.server();
+        client.retry();
     }
+
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @GetMapping("/serverRetry")
+    public void  serverRetry() throws InterruptedException {
+        log.info(">>serverRetry 接收到请求");
+        TimeUnit.SECONDS.sleep(3);
+    }
+
 }

@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 9091
 spring:
   application.name: time
   profiles.active: dev
@@ -37,11 +37,13 @@ mybatis:
 
 #feign配置
 # name为clientsdk 的请求服务地址
-clientsdk.ribbon.listOfServers: localhost:9090
-feign.client.config.clientsdk.readTimeout: 2000
+clientsdk.ribbon.listOfServers: localhost:9090,localhost:9091
+#feign.client.config.clientsdk.readTimeout: 2000
 #feign.client.config.clientsdk.connectTimeout: 3000
 
 ribbon.ReadTimeout: 3000
+#取消重试
+ribbon.MaxAutoRetriesNextServer: 0
 
 ---
 spring.profiles: dev
