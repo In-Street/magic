@@ -1,9 +1,13 @@
+import cn.hutool.core.text.escape.Html4Escape;
+import cn.hutool.http.HtmlUtil;
 import com.google.common.collect.Lists;
+import com.hankcs.hanlp.classification.utilities.TextProcessUtility;
 import com.hankcs.hanlp.summary.TextRankSentence;
 import com.hankcs.hanlp.utility.SentencesUtil;
 import com.hankcs.hanlp.utility.TextUtility;
 import com.magic.time.common.HanUtil;
 import org.junit.Test;
+import org.springframework.web.util.HtmlUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -20,9 +24,9 @@ public class TestTime {
     public void Hanlp() {
         String doc = "2022年1月1日，区域全面经济伙伴关系协定（RCEP）如期生效，全球最大自由贸易区正式启航！对新冠肺炎疫情阴霾之下的世界经济而言，这个消息无异于一道阳光！《消融寒冬的凛冽》，带来光明与希望。\n" +
                 "\n" +
-                "　　作为RCEP中经济规模最大的成员，中国始终与各成员国一道，积极参与和支持RCEP机制建设，致力于将其打造成东亚经贸合作的主平台。\n" +
+                "　　作为RCEP中经济规模最大的成员，<script type=\"text/javascript\" data-rms=\"1\" src=\"/rp/n21aGRCN5EKHB3qObygw029dyNU.br.js\"></script> 中国始终与各成员国一道，积极参与和支持RCEP机制建设，致力于将其打造成东亚经贸合作的主平台。\n" +
                 "\n" +
-                "　　早在2021年3月，中国就完成了RCEP的核准，成为非东盟国家中首个正式完成核准程序的成员国。RCEP生效实施后，中国与自贸伙伴的贸易额占比由27%增加到35%左右，超过1/3的对外贸易实现零关税。货物贸易方面，零关税水平从8%增至90%，涵盖中国约1.6万亿美元的贸易额。服务贸易方面，中国服务贸易开放承诺达到了已有自贸协定的最高水平。中国还首次在国际协定中纳入非服务业投资负面清单，对制造业、农业、林业、渔业、采矿业5个领域作出高水平自由化承诺。种种行动表明，RCEP是中国对外开放的里程碑。中国维护多边贸易体制、推动区域经济一体化进程的脚步坚定有力。\n" +
+                "　　早在2021年3月，中国就完成了RCEP的核准，成为 非东 盟国家中首个正式完成核准程序的成员国。RCEP生效实施后，中国与自贸伙伴的贸易额占比由27%增加到35%左右，超过1/3的对外贸易实现零关税。货物贸易方面，零关税水平从8%增至90%，涵盖中国约1.6万亿美元的贸易额。服务贸易方面，中国服务贸易开放承诺达到了已有自贸协定的最高水平。中国还首次在国际协定中纳入非服务业投资负面清单，对制造业、农业、林业、渔业、采矿业5个领域作出高水平自由化承诺。种种行动表明，RCEP是中国对外开放的里程碑。中国维护多边贸易体制、推动区域经济一体化进程的脚步坚定有力。\n" +
                 "\n" +
                 "　　逆境之下，正能量尤为可贵。近年来，保护主义、单边主义暗流涌动，经济全球化遭遇逆流。新冠肺炎疫情导致全球经济增长乏力，国际贸易遭遇严重衰退。百年变局叠加世纪疫情，呈现在世界面前的乱象错综复杂，“筑墙”“脱钩”“退群”泛滥，霸权、霸凌、霸道横行，强权政治、零和心态、冷战思维不断冲击国际秩序，形形色色的“伪多边主义”甚嚣尘上。\n" +
                 "\n" +
@@ -36,11 +40,7 @@ public class TestTime {
         List<String> sentenceList = TextRankSentence.getTopSentenceList(doc, doc.length());
         //sentenceList.stream().forEach(s-> System.out.println(s));
 
-        String enDoc = "A cluster is a collection of one or more nodes (servers) that together holds your entire data and provides federated indexing and search capabilities across all nodes. A cluster is identified by a unique name which by default is \"elasticsearch\". This name is important because a node can only be part of a cluster if the node is set up to join the cluster by its name.\n" +
-                "\n" +
-                "Make sure that you don’t reuse the same cluster names in different environments, otherwise you might end up with nodes joining the wrong cluster. For instance you could use logging-dev, logging-stage, and logging-prod for the development, staging, and production clusters.\n" +
-                "\n" +
-                "Note that it is valid and perfectly fine to have a cluster with only a single node in it. Furthermore, you may also have multiple independent clusters each with its own unique cluster name.";
+        String enDoc = "A cluster is a collection of one or more nodes (servers) that together holds your entire data and provides federated indexing and search capabilities across all nodes. A cluster is identified by a unique name which by default is \"elasticsearch\". This name is important because a node can only be part of a cluster if the node is set up to join the cluster by its name. Make sure that you don’t reuse the same cluster names in different environments,otherwise you might end up with nodes joining the wrong cluster. For instance you could use logging-dev, logging-stage, and logging-prod for the development, staging, and production clusters.";
 
       /*  System.out.println(">>>>>>>>>>>>>>>>>");
         String[] strings = HanUtil.content_split(enDoc);
@@ -54,16 +54,18 @@ public class TestTime {
 
         boolean allChinese = TextUtility.isAllNonChinese(doc.getBytes(StandardCharsets.UTF_8));
         //boolean allLetter = TextUtility.isAllLetter(enDoc);
-        boolean allLetter = TextUtility.isAllNonChinese(enDoc.getBytes(StandardCharsets.UTF_8));
+        boolean allLetter = TextUtility.isAllNonChinese(TextProcessUtility.preprocess(enDoc).getBytes(StandardCharsets.UTF_8));
         System.out.println("chinese: "+allChinese);
         System.out.println("letter: "+allLetter);
 
-        List<String> strings = SentencesUtil.toSentenceList(doc, false);
+        List<String> strings = SentencesUtil.toSentenceList(HtmlUtil.cleanHtmlTag(doc), false);
         AtomicInteger i = new AtomicInteger();
         Lists.newArrayList(strings).stream().forEach(s -> {
             System.out.println(i + ">>" + s);
             i.getAndIncrement();
         });
+
+
 
 
     }
