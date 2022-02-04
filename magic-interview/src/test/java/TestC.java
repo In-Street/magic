@@ -62,10 +62,7 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -761,6 +758,16 @@ public class TestC {
             }
         }
         document.close();
+    }
+
+    @Test
+    public void concurrentHashMap() {
+        ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
+        map.put("A", "a");
+        map.put("B", "b");
+        String putIfAbsent = map.putIfAbsent("A", "aa");
+        System.out.println(putIfAbsent);
+
     }
 
 }

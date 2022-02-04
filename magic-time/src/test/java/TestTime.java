@@ -1,17 +1,30 @@
-import cn.hutool.core.text.escape.Html4Escape;
 import cn.hutool.http.HtmlUtil;
 import com.google.common.collect.Lists;
 import com.hankcs.hanlp.classification.utilities.TextProcessUtility;
 import com.hankcs.hanlp.summary.TextRankSentence;
 import com.hankcs.hanlp.utility.SentencesUtil;
 import com.hankcs.hanlp.utility.TextUtility;
-import com.magic.time.common.HanUtil;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.springframework.web.util.HtmlUtils;
+import org.springframework.util.StopWatch;
+import org.springframework.web.client.RestTemplate;
 
+import javax.print.DocFlavor;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -51,12 +64,11 @@ public class TestTime {
         });*/
 
 
-
         boolean allChinese = TextUtility.isAllNonChinese(doc.getBytes(StandardCharsets.UTF_8));
         //boolean allLetter = TextUtility.isAllLetter(enDoc);
         boolean allLetter = TextUtility.isAllNonChinese(TextProcessUtility.preprocess(enDoc).getBytes(StandardCharsets.UTF_8));
-        System.out.println("chinese: "+allChinese);
-        System.out.println("letter: "+allLetter);
+        System.out.println("chinese: " + allChinese);
+        System.out.println("letter: " + allLetter);
 
         List<String> strings = SentencesUtil.toSentenceList(HtmlUtil.cleanHtmlTag(doc), false);
         AtomicInteger i = new AtomicInteger();
@@ -66,16 +78,118 @@ public class TestTime {
         });
 
 
-
-
     }
 
     @Test
     public void opennlp() {
     }
+
     @Test
     public void len() {
         String str = "2022年1月1日，区域全面经济伙伴关系协定（RCEP）如期生效，全球最大自由贸易区正式启航。";
         System.out.println(str.length());
     }
+
+
+
+    @Test
+    public void rr() {
+        System.out.println(0.1 + 0.2);
+
+        //相乘：结果值的scale=两个乘数scale相加
+        System.out.println(new BigDecimal("4.015").multiply(new BigDecimal(Double.toString(100))));
+
+        //用double构造BigDecimal 结果只是精度提高了，仍会有精度丢失
+        System.out.println(new BigDecimal(0.1).add(new BigDecimal(0.2)));
+        //以下三种BigDecimal的构造方式结果准确
+        System.out.println(new BigDecimal("0.1").add(new BigDecimal("0.2")));
+        System.out.println(BigDecimal.valueOf(0.1).add(BigDecimal.valueOf(0.2)));
+        System.out.println(new BigDecimal(Double.toString(0.1)).add(new BigDecimal(Double.toString(0.2))));
+    }
+
+    @Test
+    public void tt() {
+        int[] arr = {1, 2, 3};
+        List<int[]> ints = Arrays.asList(arr);
+        System.out.println(ints.size());
+
+        Integer[] arrInteger = {7, 8, 9};
+        arrInteger[1] = 10;
+        //元素替换 ； 不可add
+        System.out.println(Arrays.asList(arrInteger));
+
+        arr[1] = 4;
+        List<Integer> collect = Arrays.stream(arr).boxed().collect(Collectors.toList());
+        collect.add(5);
+        //collect.remove(0);
+        //元素替换 ； 可以add\remove
+        System.out.println(collect);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+
+        System.out.println("///////////////////////////////////////////////////////");
+        ArrayList<Integer> list = Lists.newArrayList(1, 2, 3, 4, 5);
+        List<Integer> sub = list.subList(0, 2);
+        System.out.println(sub);
+        //list.add(0,6);
+        //ConcurrentModificationException
+        //System.out.println(sub);
+
+        //sub.remove(1);
+        sub.add(7);
+        System.out.println(list);
+        System.out.println(sub);
+    }
+
+    @Test
+    public void yy() {
+        int elementCount = 100000;
+        int loopCount = 100000;
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("linkedListGet");
+        linkedListGet(elementCount, loopCount);
+        stopWatch.stop();
+        stopWatch.start("arrayListGet");
+        arrayListGet(elementCount, loopCount);
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
+
+
+        StopWatch stopWatch2 = new StopWatch();
+        stopWatch2.start("linkedListAdd");
+        linkedListAdd(elementCount, loopCount);
+        stopWatch2.stop();
+        stopWatch2.start("arrayListAdd");
+        arrayListAdd(elementCount, loopCount);
+        stopWatch2.stop();
+        System.out.println(stopWatch2.prettyPrint());
+    }
+
+    //LinkedList访问
+    private static void linkedListGet(int elementCount, int loopCount) {
+        List<Integer> list = IntStream.rangeClosed(1, elementCount).boxed().collect(Collectors.toCollection(LinkedList::new));
+        IntStream.rangeClosed(1, loopCount).forEach(i -> list.get(ThreadLocalRandom.current().nextInt(elementCount)));
+    }
+
+    //ArrayList访问
+    private static void arrayListGet(int elementCount, int loopCount) {
+        List<Integer> list = IntStream.rangeClosed(1, elementCount).boxed().collect(Collectors.toCollection(ArrayList::new));
+        IntStream.rangeClosed(1, loopCount).forEach(i -> list.get(ThreadLocalRandom.current().nextInt(elementCount)));
+    }
+
+    //LinkedList插入
+    private static void linkedListAdd(int elementCount, int loopCount) {
+        List<Integer> list = IntStream.rangeClosed(1, elementCount).boxed().collect(Collectors.toCollection(LinkedList::new));
+        IntStream.rangeClosed(1, loopCount).forEach(i -> list.add(ThreadLocalRandom.current().nextInt(elementCount), 1));
+        //IntStream.rangeClosed(1, loopCount).forEach(i -> list.add(ThreadLocalRandom.current().nextInt(elementCount)));
+    }
+
+    //ArrayList插入
+    private static void arrayListAdd(int elementCount, int loopCount) {
+        List<Integer> list = IntStream.rangeClosed(1, elementCount).boxed().collect(Collectors.toCollection(ArrayList::new));
+        IntStream.rangeClosed(1, loopCount).forEach(i -> list.add(ThreadLocalRandom.current().nextInt(elementCount), 1));
+        //IntStream.rangeClosed(1, loopCount).forEach(i -> list.add(ThreadLocalRandom.current().nextInt(elementCount)));
+    }
+
 }
