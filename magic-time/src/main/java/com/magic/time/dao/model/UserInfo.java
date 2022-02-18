@@ -23,4 +23,12 @@ public class UserInfo implements Serializable {
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;
+
+    public UserInfo() {
+    }
+
+    public UserInfo(Integer id, String username) {
+        this.id = id;
+        this.username = username;
+    }
 }

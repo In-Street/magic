@@ -23,3 +23,22 @@ POST {{url}}/userInfo/rest2
 Accept: */*
 Cache-Control: no-cache
 
+###
+GET {{url}}/clientReadTimeout/clientReadConcurrent?count=100
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/serialize/case1
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/serialize/get
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/serialize/case2
+Accept: */*
+Cache-Control: no-cache

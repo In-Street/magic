@@ -35,5 +35,124 @@
             <version>4.5.13</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.2.6.RELEASE</version>
+        </dependency>
+<!--        引入spring-cloud-starter-openfeign时需引入ribbon-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+            <version>2.2.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>fluent-hc</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hankcs</groupId>
+            <artifactId>hanlp</artifactId>
+            <version>portable-1.8.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.opennlp</groupId>
+            <artifactId>opennlp-tools</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
+
     </dependencies>
+    <build>
+        <finalName>magic_time</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.magic.time.MagicTimeApplication</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--此插件用于打包时将所依赖的类包一起打包，
+            eg： 打 ReplaceService main方法时使用，并使用main方法传参：java -jar -Dfile.encoding=utf-8 replace.jar 参数1 参数2 ...
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.ReplaceService</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+            <!--<plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <configuration>
+                    <buildDirectory>target</buildDirectory>
+                    <connectTimeoutMillis>3000</connectTimeoutMillis>
+                    <contextDirectory>src/main/docker</contextDirectory>
+                    <dockerInfoDirectory>src/main/docker</dockerInfoDirectory>
+                    <finalName>${project.build.finalName}</finalName>
+                </configuration>
+            </plugin>-->
+            <!--<plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>target</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>-->
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>*.yml</include>
+                    <include>*.txt</include>
+                    <include>*.xml</include>
+                    <include>*.pem</include>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
 </project>

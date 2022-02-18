@@ -35,6 +35,17 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.magic.time.dao
 
+#feign配置
+# name为clientsdk 的请求服务地址
+#clientsdk.ribbon.listOfServers: localhost:9090,localhost:9091
+#feign.client.config.clientsdk.readTimeout: 2000
+#feign.client.config.clientsdk.connectTimeout: 3000
+
+clientsdk.ribbon.listOfServers: localhost:9090
+ribbon.ReadTimeout: 3000
+#取消重试
+ribbon.MaxAutoRetriesNextServer: 0
+
 ---
 spring.profiles: dev
 

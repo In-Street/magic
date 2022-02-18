@@ -25,7 +25,7 @@ public class RestConfig {
                     .setSocketTimeout(6500)
                     .setConnectTimeout(6500)
                     //从 connection manager中获取连接超时时间，没有可用连接，就会抛出ConnectionPoolTimeoutException异常。默认
-                    .setConnectionRequestTimeout(1000)
+                    .setConnectionRequestTimeout(10000)
                     .build();
 
             PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
