@@ -12,7 +12,7 @@ public class UserExample {
 
     private Integer limit;
 
-    private Integer offset;
+    private Long offset;
 
     public UserExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -75,11 +75,11 @@ public class UserExample {
         return limit;
     }
 
-    public void setOffset(Integer offset) {
+    public void setOffset(Long offset) {
         this.offset = offset;
     }
 
-    public Integer getOffset() {
+    public Long getOffset() {
         return offset;
     }
 
@@ -321,6 +321,146 @@ public class UserExample {
 
         public Criteria andPwdNotBetween(String value1, String value2) {
             addCriterion("pwd not between", value1, value2, "pwd");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformIsNull() {
+            addCriterion("pub_platform is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformIsNotNull() {
+            addCriterion("pub_platform is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformEqualTo(String value) {
+            addCriterion("pub_platform =", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformNotEqualTo(String value) {
+            addCriterion("pub_platform <>", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformGreaterThan(String value) {
+            addCriterion("pub_platform >", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformGreaterThanOrEqualTo(String value) {
+            addCriterion("pub_platform >=", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformLessThan(String value) {
+            addCriterion("pub_platform <", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformLessThanOrEqualTo(String value) {
+            addCriterion("pub_platform <=", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformLike(String value) {
+            addCriterion("pub_platform like", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformNotLike(String value) {
+            addCriterion("pub_platform not like", value, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformIn(List<String> values) {
+            addCriterion("pub_platform in", values, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformNotIn(List<String> values) {
+            addCriterion("pub_platform not in", values, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformBetween(String value1, String value2) {
+            addCriterion("pub_platform between", value1, value2, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andPubPlatformNotBetween(String value1, String value2) {
+            addCriterion("pub_platform not between", value1, value2, "pubPlatform");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryIsNull() {
+            addCriterion("summary is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryIsNotNull() {
+            addCriterion("summary is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryEqualTo(String value) {
+            addCriterion("summary =", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryNotEqualTo(String value) {
+            addCriterion("summary <>", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryGreaterThan(String value) {
+            addCriterion("summary >", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryGreaterThanOrEqualTo(String value) {
+            addCriterion("summary >=", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryLessThan(String value) {
+            addCriterion("summary <", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryLessThanOrEqualTo(String value) {
+            addCriterion("summary <=", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryLike(String value) {
+            addCriterion("summary like", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryNotLike(String value) {
+            addCriterion("summary not like", value, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryIn(List<String> values) {
+            addCriterion("summary in", values, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryNotIn(List<String> values) {
+            addCriterion("summary not in", values, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryBetween(String value1, String value2) {
+            addCriterion("summary between", value1, value2, "summary");
+            return (Criteria) this;
+        }
+
+        public Criteria andSummaryNotBetween(String value1, String value2) {
+            addCriterion("summary not between", value1, value2, "summary");
             return (Criteria) this;
         }
     }

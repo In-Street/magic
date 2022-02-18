@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -8,12 +9,12 @@ spring:
         filters: stat
         driver-class-name: com.mysql.cj.jdbc.Driver
         #基本属性
-        url: jdbc:mysql://127.0.0.1:3309/test?characterEncoding=utf-8
+        url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8
         #docker mysql 容器地址
 #        url: jdbc:mysql://172.18.0.2:3306/sharding?characterEncoding=utf-8
         #jasypt加密
-        username: ENC(0qsQtSnXgMCITbHWJ15Nkg==)
-        password: ENC(sivbANn4558zpnd87WSaAA==)
+        username: ENC(eskTo/YYzmbRBJ4fbzDkow==)
+        password: ENC(Y8V58Mc8RPKNk9hFuAk1uQ==)
         #配置初始化大小/最小/最大
         initial-size: 5
         min-idle: 5
@@ -36,12 +37,12 @@ spring:
         filters: stat
         driver-class-name: com.mysql.cj.jdbc.Driver
         #基本属性
-        url: jdbc:mysql://127.0.0.1:3309/leaf?characterEncoding=utf-8
+        url: jdbc:mysql://127.0.0.1:3306/leaf?characterEncoding=utf-8
         #docker mysql 容器地址
 #        url: jdbc:mysql://172.18.0.2:3306/ds_0?characterEncoding=utf-8
         #jasypt加密
-        username: ENC(0qsQtSnXgMCITbHWJ15Nkg==)
-        password: ENC(sivbANn4558zpnd87WSaAA==)
+        username: ENC(eskTo/YYzmbRBJ4fbzDkow==)
+        password: ENC(Y8V58Mc8RPKNk9hFuAk1uQ==)
         #配置初始化大小/最小/最大
         initial-size: 5
         min-idle: 5
@@ -58,3 +59,6 @@ spring:
         test-on-return: false
         pool-prepared-statements: false
         max-pool-prepared-statement-per-connection-size: 20
+mybatis-plus:
+  mapper-locations: classpath*:/
+  type-aliases-package: com.
