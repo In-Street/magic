@@ -25,7 +25,7 @@ public class MagicTimeApplication {
         SpringApplication.run(MagicTimeApplication.class, args);
     }
 
-    @Bean(name = "objectMapper")
+    //@Bean(name = "objectMapper")
     public ObjectMapper initObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         //反序列化时有不存在的属性时忽略

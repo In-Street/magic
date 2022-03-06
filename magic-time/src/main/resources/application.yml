@@ -6,16 +6,16 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6380
-  datasource:
-#    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      jdbc-url: jdbc:mysql://127.0.0.1:3310/test?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
-      username: root
-      password: 123456
-       #通过 JMX MBean 注册连接池相关统计信息，观察连接池情况
-      register-mbeans: true
-      pool-name: connect-count-test
-      maximum-pool-size: 11
+#  datasource:
+##    type: com.zaxxer.hikari.HikariDataSource
+#    hikari:
+#      jdbc-url: jdbc:mysql://127.0.0.1:3310/test?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+#      username: root
+#      password: 123456
+#       #通过 JMX MBean 注册连接池相关统计信息，观察连接池情况
+#      register-mbeans: true
+#      pool-name: connect-count-test
+#      maximum-pool-size: 11
 
     #在实现了 implements WebMvcConfigurer接口时，此配置是无效的
   jackson:

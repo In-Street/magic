@@ -18,9 +18,9 @@ public class UserInfo implements Serializable {
 
     private String address;
 
-    private Date createTime;
+   /* private Date createTime;
 
-    private Date updateTime;
+    private Date updateTime;*/
 
     private static final long serialVersionUID = 1L;
 

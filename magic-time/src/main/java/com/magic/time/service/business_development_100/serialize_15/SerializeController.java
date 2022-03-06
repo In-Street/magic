@@ -1,6 +1,8 @@
 package com.magic.time.service.business_development_100.serialize_15;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magic.time.dao.model.UserInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -53,14 +55,17 @@ public class SerializeController {
     public void get() {
         //log.info("redisTemplate: {}",redisTemplate.opsForValue().get("stringRedisTemplate"));
         log.info("stringRedisTemplate: {}", stringRedisTemplate.opsForValue().get("redisTemplate"));
-        log.info("stringRedisTemplate-case2: {}", stringRedisTemplate.opsForValue().get("case2"));
-        log.info("userInfoRedisTemplate: {}", userInfoRedisTemplate.opsForValue().get("case2"));
+        log.info("stringRedisTemplate-case2: {}", stringRedisTemplate.opsForValue().get("case3"));
+
+        //Jackson2JsonRedisSerializer 未指定ObjectMapper时，输出类型为LinkedHashMap
+        Object case2 = userInfoRedisTemplate.opsForValue().get("case3");
+        log.info("userInfoRedisTemplate: {}，{}", case2,case2.getClass());
     }
 
     @GetMapping("/case2")
     public void case2() {
         UserInfo userInfo = new UserInfo(3, "不能说的秘密");
-        userInfoRedisTemplate.opsForValue().set("case2", userInfo);
+        userInfoRedisTemplate.opsForValue().set("case3", userInfo);
     }
 
     @Bean(name = "redisTemplate")
@@ -69,6 +74,12 @@ public class SerializeController {
         redisTemplate.setConnectionFactory(factory);
 
         Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        //objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
+        //objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
+        serializer.setObjectMapper(objectMapper);
+
         redisTemplate.setKeySerializer(RedisSerializer.string());
         redisTemplate.setValueSerializer(serializer);
         redisTemplate.setHashKeySerializer(RedisSerializer.string());
@@ -77,3 +88,17 @@ public class SerializeController {
         return redisTemplate;
     }
 }
+
+/**
+ * [
+ *   "com.magic.time.dao.model.UserInfo",
+ *   {
+ *     "id": 3,
+ *     "username": "不能说的秘密",
+ *     "avatar": null,
+ *     "address": null,
+ *     "createTime": null,
+ *     "updateTime": null
+ *   }
+ * ]
+ */
