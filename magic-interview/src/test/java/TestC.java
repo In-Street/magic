@@ -238,9 +238,9 @@ public class TestC {
     @Test
     public void encrypt() {
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword("");
+        textEncryptor.setPassword("e2TxKdz");
 
-        String res = textEncryptor.encrypt("123456");
+        String res = textEncryptor.encrypt("root");
         System.out.println(res);
         System.out.println(textEncryptor.encrypt("123456"));
     }

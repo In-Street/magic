@@ -4,14 +4,13 @@ import com.magic.dao.config.DataSource;
 import com.magic.dao.config.DataSourceType;
 import com.magic.dao.model.User;
 import com.magic.dao.model.UserExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
-
-//@Mapper
+@Mapper
 public interface UserMapper {
     long countByExample(UserExample example);
 

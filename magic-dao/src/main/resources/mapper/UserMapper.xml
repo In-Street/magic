@@ -5,6 +5,8 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="pub_platform" jdbcType="VARCHAR" property="pubPlatform" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username/*, pwd*/
+    id, username, pwd, pub_platform, summary
   </sql>
   <select id="selectByExample" parameterType="com.magic.dao.model.UserExample" resultMap="BaseResultMap">
     select
@@ -73,7 +75,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user
+    from t_user_1
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,37 +94,39 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from t_user_1
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+    delete from t_user_1
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.magic.dao.model.UserExample">
-    delete from user
+    delete from t_user_1
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.magic.dao.model.User">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into user (username, pwd)
-    values (#{username,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.magic.dao.model.User" useGeneratedKeys="true">
+    insert into t_user_1 (username, pwd, pub_platform, 
+      summary)
+    values (#{username,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{pubPlatform,jdbcType=VARCHAR}, 
+      #{summary,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.magic.dao.model.User">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into user
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.magic.dao.model.User" useGeneratedKeys="true">
+    insert into t_user_1
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="username != null">
         username,
       </if>
       <if test="pwd != null">
         pwd,
+      </if>
+      <if test="pubPlatform != null">
+        pub_platform,
+      </if>
+      <if test="summary != null">
+        summary,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -132,16 +136,22 @@
       <if test="pwd != null">
         #{pwd,jdbcType=VARCHAR},
       </if>
+      <if test="pubPlatform != null">
+        #{pubPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.magic.dao.model.UserExample" resultType="java.lang.Long">
-    select count(*) from user
+    select count(*) from t_user_1
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update user
+    update t_user_1
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -152,22 +162,30 @@
       <if test="record.pwd != null">
         pwd = #{record.pwd,jdbcType=VARCHAR},
       </if>
+      <if test="record.pubPlatform != null">
+        pub_platform = #{record.pubPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null">
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update user
+    update t_user_1
     set id = #{record.id,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
-      pwd = #{record.pwd,jdbcType=VARCHAR}
+      pwd = #{record.pwd,jdbcType=VARCHAR},
+      pub_platform = #{record.pubPlatform,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.magic.dao.model.User">
-    update user
+    update t_user_1
     <set>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
@@ -175,13 +193,21 @@
       <if test="pwd != null">
         pwd = #{pwd,jdbcType=VARCHAR},
       </if>
+      <if test="pubPlatform != null">
+        pub_platform = #{pubPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.magic.dao.model.User">
-    update user
+    update t_user_1
     set username = #{username,jdbcType=VARCHAR},
-      pwd = #{pwd,jdbcType=VARCHAR}
+      pwd = #{pwd,jdbcType=VARCHAR},
+      pub_platform = #{pubPlatform,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="selfPlusMinus">

@@ -261,3 +261,8 @@ Cache-Control: no-cache
 POST {{url}}/actuator/shutdown
 Accept: */*
 Cache-Control: no-cache
+
+### mybatis plus
+GET {{url}}/mp/list
+Accept: */*
+Cache-Control: no-cache

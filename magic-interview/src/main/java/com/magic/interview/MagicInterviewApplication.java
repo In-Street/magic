@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
@@ -104,7 +102,7 @@ public class MagicInterviewApplication {
         //反序列化时有不存在的属性时忽略
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         //序列化时忽略null 值的字段
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        //objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return objectMapper;
     }
 }
