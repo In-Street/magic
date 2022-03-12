@@ -34,11 +34,43 @@ Accept: */*
 Cache-Control: no-cache
 
 ###
-GET {{url}}/serialize/get
+GET {{url}}/serialize/get/org2
 Accept: */*
 Cache-Control: no-cache
 
 ###
-GET {{url}}/serialize/case2
+GET {{url}}/serialize/set
 Accept: */*
 Cache-Control: no-cache
+
+###
+POST {{url}}/serialize/test
+Accept: */*
+Cache-Control: no-cache
+
+###
+POST {{url}}/serialize/test2
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "orgId": "CCC",
+  "orgName": "搁浅",
+  "v": 11
+}
+
+###
+GET {{url}}/serialize/res/1000
+Accept: */*
+Cache-Control: no-cache
+
+###
+POST {{url}}/serialize/res
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "code": 1000
+}

@@ -20,6 +20,8 @@ spring:
     #在实现了 implements WebMvcConfigurer接口时，此配置是无效的
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+#    serialization:
+#      write_enums_using_index: true
 
 #优雅停机 访问： /actuator/shutdown
 management:
