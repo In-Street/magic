@@ -74,3 +74,8 @@ Content-Type: application/json
 {
   "code": 1000
 }
+
+###
+GET {{url}}/serialize/getEnums
+Accept: */*
+Cache-Control: no-cache

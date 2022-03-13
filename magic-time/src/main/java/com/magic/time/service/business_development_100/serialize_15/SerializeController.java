@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,7 +20,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -44,6 +47,9 @@ public class SerializeController {
     @Autowired
     @Qualifier("objectRedisTemplate2")
     private RedisTemplate redisTemplate2;
+    @Autowired
+    //@Qualifier("serialRest")
+    private RestTemplate restTemplate;
 
     /**
      * 未自定义RedisTemplate的Key、Value的序列化方式时
@@ -127,7 +133,21 @@ public class SerializeController {
         return selfResponse;
     }
 
+    @GetMapping("/getEnums")
+    public StatusEnumClient getEnums(){
+        return restTemplate.getForObject("http://localhost:9090/serialize/serverEnums", StatusEnumClient.class);
+    }
 
+    @GetMapping("/serverEnums")
+    public StatusEnumServer serverEnums(){
+        return StatusEnumServer.CANCELED;
+    }
+
+
+    /**
+     * 尽量不新建objectmapper。使用Jackson配置项来解决所需
+     * @return
+     */
     //@Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -136,7 +156,11 @@ public class SerializeController {
         return objectMapper;
     }
 
-    @Bean
+    /**
+     * 和application.yml中Jackson配置效果一样：write_enums_using_index:true
+     * @return
+     */
+    //@Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return build -> build.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
     }
@@ -173,6 +197,14 @@ public class SerializeController {
         redisTemplate.setHashValueSerializer(RedisSerializer.json());
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
+    }
+
+
+    //@Bean("serialRest")
+    public RestTemplate restTemplate(MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter) {
+        return new RestTemplateBuilder()
+                .additionalMessageConverters(mappingJackson2HttpMessageConverter)
+                .build();
     }
 
     @Getter

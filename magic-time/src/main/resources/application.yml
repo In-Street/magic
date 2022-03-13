@@ -20,6 +20,10 @@ spring:
     #在实现了 implements WebMvcConfigurer接口时，此配置是无效的
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+    #反序列化时，不存在的枚举值使用默认值
+    deserialization:
+      read_unknown_enum_values_using_default_value: true
+      #序列化枚举返回下标
 #    serialization:
 #      write_enums_using_index: true
 
