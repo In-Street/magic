@@ -2,6 +2,8 @@ package com.magic.time.dao.model;
 
 import lombok.Data;
 
+import java.lang.ref.WeakReference;
+
 /**
  *
  * @author Cheng Yufei
@@ -13,4 +15,7 @@ public class OrgInfo {
     private String orgId;
 
     private String orgName;
+
+    private WeakReference<UserInfo> weakUserInfo;
+    private UserInfo userInfo;
 }
