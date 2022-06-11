@@ -16,6 +16,7 @@
         <module>magic-rabbit</module>
         <module>magic-xxl</module>
         <module>magic-time</module>
+        <module>magic-lc</module>
     </modules>
     <packaging>pom</packaging>
 
