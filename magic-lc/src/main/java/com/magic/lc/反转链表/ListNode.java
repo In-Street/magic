@@ -2,6 +2,7 @@ package com.magic.lc.反转链表;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -10,9 +11,10 @@ import lombok.Data;
  **/
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ListNode {
 
-    Integer value;
+   public Integer value;
 
-    ListNode next;
+    public ListNode next;
 }
