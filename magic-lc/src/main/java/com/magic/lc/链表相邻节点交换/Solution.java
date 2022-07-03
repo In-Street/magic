@@ -1,10 +1,7 @@
-package com.magic.lc.链表节点交换;
+package com.magic.lc.链表相邻节点交换;
 
 
 import com.magic.lc.反转链表.ListNode;
-import javafx.beans.binding.ListBinding;
-
-import java.util.List;
 
 /**
  *
