@@ -10,9 +10,9 @@ import com.magic.lc.反转链表.ListNode;
 public class Solution {
 
     public static void main(String[] args) {
-        //ListNode node4 = new ListNode(4, null);
+        ListNode node4 = new ListNode(4, null);
 
-        ListNode node3 = new ListNode(3, null);
+        ListNode node3 = new ListNode(3, node4);
 
         ListNode node2 = new ListNode(2, node3);
 
@@ -33,9 +33,9 @@ public class Solution {
                 }
             }
             ListNode next = tail.next;
-            ListNode reverse = reverse(node1, tail);
-            pre.next = reverse;
-            reverse.next = next;
+            ListNode[] reverse = reverse(node1, tail);
+            pre.next = reverse[0];
+            reverse[1].next = next;
             pre = tail;
             node1 = next;
 
@@ -44,16 +44,17 @@ public class Solution {
 
     }
 
-    public static ListNode reverse(ListNode head, ListNode tail) {
+    public static ListNode[] reverse(ListNode head, ListNode tail) {
         ListNode pre = null;
-        while (head != tail) {
+        ListNode tailNext = tail.next;
+        while (head != tailNext) {
             ListNode tmp = head.next;
             head.next = pre;
             pre = head;
             head = tmp;
         }
         print(pre);
-        return pre;
+        return new ListNode[]{tail, head};
     }
 
     public static void print(ListNode node) {
