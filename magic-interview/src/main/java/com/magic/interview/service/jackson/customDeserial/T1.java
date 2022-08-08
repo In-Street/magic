@@ -1,10 +1,7 @@
-package com.magic.interview.controller;
+package com.magic.interview.service.jackson.customDeserial;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -21,7 +18,5 @@ import java.lang.annotation.Target;
 @JacksonAnnotationsInside
 @JsonDeserialize(using = Deserial.class)
 public @interface T1  {
-    int value();
-
-    //Class<? extends JsonDeserializer> using();
+    int cutLen();
 }
