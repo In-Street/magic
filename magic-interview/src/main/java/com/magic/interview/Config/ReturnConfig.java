@@ -7,8 +7,11 @@ import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.util.LinkedHashMap;
 
 /**
  * @author Cheng Yufei
@@ -34,6 +37,14 @@ public class ReturnConfig implements ResponseBodyAdvice {
 
 		if (body instanceof String) {
 			return gson.toJson(Result.success(body));
+		}
+
+		//兼容 AsyncController 返回WebAsyncTask 类型时，业务抛异常。若不加会，异常信息包装在success的data中
+		if (body instanceof LinkedHashMap) {
+			LinkedHashMap<?, ?> map = (LinkedHashMap<?, ?>) body;
+			if (ObjectUtils.nullSafeEquals(500,map.get("status"))) {
+				return Result.fail(100, "失败");
+			}
 		}
 		return Result.success(body);
 	}
