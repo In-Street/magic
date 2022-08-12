@@ -5,6 +5,9 @@ import com.magic.base.dto.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,9 @@ import java.util.concurrent.Callable;
 @RequestMapping("/async")
 public class AsyncController {
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     /**
      * WebAsyncManager
      * ThreadPoolTaskExecutor:core-8
@@ -41,10 +47,12 @@ public class AsyncController {
      * @return
      */
     @GetMapping("/callable")
-    public Callable<String> callbbale() {
+    public Callable<String> callable() {
         Callable<String> callable = () -> {
             log.info(">>callable 方法处理");
             Thread.sleep(5000);
+            //int a = 0;
+            //int res = 100 / a;
             return "callbale success";
         };
         return callable;
@@ -65,12 +73,12 @@ public class AsyncController {
             log.info(">>任务完成");
         });
 
-        webAsyncTask.onTimeout(()->{
+        webAsyncTask.onTimeout(() -> {
             log.info(">>任务超时");
             return "超时";
         });
 
-        webAsyncTask.onError(()->{
+        webAsyncTask.onError(() -> {
             log.error(">>任务出错");
 
             //不会返回
@@ -89,5 +97,19 @@ public class AsyncController {
             log.info(">>" + s + " -- " + i);
         }
         return "succ";
+    }
+
+    @GetMapping("/asyncException")
+    public String asyncException() {
+        applicationContext.getBean(AsyncController.class).asyncExceptionMethod();
+
+        return "succ";
+    }
+
+    @Async
+    public void asyncExceptionMethod() {
+        log.info("Thread Name:{}", Thread.currentThread().getName());
+        int a = 0;
+        int i = 10 / a;
     }
 }

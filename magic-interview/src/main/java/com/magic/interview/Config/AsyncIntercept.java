@@ -6,6 +6,7 @@ import com.magic.base.dto.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,5 +39,15 @@ public class AsyncIntercept implements AsyncHandlerInterceptor {
             writer.write(JSONObject.toJSONString(Result.fail(100, "异步执行失败")));
             writer.close();
         }
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        log.info(">> AsyncIntercept postHandle");
+    }
+
+    @Override
+    public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info(">> AsyncIntercept afterConcurrentHandlingStarted");
     }
 }
