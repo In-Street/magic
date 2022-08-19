@@ -46,9 +46,9 @@ jwt:
   secret: jwt:secret
 
 test:
-#  list:
-#    - cc
-#    - dd
+  list2:
+    - cc
+    - dd
 
   list: aaa,bbb,vvv
   map: '{"id": 12, "name": "zhangsan", "sex": "male"}'

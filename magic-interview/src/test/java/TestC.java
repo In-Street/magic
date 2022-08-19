@@ -14,6 +14,11 @@ import com.google.gson.JsonObject;
 import com.magic.interview.service.validated.LombokDto;
 import com.spire.pdf.PdfDocument;
 import com.spire.pdf.PdfPageBase;
+import com.spire.pdf.fields.PdfForm;
+import com.spire.pdf.security.PdfSignature;
+import com.spire.pdf.widget.PdfFormFieldWidgetCollection;
+import com.spire.pdf.widget.PdfFormWidget;
+import com.spire.pdf.widget.PdfSignatureFieldWidget;
 import jodd.template.StringTemplateParser;
 import jodd.util.CharUtil;
 import jodd.util.StringUtil;
@@ -758,6 +763,35 @@ public class TestC {
             }
         }
         document.close();
+    }
+
+    @Test
+    public void verify() {
+        PdfDocument document = new PdfDocument("/Users/chengyufei/Downloads/dmg/programme/edge_downloads/E12.pdf");
+
+        PdfFormWidget pdfFormWidget = (PdfFormWidget) document.getForm();
+        PdfFormFieldWidgetCollection collection = pdfFormWidget.getFieldsWidget();
+
+        for (int i = 0; i < collection.getCount(); i++) {
+            //判定是否为签名域
+            if (collection.get(i) instanceof PdfSignatureFieldWidget) {
+                //获取签名域
+                PdfSignatureFieldWidget signatureFieldWidget = (PdfSignatureFieldWidget) collection.get(i);
+                //获取签名
+                PdfSignature signature = signatureFieldWidget.getSignature();
+                String signatureName = signatureFieldWidget.getName();
+                System.out.println(signatureName);
+
+                //判定签名是否有效
+                boolean result = signature.verifySignature();
+                if (result) {
+                    System.out.println("有效签名");
+                } else {
+                    System.out.println("无效签名");
+                }
+            }
+
+        }
     }
 
     @Test
