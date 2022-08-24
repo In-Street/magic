@@ -56,7 +56,9 @@ public class ValueService {
         System.out.println(oriString);
         System.out.printf("========");
 
-        System.out.println(config.getList2());
+        System.out.println("config list: "+config.getList2());
+
+        map.forEach((k, v) -> System.out.println(k + "----" + v));
 
         return list.toString();
     }
