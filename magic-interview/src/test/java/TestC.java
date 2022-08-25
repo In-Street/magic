@@ -1,5 +1,6 @@
 import cn.hutool.core.text.UnicodeUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.druid.filter.config.ConfigTools;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.CharMatcher;
@@ -801,6 +802,32 @@ public class TestC {
         map.put("B", "b");
         String putIfAbsent = map.putIfAbsent("A", "aa");
         System.out.println(putIfAbsent);
+
+    }
+
+    /**
+     * druid 自带的对数据库链接密码的RSA加解密
+     * @throws Exception
+     */
+    @Test
+    public void druidEnc() throws Exception {
+        //privateKey:MIIBUwIBADANBgkqhkiG9w0BAQEFAASCAT0wggE5AgEAAkEAqTULuoNgy27BhaBA6YdVSTgWPN19JPKM/qkwXq04oSBRi3PB7k2bbyWyyVJ0Hdq7cZr+H3phSEOcxihqYKWcrwIDAQABAkAOFixzypw0U3Qo+75rsqiW/+RaDNZuTQMP8GXme+VLBJJ/4zPsw4e4jWGKkEw4QTPO+Jq5l2oD9s6n/IoqThKBAiEA+0se7fxNWHq+mBN+clPAIQ9nF43CIwMsCPq9FeLjtiMCIQCsYFhnFzAZGPMEkPS4kStNzPmjpqPN4HSLl9gV2/aaBQIgFU7AV6OeF1OJF7IHdcA+OU9qCWg+vuNE95nzMIjlkAsCIBJ8Mn67qdjHKChxMw0n5DDvrkWydRZ634Sov+94KzXRAiBwVDUHAP2t2KynzKg4lETbrXE9Y4wJ2SxcpOqHYnbJ9A==
+        //publicKey:MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKk1C7qDYMtuwYWgQOmHVUk4FjzdfSTyjP6pMF6tOKEgUYtzwe5Nm28lsslSdB3au3Ga/h96YUhDnMYoamClnK8CAwEAAQ==
+        //password:cGD+ThjBGNVUGVVFnsY5FOR16WWoOY1v7RGRxA84zUrEPp0OR5nwrbO8AcX/oLY/SOrnaG4TAhBl+3rGWj3PgA==
+        //ConfigTools.main(new String[]{"root","123456"});
+
+        String text = ConfigTools.encrypt("MIIBUwIBADANBgkqhkiG9w0BAQEFAASCAT0wggE5AgEAAkEAqTULuoNgy27BhaBA6YdVSTgWPN19JPKM/qkwXq04oSBRi3PB7k2bbyWyyVJ0Hdq7cZr+H3phSEOcxihqYKWcrwIDAQABAkAOFixzypw0U3Qo+75rsqiW/+RaDNZuTQMP8GXme+VLBJJ/4zPsw4e4jWGKkEw4QTPO+Jq5l2oD9s6n/IoqThKBAiEA+0se7fxNWHq+mBN+clPAIQ9nF43CIwMsCPq9FeLjtiMCIQCsYFhnFzAZGPMEkPS4kStNzPmjpqPN4HSLl9gV2/aaBQIgFU7AV6OeF1OJF7IHdcA+OU9qCWg+vuNE95nzMIjlkAsCIBJ8Mn67qdjHKChxMw0n5DDvrkWydRZ634Sov+94KzXRAiBwVDUHAP2t2KynzKg4lETbrXE9Y4wJ2SxcpOqHYnbJ9A==",
+                "root");
+        System.out.println(text);
+
+        String text2 = ConfigTools.encrypt("MIIBUwIBADANBgkqhkiG9w0BAQEFAASCAT0wggE5AgEAAkEAqTULuoNgy27BhaBA6YdVSTgWPN19JPKM/qkwXq04oSBRi3PB7k2bbyWyyVJ0Hdq7cZr+H3phSEOcxihqYKWcrwIDAQABAkAOFixzypw0U3Qo+75rsqiW/+RaDNZuTQMP8GXme+VLBJJ/4zPsw4e4jWGKkEw4QTPO+Jq5l2oD9s6n/IoqThKBAiEA+0se7fxNWHq+mBN+clPAIQ9nF43CIwMsCPq9FeLjtiMCIQCsYFhnFzAZGPMEkPS4kStNzPmjpqPN4HSLl9gV2/aaBQIgFU7AV6OeF1OJF7IHdcA+OU9qCWg+vuNE95nzMIjlkAsCIBJ8Mn67qdjHKChxMw0n5DDvrkWydRZ634Sov+94KzXRAiBwVDUHAP2t2KynzKg4lETbrXE9Y4wJ2SxcpOqHYnbJ9A==",
+                "123456");
+        System.out.println(text2);
+
+        String decrypt = ConfigTools.decrypt("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKk1C7qDYMtuwYWgQOmHVUk4FjzdfSTyjP6pMF6tOKEgUYtzwe5Nm28lsslSdB3au3Ga/h96YUhDnMYoamClnK8CAwEAAQ=="
+                , "Dc6Y5k3xuFSWcJdg40Rr3oP1GFYnAtTDIaJYAr9vzif0/Ib93PyiZLSRm769x203n7VjK2mf/UnUQwElOUF07g==");
+        System.out.println(decrypt);
+
 
     }
 
