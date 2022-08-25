@@ -31,6 +31,9 @@ public class BatchService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * batch 形式一：使用SqlSessionFactory
+     */
     public void insertB() {
         SqlSession sqlSession = dynamicSqlSessionFactory.openSession(ExecutorType.BATCH, false);
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -56,6 +59,10 @@ public class BatchService {
         System.out.println("batch 耗时： " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
+    /**
+     * batch形式二：使用PreparedStatement
+     * @throws SQLException
+     */
     public void insertB2() throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8", "root", "123456");
         connection.setAutoCommit(false);
