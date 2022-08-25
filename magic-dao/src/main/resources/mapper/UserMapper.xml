@@ -212,10 +212,20 @@
   </update>
   <update id="selfPlusMinus">
     update user
- 	  set ${columnName} = ${columnName} ${operator}  ${count} 
+ 	  set ${columnName} = ${columnName} ${operator}  ${count}
 	  <if test="_parameter != null">
 		<include refid="Update_By_Example_Where_Clause" />
 	  </if>
   </update>
+
+  <insert id="insertList" parameterType="java.util.List">
+    insert into t_user_1 (username, pwd)
+    values
+    <foreach collection="list" open="(" close=")" separator="),(" item="li">
+       #{li.username,jdbcType=VARCHAR},
+       #{li.pwd,jdbcType=VARCHAR}
+    </foreach>
+  </insert>
+
   <!--<cache type="cyf.gradle.dao.cache.MyBatisRedisCache" />-->
 </mapper>

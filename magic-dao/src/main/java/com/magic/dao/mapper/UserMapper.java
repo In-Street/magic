@@ -36,6 +36,8 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
+    int insertList(@Param("list") List<User> list);
+
     /**
      *  @ResultType 可返回自定义DTO，通过 select username as name 来对应dto中自定义的属性值
      * @return
