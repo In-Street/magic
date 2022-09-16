@@ -32,6 +32,8 @@ public class RestTemplateConfig {
 				.setConnectTimeout(6000)
 				//从池中获取连接超时时间，如果在超时时间内，没有可用连接，就会抛出ConnectionPoolTimeoutException异常
 				.setConnectionRequestTimeout(1000)
+				//获取连接前检查是否可用
+				//.setStaleConnectionCheckEnabled()
 				.build();
 
 		//长连接保持30s。超过TTL值的持久连接将不会被重用，默认2000ms
@@ -45,6 +47,7 @@ public class RestTemplateConfig {
 
 		CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager).setDefaultRequestConfig(requestConfig)
 				.evictExpiredConnections()
+				//.evictIdleConnections()
 				//自定义连接存活策略
 				//.setKeepAliveStrategy()
 				//忽略SSL

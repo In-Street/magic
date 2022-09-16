@@ -3,6 +3,8 @@ import cn.hutool.core.util.RandomUtil;
 import com.alibaba.druid.filter.config.ConfigTools;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -12,6 +14,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.google.gson.JsonObject;
+import com.magic.dao.mapper.UserMapper;
+import com.magic.dao.model.User;
 import com.magic.interview.service.validated.LombokDto;
 import com.spire.pdf.PdfDocument;
 import com.spire.pdf.PdfPageBase;
@@ -20,6 +24,7 @@ import com.spire.pdf.security.PdfSignature;
 import com.spire.pdf.widget.PdfFormFieldWidgetCollection;
 import com.spire.pdf.widget.PdfFormWidget;
 import com.spire.pdf.widget.PdfSignatureFieldWidget;
+import io.lettuce.core.ScriptOutputType;
 import jodd.template.StringTemplateParser;
 import jodd.util.CharUtil;
 import jodd.util.StringUtil;
@@ -30,12 +35,18 @@ import org.apache.commons.collections4.functors.AnyPredicate;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.WordUtils;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.client.fluent.Response;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -44,6 +55,7 @@ import org.jasypt.util.text.BasicTextEncryptor;
 import org.junit.Test;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriComponents;
@@ -55,14 +67,14 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -733,11 +745,13 @@ public class TestC {
             }
         }
     }
+
     @Test
     public void bx() {
         ThreadLocal<Object> objectThreadLocal = ThreadLocal.withInitial(() -> null);
 
     }
+
     @Test
     public void pdfHandler() throws IOException {
         PdfDocument document = new PdfDocument("/Users/chengyufei/Downloads/logo.pdf");
@@ -745,11 +759,11 @@ public class TestC {
         PdfPageBase page;
         ArrayList<String> list = null;
         int name = 0;
-        for (int i= 22; i<23;i++) {
+        for (int i = 22; i < 23; i++) {
             ArrayList<String> strings = new ArrayList<>();
             page = document.getPages().get(i);
             String text = page.extractText(false);
-             list = Lists.newArrayList(text.split("\r\n"));
+            list = Lists.newArrayList(text.split("\r\n"));
             System.out.println(list);
 
             page = document.getPages().get(i);
@@ -759,7 +773,7 @@ public class TestC {
                 //System.out.println(list.get(j));
                 //File output = new File("/Users/chengyufei/Downloads/dmg/logo/"+name+++".png");
 
-                File output = new File("/Users/chengyufei/Downloads/dmg/logo/"+list.get(j+2)+".png");
+                File output = new File("/Users/chengyufei/Downloads/dmg/logo/" + list.get(j + 2) + ".png");
                 ImageIO.write(bufferedImages[j], "PNG", output);
             }
         }
@@ -795,6 +809,7 @@ public class TestC {
         }
     }
 
+    //List<Integer> result = list.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
     @Test
     public void concurrentHashMap() {
         ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
@@ -831,4 +846,174 @@ public class TestC {
 
     }
 
+    @Test
+    public void down() throws IOException {
+
+        //
+        // ffmpeg -f concat -i /Users/chengyufei/Downloads/dmg/programme/edge_downloads/video/v.txt -vcodec copy -acodec copy /Users/chengyufei/Downloads/dmg/programme/edge_downloads/video/output.mp4
+        String path = "/Users/chengyufei/Downloads/dmg/programme/edge_downloads/video/";
+        String url = "http://cntv.vod.cdn.myqcloud.com/flash/mp4video63/TMS/2022/08/14/0fa6aeb9163b4675a21fcd290925fea2_h264818000nero_aac32-";
+        String text = "file  '/Users/chengyufei/Downloads/dmg/programme/edge_downloads/video/";
+        File file;
+        for (int i = 1; i <= 18; i++) {
+            file = new File(path + i + ".ts");
+            //FileUtils.copyURLToFile(new URL(url + i + ".mp4"), file);
+            //FileUtils.writeStringToFile(new File(path + "v.txt"), text + i + ".ts\'\r", StandardCharsets.UTF_8, true);
+        }
+
+        Response response = Request.Get("https://vdn.apps.cntv.cn/api/getHttpVideoInfo.do?pid=99b0310f4f184d88b3712dfc53ab2c99&client=flash&im=0&tsp=1661498650&vn=2049&vc=904F9F63ED024F262369729ED95E7D23&uid=undefined&wlan=")
+                .execute();
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode jsonNodes = objectMapper.readValue(response.returnContent().toString(), ObjectNode.class);
+    }
+
+    @Test
+    public void collections() {
+        ArrayList<String> list = Lists.newArrayList("照片", "版本", "阿雪", "旁边");
+        //Collections.sort(list);
+        //Collections.reverse(list);
+
+        //降序两种
+
+        //中文排序
+        List<String> result = list.stream().sorted((i, j) -> Collator.getInstance(Locale.CHINESE).compare(i, j)).collect(Collectors.toList());
+
+        System.out.println(result);
+
+        //
+        List<String> unmodifiableList = Collections.unmodifiableList(list);
+        //unmodifiableList.add(5);
+
+
+        ArrayList<Integer> list2 = Lists.newArrayList(8, 3, 1, 4, 2, 7, 5);
+        int search = Collections.binarySearch(list2, 8);
+    }
+
+
+    @Test
+    public void collectionutils() {
+        ArrayList<Integer> list = Lists.newArrayList(3, 1, 4, 2);
+        ArrayList<Integer> list2 = Lists.newArrayList(8, 3, 1, 4, 2, 7, 5);
+        Collection<Integer> union = CollectionUtils.union(list, list2);
+        System.out.println("union: " + union);
+
+        Collection<Integer> intersection = CollectionUtils.intersection(list, list2);
+        System.out.println("intersection: " + intersection);
+
+        //交集的补集
+        Collection<Integer> disjunction = CollectionUtils.disjunction(list2, list);
+        System.out.println("disjunction: " + disjunction);
+
+        Collection<Integer> subtract = CollectionUtils.subtract(list, list2);
+        System.out.println("subtract: " + subtract);
+
+        Collection<Integer> subtract2 = CollectionUtils.subtract(list2, list);
+        System.out.println("subtract2: " + subtract2);
+
+    }
+
+    @Test
+    public void lists() {
+        ArrayList<Integer> list2 = Lists.newArrayList(8, 3, 1, 4, 2, 7, 5);
+        //3个元素分一组
+        List<List<Integer>> partition = Lists.partition(list2, 3);
+        System.out.println(partition);
+
+        //流式处理：返回的集合不可add , 可以remove，操作影响原集合
+        List<Integer> transform = Lists.transform(list2, i -> i + 1);
+        transform.remove(0);
+        //原集合的操作会影响流式处理后的集合
+        list2.add(10);
+        System.out.println(transform);
+        System.out.println(list2);
+    }
+
+    @Test
+    public void objects() {
+        User user = new User();
+        user.setId(10);
+        user.setUsername("AAA");
+        int hashCode = Objects.hashCode(user);
+        System.out.println(hashCode);
+    }
+
+    @Test
+    public void booleanuttils() {
+
+        Boolean a = true;
+        Boolean b = false;
+        Boolean c = null;
+        //默认：true - 1  /  false - 0
+        int aInt = BooleanUtils.toInteger(a);
+        int bInt = BooleanUtils.toInteger(b);
+        System.out.println(aInt + "---" + bInt);
+
+        //自定义true false 对应的值
+        int aIntCustom = BooleanUtils.toInteger(a, 100, 200, 999);
+        System.out.println(aIntCustom);//100
+
+        boolean cB = BooleanUtils.toBooleanDefaultIfNull(c, false);
+        System.out.println(cB);
+
+        String s = BooleanUtils.toStringTrueFalse(true);
+        String onOff = BooleanUtils.toStringOnOff(true);
+        String yesNo = BooleanUtils.toStringYesNo(true);
+        //true--on--yes
+        System.out.println(s + "--" + onOff + "--" + yesNo);
+        //自定义对应的字符串值
+        String string = BooleanUtils.toString(true, "请求成功", "请求失败", "异常");
+        System.out.println(string);
+
+
+        boolean intToBoo = BooleanUtils.toBoolean(1, 1, 0);
+        System.out.println(intToBoo);
+
+    }
+
+    @Test
+    public void stringutils() {
+        String str = "0.1";
+        boolean numeric = StringUtils.isNumeric(str);
+        System.out.println(numeric);//false
+
+        String add = "北京市大兴";
+        //缩写：第二个参数为返回字符串的最大长度，最小为4，因为...已经为3了
+        String abbreviate = StringUtils.abbreviate(add, 4);
+        String abbreviate1 = StringUtils.abbreviate(add, 2, 4);
+        System.out.println(abbreviate + " -- " + abbreviate1);
+
+        String overlay = StringUtils.overlay("18235011372", "****", 3, 7);
+        System.out.println(overlay);
+
+        ArrayList<Integer> integers = Lists.newArrayList(1, 2, 3);
+        String join = StringUtils.join(integers, ",");
+        System.out.println(join);
+
+        String appendIfMissing = StringUtils.appendIfMissing(add, "区", "区", "市", "县");
+        System.out.println("appendIfMissing: " + appendIfMissing);
+
+        //changing the first character to title case - Luke
+        System.out.println(StringUtils.capitalize("luke"));
+
+        //填充
+        System.out.println(StringUtils.center(add, 6, "A"));
+        System.out.println(StringUtils.leftPad(add, 8, "A"));
+
+        //去除字符串结尾处的一个换行符，包括: \r  \n   \r\n
+        System.out.println(StringUtils.chomp(add + "\r\n"));
+
+        //去除最后一个字符
+        System.out.println(StringUtils.chop(add));
+
+        //若为 null ，返回默认值
+        System.out.println(StringUtils.defaultString(null, "ABC"));
+
+        System.out.println(StringUtils.difference("北京市大兴区", "北京市朝阳区"));
+
+        System.out.println(RegExUtils.removeAll(" B 北京市  大兴区  C ", " "));
+
+        StringJoiner stringJoiner = new StringJoiner(" ", "ffmpeg ", ".mp4");
+        stringJoiner.add("A").add("B").add("C");
+        System.out.println(stringJoiner.toString());
+    }
 }
