@@ -24,6 +24,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new AsyncIntercept());
+		//registry.addInterceptor(new AsyncIntercept());
 	}
 }

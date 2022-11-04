@@ -30,7 +30,7 @@ public class MpService {
 
         User user = new User();
         user.setUsername("夜的第七章");
-        user.setPubPlatform();
+        //user.setPubPlatform();
         return users;
     }
 

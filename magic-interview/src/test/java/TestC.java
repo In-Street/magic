@@ -35,20 +35,19 @@ import org.apache.commons.collections4.functors.AnyPredicate;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.RegExUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.*;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -242,6 +241,12 @@ public class TestC {
 
         // 将输入流信息转化为字符串
         //String resMsg = IOUtils.toString(request.getInputStream());
+
+        //转换为 Bufferedxxx
+        //IOUtils.buffer()
+
+        //IOUtils.contentEquals()
+        //IOUtils.resourceToString()
     }
 
     @Test
@@ -1008,12 +1013,22 @@ public class TestC {
         //若为 null ，返回默认值
         System.out.println(StringUtils.defaultString(null, "ABC"));
 
-        System.out.println(StringUtils.difference("北京市大兴区", "北京市朝阳区"));
+        //找到第二个字符串和第一个字符串相比第一处不同位置处后 ，返回截取剩下的第二个字符串
+        System.out.println("difference: "+StringUtils.difference("市北京大兴区", "北京市朝阳区"));
 
         System.out.println(RegExUtils.removeAll(" B 北京市  大兴区  C ", " "));
 
         StringJoiner stringJoiner = new StringJoiner(" ", "ffmpeg ", ".mp4");
         stringJoiner.add("A").add("B").add("C");
         System.out.println(stringJoiner.toString());
+
+
     }
+
+
+    @Test
+    public void dd() {
+
+    }
+    
 }
