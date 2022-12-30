@@ -175,11 +175,13 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-       <!-- <dependency>
+        <dependency>
             <groupId> e-iceblue </groupId>
             <artifactId>spire.pdf</artifactId>
             <version>3.11.6</version>
-        </dependency>-->
+            <scope>system</scope>
+            <systemPath>/Users/chengyufei/Downloads/project/self/github/magic/magic-interview/spire.pdf-3.11.6.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>org.reflections</groupId>

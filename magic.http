@@ -262,7 +262,38 @@ POST {{url}}/actuator/shutdown
 Accept: */*
 Cache-Control: no-cache
 
+###
+GET {{url}}/pay/way1?code=ali
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/pay/way3?code=a
+Accept: */*
+Cache-Control: no-cache
+
 ### mybatis plus
 GET {{url}}/mp/list
+Accept: */*
+Cache-Control: no-cache
+
+### foreach \ batch \ single
+GET {{url}}/sqlBatch/test?type = batch
+Accept: */*
+Cache-Control: no-cache
+
+
+###
+GET {{url}}/test/getCode
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/httpClient/restTemplate
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/proxy/jdk
 Accept: */*
 Cache-Control: no-cache

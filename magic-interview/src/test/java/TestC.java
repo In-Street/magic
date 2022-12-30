@@ -16,6 +16,7 @@ import com.google.common.primitives.Ints;
 import com.google.gson.JsonObject;
 import com.magic.dao.mapper.UserMapper;
 import com.magic.dao.model.User;
+import com.magic.interview.service.removeifelse.way_4.*;
 import com.magic.interview.service.validated.LombokDto;
 import com.spire.pdf.PdfDocument;
 import com.spire.pdf.PdfPageBase;
@@ -1027,8 +1028,21 @@ public class TestC {
 
 
     @Test
-    public void dd() {
+    public void handler() {
+        Build build = new Build();
+        build.add(new NullCheckHandler())
+                .add(new TokenCheckHandler())
+                .add(new TimeCheckHandler());
+        //NullCheck -> TokenCheck -> TimeCheck
+        AbstractHandler handler = build.build();
 
+        UserData userData = new UserData();
+        userData.setUid("AA");
+        userData.setToken("ABC");
+        userData.setTime(DateUtils.addMinutes(new Date(),-3).getTime());
+
+        String result = handler.handler(userData);
+        System.out.println(result);
     }
     
 }
