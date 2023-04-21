@@ -79,3 +79,14 @@ Content-Type: application/json
 GET {{url}}/serialize/getEnums
 Accept: */*
 Cache-Control: no-cache
+
+###
+GET {{url}}/say/say
+Accept: */*
+Cache-Control: no-cache
+
+
+###
+GET {{url}}/ttt/q
+Accept: */*
+Cache-Control: no-cache

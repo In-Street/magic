@@ -57,15 +57,15 @@ public class ExceptionHandler {
     public static void h3() {
         ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("pool_thread_%s")
                 .setUncaughtExceptionHandler((thread, exception) -> {
-                    log.error(String.format(">>自定义线程池异常，thread:{}", thread), exception);
+                    log.error(String.format(">>自定义线程池异常，thread:%s", thread), exception);
                 })
                 .build());
 
         ArrayList<Future> futures = new ArrayList<>();
         IntStream.rangeClosed(1, 6).forEach(i ->
                 {
-                    Future<?> future = executorService.submit(() -> {
-                    //executorService.execute(() -> {
+                    //Future<?> future = executorService.submit(() -> {
+                    executorService.execute(() -> {
                             if (i == 5) {
                                 throw new RuntimeException("任务5失败");
                             } else {
@@ -73,7 +73,7 @@ public class ExceptionHandler {
                             }
 
                     });
-                    futures.add(future);
+                    //futures.add(future);
                 }
         );
 

@@ -1,30 +1,43 @@
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.http.HtmlUtil;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.hankcs.hanlp.classification.utilities.TextProcessUtility;
 import com.hankcs.hanlp.summary.TextRankSentence;
 import com.hankcs.hanlp.utility.SentencesUtil;
 import com.hankcs.hanlp.utility.TextUtility;
+import com.magic.time.dao.model.UserInfo;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Equator;
+import org.apache.commons.collections4.PredicateUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StopWatch;
-import org.springframework.web.client.RestTemplate;
 
-import javax.print.DocFlavor;
+import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  *
@@ -88,9 +101,155 @@ public class TestTime {
     public void len() {
         String str = "2022年1月1日，区域全面经济伙伴关系协定（RCEP）如期生效，全球最大自由贸易区正式启航。";
         System.out.println(str.length());
+
+        String s = "set";
+        System.out.println(s.getBytes(StandardCharsets.UTF_8).length);
+    }
+
+    /**
+     *   AbstractHandlerMapping # getHandler
+     *    RequestMappingHandlerAdapter  # invokeHandlerMethod
+     *    InvocableHandlerMethod # doInvoke  -> HandlerMethod # invoke  -> 反射 委派代理实现 调用native
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    @Test
+    public void rest4() throws InterruptedException, IOException {
+
+        HashMap<String, Integer> map = new HashMap<>();
+        HashMap<String, Integer> map2 = new HashMap<>();
+        HashMap<String, Integer> map3 = new HashMap<>();
+        HashMap<String, Integer> map4 = new HashMap<>();
+
+
+        int start = 679092, end = 679151;
+        ;
+        String host = "";
+        for (int i = start; i <= end; i++) {
+            String url = host + i + "/" + i + ".m3u8";
+            String v = "/Users/chengyufei/Downloads/dmg/common/edge_download/" + i + ".m3u8";
+            File file = new File(v);
+            try {
+                FileUtils.copyURLToFile(new URL(url), file);
+            } catch (Exception e) {
+                continue;
+            }
+            long count = Files.lines(Paths.get(v)).count();
+            if (count < 15 || count > 200) {
+                continue;
+            }
+            String s = FileUtils.readLines(file, StandardCharsets.UTF_8).stream().skip(count - 2).findFirst().get();
+            String key = String.valueOf(i);
+            String last = s.replace(".ts", "").substring(key.length());
+            if (map.size() < 4) {
+                map.put(key, Integer.valueOf(last));
+                continue;
+            }
+            if (map2.size() < 4) {
+                map2.put(key, Integer.valueOf(last));
+                continue;
+            }
+            if (map3.size() < 4) {
+                map3.put(key, Integer.valueOf(last));
+                continue;
+            }
+            //if (map4.size() < 15) {
+            map4.put(key, Integer.valueOf(last));
+            continue;
+            //}
+        }
+
+        ForkJoinPool forkJoinPool = new ForkJoinPool(5);
+        forkJoinPool.submit(() -> {
+            forMap(map3);
+        });
+        forkJoinPool.submit(() -> {
+            forMap(map2);
+        });
+        forkJoinPool.submit(() -> {
+            forMap(map);
+        });
+        forkJoinPool.submit(() -> {
+            forMap(map4);
+        });
+        forkJoinPool.shutdown();
+        forkJoinPool.awaitTermination(2, TimeUnit.HOURS);
     }
 
 
+    private void forMap(Map<String, Integer> map) {
+        if (map.size() == 0) {
+            return;
+        }
+        map.forEach((str, index) -> {
+            System.out.println(Thread.currentThread().getId() + ">>正在处理：" + str);
+
+            String host = "";
+            File result = new File("/Users/chengyufei/Downloads/dmg/common/edge_download/" + str + ".txt");
+            for (int i = 0; i <= index; i++) {
+                String v = "/Users/chengyufei/Downloads/dmg/common/edge_download/" + str + i + ".ts";
+                try {
+                    FileUtils.copyURLToFile(new URL(host + str + "/" + str + i + ".ts"), new File(v));
+                    FileUtils.write(result, "file '" + v + "'\n", "utf-8", true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                Process exec = Runtime.getRuntime().exec("/Users/chengyufei/Downloads/dmg/common/edge_download/未命名文件夹/com.sh " + str);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    @Test
+    public void fileLineCount() throws IOException {
+        String path = "/Users/chengyufei/Downloads/dmg/common/pictures/614748.m3u8";
+        long count = Files.lines(Paths.get(path)).count();
+        System.out.println(count);
+        String s = FileUtils.readLines(new File(path), StandardCharsets.UTF_8).stream().skip(count - 2).findFirst().get();
+        System.out.println(s.replace(".ts", "").substring("614748".length()));
+    }
+
+    @Test
+    public void dd() {
+        String s = IntStream.rangeClosed(1, 10).mapToObj(__ -> "a").collect(Collectors.joining("")) + UUID.randomUUID().toString();
+        System.out.println(s);
+
+        Map<Class<?>, Object> DEFAULT_VALUES = Stream.of(boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class)
+                .collect(toMap(clazz -> clazz, clazz -> Array.get(Array.newInstance(clazz, 1), 0)));
+
+        System.out.println(DEFAULT_VALUES);
+    }
+
+    @Test
+    public void rest3() {
+
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("601537", 13);
+        map.put("601625", 39);
+        map.put("601642", 28);
+        map.put("601686", 55);
+        map.put("601713", 27);
+        map.put("601781", 86);
+        map.put("601834", 59);
+        map.forEach((str, index) -> {
+            String host = "https://cdn77.91p49.com/m3u8/";
+            //String host = "https://la.killcovid2021.com/m3u8/";
+            File result = new File("/Users/chengyufei/Downloads/dmg/common/edge_download/" + str + ".txt");
+            for (int i = 0; i <= index; i++) {
+                String v = "/Users/chengyufei/Downloads/dmg/common/edge_download/" + str + i + ".ts";
+                try {
+                    FileUtils.copyURLToFile(new URL(host + str + "/" + str + i + ".ts"), new File(v));
+                    FileUtils.write(result, "file '" + v + "'\n", "utf-8", true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     @Test
     public void rr() {
@@ -192,4 +351,126 @@ public class TestTime {
         //IntStream.rangeClosed(1, loopCount).forEach(i -> list.add(ThreadLocalRandom.current().nextInt(elementCount)));
     }
 
+    @Test
+    public void ee() {
+        String s = "AB";
+        String[] copies = s.split("&&");
+        System.out.println(copies.length);
+
+        UserInfo a = new UserInfo(1, "A");
+        UserInfo b = new UserInfo(1, "B");
+        UserInfo c = new UserInfo(2, "C");
+
+        List<UserInfo> list = Lists.newArrayList(a);
+        List<UserInfo> list2 = Lists.newArrayList(b, c);
+
+        Collection<UserInfo> res = CollectionUtils.retainAll(list2, list, new Equator<UserInfo>() {
+            @Override
+            public boolean equate(UserInfo o1, UserInfo o2) {
+                return o1.getId().equals(o2.getId());
+            }
+
+            @Override
+            public int hash(UserInfo o) {
+                return 0;
+            }
+        });
+        //System.out.println(res);
+
+
+        List<UserInfo> collate = CollectionUtils.collate(list, list2, Comparator.comparing(u -> u.getId()), false);
+        //System.out.println(collate);
+
+        Collection<UserInfo> infos = CollectionUtils.removeAll(list, list2, new Equator<UserInfo>() {
+            @Override
+            public boolean equate(UserInfo o1, UserInfo o2) {
+                return !o1.getId().equals(o2.getId());
+            }
+
+            @Override
+            public int hash(UserInfo o) {
+                return 0;
+            }
+        });
+        System.out.println(infos);
+
+        FastDateFormat instance = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - 60);
+        long endTime = calendar.getTimeInMillis();
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - 11);
+        long startTime = calendar.getTimeInMillis();
+        List<String> strings = Arrays.asList(instance.format(startTime), instance.format(endTime));
+        System.out.println(strings);
+    }
+
+    @Test
+    public void t3() {
+
+        Map<? extends Class<?>, Object> collect = Stream.of(boolean.class, double.class).collect(toMap(c -> (Class<?>) c, cla -> Array.get(Array.newInstance(cla, 1), 0)));
+        //{double=0.0, boolean=false}
+        System.out.println(collect);
+
+        ArrayList<String> strings = Lists.newArrayList("A", "B", "C", "A");
+        Set<String> strings1 = new HashSet<>(strings);
+        System.out.println(CollectionUtils.disjunction(strings, strings1));
+
+
+        List<String> collect1 = strings.stream().collect(Collectors.groupingBy(s -> s)).entrySet().stream().filter(v -> v.getValue().size() > 1).map(e -> e.getKey()).collect(Collectors.toList());
+        //System.out.println(collect1);
+
+        List<String> collect2 = strings.stream().filter(s -> Collections.frequency(strings, s) > 1).collect(Collectors.toList());
+        //System.out.println(collect2);
+
+
+    }
+
+    @Test
+    public void lb() {
+        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("B", "b");
+        linkedHashMap.put("A", "a");
+        linkedHashMap.remove("A", "A");
+
+        Integer a = -128;
+        Integer b = -128;
+        System.out.println(a == b);
+
+        String s1 = "A";
+        String s2 = "A";
+        System.out.println(s1 == s2);
+
+        String s = "$2a$10$BhYolP0zcLKxuj5vJgQMH.VE73Ge3iZfaWqv6D5n4SGXDHEKhCNAO";
+        System.out.println(s.length());
+        System.out.println(Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    @Test
+    public void te() {
+        Integer a = 100;
+        Integer b = 100;
+        Integer c = 200;
+        Integer d = 200;
+        Long e = 100L;
+
+        System.out.println(a == b);
+        System.out.println(c == d);
+
+        System.out.println(c == (a + b));
+
+        System.out.println(a.equals(e));
+
+        System.out.println(0.1+0.2);
+        System.out.println(1.0-0.7);
+
+        String ss = "100";
+        ddd(ss);
+        System.out.println(ss);
+    }
+
+    public void ddd(String integer) {
+        integer = "3";
+        System.out.println(integer);
+    }
 }

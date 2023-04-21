@@ -3,9 +3,9 @@ server:
 spring:
   application.name: time
   profiles.active: dev
-  redis:
-    host: 127.0.0.1
-    port: 6380
+#  redis:
+#    host: 127.0.0.1
+#    port: 6380
 #  datasource:
 ##    type: com.zaxxer.hikari.HikariDataSource
 #    hikari:

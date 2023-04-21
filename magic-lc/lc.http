@@ -1,0 +1,10 @@
+###
+< {%
+    const url='http://localhost:8080/test/test?key=123';
+
+    var s=new request();
+
+ %}
+GET http://localhost:8080/test/test?key={{key}}
+Accept: */*
+Cache-Control: no-cache

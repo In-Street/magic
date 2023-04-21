@@ -20,8 +20,8 @@ public class SelfResponse {
         this.success = success;
     }
 
-    @JsonCreator
-    public SelfResponse(@JsonProperty int code) {
+    //@JsonCreator
+    public SelfResponse(/*@JsonProperty*/ int code) {
         this.code = code;
         success = code == 1000 ? true : false;
     }
