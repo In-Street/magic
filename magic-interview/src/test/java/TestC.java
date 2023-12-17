@@ -1023,6 +1023,8 @@ public class TestC {
         stringJoiner.add("A").add("B").add("C");
         System.out.println(stringJoiner.toString());
 
+        System.out.println(!StringUtils.containsAny("北京","北京","分公司"));
+
 
     }
 
@@ -1043,6 +1045,7 @@ public class TestC {
 
         String result = handler.handler(userData);
         System.out.println(result);
+
     }
     
 }
