@@ -1,0 +1,36 @@
+server:
+  port: 20002
+  # 在返回给页面的结果里，把错误信息添加到message里
+  error:
+    include-message: always
+spring:
+  application:
+    name: coupon-calculation-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        # 服务注册到nacos的名称
+        service: coupon-calculation-service
+        #客户端向服务端发送心跳的时间间隔，单位ms
+        heart-beat-interval: 5000
+        #服务端没有接受到客户端心跳请求就将其设为不健康的时间间隔，默认为15s
+        # 注：推荐值该值为15s即可，如果有的业务线希望服务下线或者出故障时希望尽快被发现，可以适当减少该值
+        heart-beat-timeout: 20000
+        #元数据，自己定义
+        metadata:
+          mydata: Mckenna
+
+        # 客户端在启动时是否读取本地配置项(一个文件)来获取服务列表
+        # 注：推荐该值为false，若改成true。则客户端会在本地的一个文件中保存服务信息，当下次宕机启动时，会优先读取本地的配置对外提供服务。
+        naming-load-cache-at-start: false
+
+        #命名空间ID，区分环境进行数据隔离
+        namespace: dev
+        #两个服务存在上下游调用时，必须配置相同的group才能发起调用
+        group: Mckenna-Group
+        cluster-name: Cluster-A
+        #向注册中心注册，默认true；若只作为消费者时，不作为服务提供方，可设置为false
+        register-enabled: true
+        username: nacos
+        password: nacos

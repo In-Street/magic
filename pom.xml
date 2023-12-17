@@ -17,6 +17,7 @@
         <module>magic-xxl</module>
         <module>magic-time</module>
         <module>magic-lc</module>
+        <module>magic-coupon</module>
     </modules>
     <packaging>pom</packaging>
 
