@@ -17,18 +17,18 @@
         <module>magic-xxl</module>
         <module>magic-time</module>
         <module>magic-lc</module>
-        <module>magic-coupon</module>
+        <module>magic-day</module>
     </modules>
     <packaging>pom</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.6.RELEASE</version>
+        <version>2.7.15</version>
     </parent>
 
     <properties>
-        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
+        <spring-boot.version>2.7.15</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -259,19 +259,27 @@
         <repository>
             <id>aliyun</id>
             <name>aliyun</name>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <url>https://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
 
         <repository>
             <id>repo1</id>
             <name>repo1</name>
-            <url>http://repo1.maven.org/maven2/</url>
+            <url>https://repo1.maven.org/maven2/</url>
         </repository>
 
         <repository>
             <id>repo</id>
             <name>repo</name>
-            <url>http://repo.spring.io/release/</url>
+            <url>https://repo.spring.io/release/</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun-plugin</id>
+            <name>aliyun-plugin</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>

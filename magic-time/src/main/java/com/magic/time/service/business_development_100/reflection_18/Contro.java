@@ -19,7 +19,7 @@ import java.util.Map;
 @RequestMapping("/ttt")
 public class Contro {
 
-    @Autowired
+    /*@Autowired
     //@Qualifier("testInterImpl")
     private TesInterImpl tesInter;
 
@@ -32,5 +32,5 @@ public class Contro {
         String testInterImpl = maps.get("tesInterImpl2").getA();
         System.out.println(testInterImpl);
         return tesInter.getA();
-    }
+    }*/
 }

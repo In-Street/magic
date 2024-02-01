@@ -1,0 +1,6 @@
+@url=http://localhost:8090
+
+###
+GET {{url}}/frame/getFrameworkTree
+Accept: */*
+Cache-Control: no-cache

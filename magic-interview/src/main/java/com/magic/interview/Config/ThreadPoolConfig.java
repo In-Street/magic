@@ -29,7 +29,7 @@ public class ThreadPoolConfig implements AsyncConfigurer {
         poolTaskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         poolTaskExecutor.setQueueCapacity(100);
         poolTaskExecutor.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("task_demo_pool_%d")
-                .setUncaughtExceptionHandler((thread,throwable)->{log.error(String.format(">>自定义线程池异常，thread:{}", thread), throwable);}).build());
+                .setUncaughtExceptionHandler((thread,throwable)->{log.error(String.format(">>自定义线程池异常，thread:%s", thread), throwable);}).build());
         poolTaskExecutor.initialize();
         return poolTaskExecutor;
     }

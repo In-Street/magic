@@ -1,0 +1,15 @@
+server:
+  port: 8090
+spring:
+  application.name: day
+  profiles.active: dev
+
+  #在实现了 implements WebMvcConfigurer接口时，此配置是无效的
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+
+---
+spring:
+  profiles:
+    include: dao-dev
