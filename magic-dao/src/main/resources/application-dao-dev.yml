@@ -19,7 +19,10 @@ spring:
 
         #druid 自带RSA加解密：需配置filters、connect-properties
         username: root
-        password: Dc6Y5k3xuFSWcJdg40Rr3oP1GFYnAtTDIaJYAr9vzif0/Ib93PyiZLSRm769x203n7VjK2mf/UnUQwElOUF07g==
+        #Intel
+#        password: Dc6Y5k3xuFSWcJdg40Rr3oP1GFYnAtTDIaJYAr9vzif0/Ib93PyiZLSRm769x203n7VjK2mf/UnUQwElOUF07g==
+        #M1
+        password: CIxK93KdJEBtp6iIg9zuKeA6KSbZict/DB3H1b6esJin7MO3Aqfq8YojWI4VsXgyQ1c+q510VCSVoaLKxbie7Q==
 
         #配置初始化大小/最小/最大
         initial-size: 5

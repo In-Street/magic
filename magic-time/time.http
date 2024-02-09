@@ -81,12 +81,16 @@ Accept: */*
 Cache-Control: no-cache
 
 ###
-GET {{url}}/say/say
+GET {{url}}/say/say?token={{token}}
 Accept: */*
 Cache-Control: no-cache
 
 
 ###
-GET {{url}}/ttt/q
+< {%
+    request.variables.set("token", "")
+%}
+GET {{url}}/ttt/q?
+    token={{token}}
 Accept: */*
 Cache-Control: no-cache

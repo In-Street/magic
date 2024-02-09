@@ -180,7 +180,10 @@
             <artifactId>spire.pdf</artifactId>
             <version>3.11.6</version>
             <scope>system</scope>
-            <systemPath>/Users/chengyufei/Downloads/project/self/github/magic/magic-interview/spire.pdf-3.11.6.jar</systemPath>
+<!--            Intel-->
+<!--            <systemPath>/Users/chengyufei/Downloads/project/self/github/magic/magic-interview/spire.pdf-3.11.6.jar</systemPath>-->
+<!--            M1-->
+            <systemPath>/Users/chengyufei/Downloads/project/self/github/magic/magic-interview/spire.pdf-9.11.3.jar</systemPath>
         </dependency>
 
         <dependency>

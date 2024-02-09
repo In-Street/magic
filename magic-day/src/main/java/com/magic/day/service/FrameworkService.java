@@ -21,9 +21,10 @@ public class FrameworkService {
 
     @Autowired
     private FrameworkMapper frameworkMapper;
+
     public List<FrameworkVo> listFrameworkTree() {
 
-        List<Framework> list=frameworkMapper.getFrameworkList();
+        List<Framework> list = frameworkMapper.getFrameworkList();
 
         List<FrameworkVo> voList = list.stream().map(f -> {
             FrameworkVo vo = new FrameworkVo();
@@ -36,7 +37,7 @@ public class FrameworkService {
 
         Map<Long, List<FrameworkVo>> parentIdMap = voList.stream().parallel().collect(Collectors.groupingBy(FrameworkVo::getParentId));
 
-        voList.stream().forEach(v->v.setChildrenList(parentIdMap.get(v.getFrameworkId())));
+        voList.forEach(v -> v.setChildrenList(parentIdMap.get(v.getFrameworkId())));
 
         List<FrameworkVo> res = voList.stream().filter(v -> v.getParentId() == 0L).collect(Collectors.toList());
 

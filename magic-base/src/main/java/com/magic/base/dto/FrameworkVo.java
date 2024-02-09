@@ -12,6 +12,6 @@ public class FrameworkVo {
 	private Long parentId;
 	private String frameworkName;
 	private String treeName;
-	@JsonBackReference
+	// @JsonBackReference
 	private List<FrameworkVo> childrenList;
 }
