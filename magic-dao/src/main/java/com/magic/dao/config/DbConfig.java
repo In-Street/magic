@@ -70,6 +70,15 @@ public class DbConfig {
         factoryBean.setMapperLocations(resolver.getResources("classpath*:mapper/*.xml"));
         factoryBean.setTypeAliasesPackage("com.magic.dao.model");
         factoryBean.setDataSource(dynamicDataSource);
+
+        //使用@Select 时，不像xml文件中可以使用<resultMap> 标签来对应实体类属性，所以需要进行设置：【下面方式任选其一】
+        // 1. 全局设置驼峰mapUnderscoreToCamelCase=true，这样select * 时 ，使查询结果对应到实体类；
+        // 2. 在 sql中， select xx as xxx，as别名时来对应实体类属性；
+        // 3. 使用方法注解：@Results 注解进行实体映射；
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setMapUnderscoreToCamelCase(true);
+        factoryBean.setConfiguration(configuration);
+
         return factoryBean.getObject();
     }
 }
