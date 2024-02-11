@@ -18,6 +18,7 @@
         <module>magic-time</module>
         <module>magic-lc</module>
         <module>magic-day</module>
+        <module>magic-activiti</module>
     </modules>
     <packaging>pom</packaging>
 

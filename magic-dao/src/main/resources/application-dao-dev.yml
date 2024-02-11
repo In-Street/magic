@@ -82,6 +82,49 @@ spring:
         connect-properties:
           config.decrypt: true
           config.decrypt.key: ${datasource.key}
+
+      third:
+        #监控统计拦截的filters
+        #        filters: stat
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        #基本属性
+        url: jdbc:mysql://127.0.0.1:3306/activiti?characterEncoding=utf-8
+        #docker mysql 容器地址
+        #        url: jdbc:mysql://172.18.0.2:3306/sharding?characterEncoding=utf-8
+
+        #jasypt加密
+        #        username: ENC(eskTo/YYzmbRBJ4fbzDkow==)
+        #        password: ENC(Y8V58Mc8RPKNk9hFuAk1uQ==)
+
+        #druid 自带RSA加解密：需配置filters、connect-properties
+        username: root
+        #Intel
+        #        password: Dc6Y5k3xuFSWcJdg40Rr3oP1GFYnAtTDIaJYAr9vzif0/Ib93PyiZLSRm769x203n7VjK2mf/UnUQwElOUF07g==
+        #M1
+        password: CIxK93KdJEBtp6iIg9zuKeA6KSbZict/DB3H1b6esJin7MO3Aqfq8YojWI4VsXgyQ1c+q510VCSVoaLKxbie7Q==
+
+        #配置初始化大小/最小/最大
+        initial-size: 5
+        min-idle: 5
+        max-active: 100
+        #获取连接等待超时时间
+        max-wait: 60000
+        #间隔多久进行一次检测，检测需要关闭的空闲连接
+        time-between-eviction-runs-millis: 60000
+        #一个连接在池中最小生存的时间
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 'x'
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        pool-prepared-statements: false
+        max-pool-prepared-statement-per-connection-size: 20
+        #druid 自带RSA加解密：开启config用于程序启动时对数据库链接密码使用指定的公钥解密
+        filters: config
+        connect-properties:
+          config.decrypt: true
+          #指定公钥，配置在程序启动参数中 --datasource.key
+          config.decrypt.key: ${datasource.key}
 mybatis-plus:
   mapper-locations: classpath*:/
   type-aliases-package: com.

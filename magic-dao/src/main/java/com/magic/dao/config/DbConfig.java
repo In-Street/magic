@@ -39,6 +39,13 @@ public class DbConfig {
         return dataSource;
     }
 
+    @Bean(name = "third")
+    @ConfigurationProperties(prefix = "spring.datasource.druid.third")
+    public DruidDataSource thirdDataSource() {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return dataSource;
+    }
+
     /**
      * 设置AbstractRoutingDataSource的路由数据源及默认数据源
      *
