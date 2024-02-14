@@ -1,0 +1,6 @@
+@url=http://localhost:8090
+
+### 部署流程
+GET {{url}}/activiti/deploy
+Accept: */*
+Cache-Control: no-cache

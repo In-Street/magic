@@ -75,6 +75,34 @@
                 </executions>
             </plugin>
 
+<!--            将resources/bpmn 文件夹下的文件 在 maven 编译时拷贝到 ${project.build.directory}/classes  文件夹下，而不是在classes文件夹下 单独生成bpmn文件夹-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/resources/bpmn</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!--此插件用于打包时将所依赖的类包一起打包，
             eg： 打 ReplaceService main方法时使用，并使用main方法传参：java -jar -Dfile.encoding=utf-8 replace.jar 参数1 参数2 ...
 
@@ -138,8 +166,11 @@
                     <include>*.yml</include>
                     <include>*.txt</include>
                     <include>*.xml</include>
+                    <include>*.png</include>
                     <include>*.pem</include>
                     <include>*.properties</include>
+<!--                    maven 编译时，在target/classes 目录下生成 bpmn 文件夹及其文件夹下的所有文件-->
+                    <include>bpmn/*</include>
                 </includes>
             </resource>
         </resources>
