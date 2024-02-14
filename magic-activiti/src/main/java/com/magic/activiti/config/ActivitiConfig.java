@@ -1,8 +1,6 @@
 package com.magic.activiti.config;
 
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.*;
 import org.activiti.engine.impl.cfg.IdGenerator;
 import org.activiti.engine.impl.persistence.StrongUuidGenerator;
 import org.activiti.spring.ProcessEngineFactoryBean;
@@ -62,5 +60,40 @@ public class ActivitiConfig {
         ProcessEngineFactoryBean processEngineFactoryBean = new ProcessEngineFactoryBean();
         processEngineFactoryBean.setProcessEngineConfiguration(processEngineConfiguration);
         return processEngineFactoryBean.getObject();
+    }
+
+    /**
+     *  通过 ProcessEngine 获取服务组件Bean
+     * @param processEngine
+     * @return
+     */
+    @Bean(name="repositoryService")
+    public RepositoryService repositoryService(@Qualifier("processEngine") ProcessEngine processEngine){
+        return processEngine.getRepositoryService();
+    }
+
+    @Bean(name="runtimeService")
+    public RuntimeService runtimeService(@Qualifier("processEngine") ProcessEngine processEngine){
+        return processEngine.getRuntimeService();
+    }
+
+    @Bean(name="historyService")
+    public HistoryService historyService(@Qualifier("processEngine") ProcessEngine processEngine){
+        return processEngine.getHistoryService();
+    }
+
+    @Bean(name="taskService")
+    public TaskService taskService(@Qualifier("processEngine") ProcessEngine processEngine){
+        return processEngine.getTaskService();
+    }
+
+    @Bean(name="identityService")
+    public IdentityService identityService(@Qualifier("processEngine") ProcessEngine processEngine){
+        return processEngine.getIdentityService();
+    }
+
+    @Bean(name="managementService")
+    public ManagementService managementService(@Qualifier("processEngine") ProcessEngine processEngine){
+        return processEngine.getManagementService();
     }
 }
