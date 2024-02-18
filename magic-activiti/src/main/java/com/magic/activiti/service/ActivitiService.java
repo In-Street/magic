@@ -1,5 +1,7 @@
 package com.magic.activiti.service;
 
+
+import cn.anony.annotations.ElementVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
@@ -18,6 +20,10 @@ public class ActivitiService {
     @Autowired
     @Lazy
     private RepositoryService repositoryService;
+
+
+    @ElementVersion
+    private static final String version = "";
 
     public String deploy() {
         Deployment deployed = repositoryService.createDeployment()
