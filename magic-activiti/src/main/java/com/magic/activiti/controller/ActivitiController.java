@@ -18,7 +18,7 @@ public class ActivitiController {
     private ActivitiService activitiService;
     @GetMapping("/deploy")
     public String deploy(){
-        System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件","AAAA");
+        System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件","AAAA-B");
         return activitiService.deploy();
     }
 }
