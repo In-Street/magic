@@ -32,7 +32,7 @@ public class ActivitiService {
                 .name("出差申请流程")
                 .deploy();
 
-        log.info("出差申请流程部署，id:{}",deployed.getId());
+        log.info("出差申请流程部署，id:{}CC",deployed.getId());
         System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件",deployed.getId());
         return "success";
     }
