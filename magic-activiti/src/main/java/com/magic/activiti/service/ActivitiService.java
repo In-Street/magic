@@ -33,7 +33,8 @@ public class ActivitiService {
                 .deploy();
 
         log.info("出差申请流程部署，id:{}",deployed.getId());
-        System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件",deployed.getId());
+        System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件AA",deployed.getId());
+        System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件BB",deployed.getId());
         return "success";
     }
 }
