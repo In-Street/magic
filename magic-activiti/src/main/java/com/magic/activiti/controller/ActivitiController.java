@@ -18,6 +18,7 @@ public class ActivitiController {
     private ActivitiService activitiService;
     @GetMapping("/deploy")
     public String deploy(){
+        System.out.println("BBBBB");
         return activitiService.deploy();
     }
 }
