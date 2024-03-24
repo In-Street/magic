@@ -4,3 +4,9 @@
 GET {{url}}/activiti/deploy
 Accept: */*
 Cache-Control: no-cache
+
+
+### 启动流程
+GET {{url}}/activiti/startProcess
+Accept: */*
+Cache-Control: no-cache
