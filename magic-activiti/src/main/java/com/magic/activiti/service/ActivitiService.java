@@ -4,7 +4,9 @@ package com.magic.activiti.service;
 import cn.anony.annotations.ElementVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class ActivitiService {
     @Autowired
     @Lazy
     private RepositoryService repositoryService;
+    @Autowired
+    @Lazy
+    private RuntimeService runtimeService;
 
 
     @ElementVersion
@@ -33,8 +38,21 @@ public class ActivitiService {
                 .deploy();
 
         log.info("出差申请流程部署，id:{}",deployed.getId());
-        System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件AA",deployed.getId());
-        System.out.printf("出差申请流程部署，id:%s，测试合并分支部分文件BB",deployed.getId());
+        return "success";
+    }
+
+
+    public String startProcess() {
+        //key: ACT_RE_PROCDEF # KEY_  字段
+        ProcessInstance myEvectionProcessInstance = runtimeService.startProcessInstanceByKey("myEvection");
+
+        // ACT_RE_PROCDEF # ID_ 字段
+        log.info("流程定义ID：{}",myEvectionProcessInstance.getProcessDefinitionId());
+
+        //与 getProcessInstanceId 一样， ACT_RU_TASK # PROC_INST_ID_ 字段
+        log.info("流程实例ID：{}",myEvectionProcessInstance.getId());
+        log.info("流程实例ID：{}",myEvectionProcessInstance.getProcessInstanceId());
+
         return "success";
     }
 }
