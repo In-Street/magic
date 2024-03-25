@@ -10,3 +10,8 @@ Cache-Control: no-cache
 GET {{url}}/activiti/startProcess
 Accept: */*
 Cache-Control: no-cache
+
+### 查询个人待执行的任务
+GET {{url}}/activiti/getTaskByAssignee?assignee=zhangsan
+Accept: */*
+Cache-Control: no-cache

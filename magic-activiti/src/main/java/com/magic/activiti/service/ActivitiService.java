@@ -5,11 +5,15 @@ import cn.anony.annotations.ElementVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Cheng Yufei
@@ -25,6 +29,10 @@ public class ActivitiService {
     @Autowired
     @Lazy
     private RuntimeService runtimeService;
+
+    @Autowired
+    @Lazy
+    private TaskService taskService;
 
 
     @ElementVersion
@@ -66,6 +74,29 @@ public class ActivitiService {
         log.info("流程实例ID：{}",myEvectionProcessInstance.getId());
         log.info("流程实例ID：{}",myEvectionProcessInstance.getProcessInstanceId());
 
+        return "success";
+    }
+
+    /**
+     * 查询个人待执行的任务：
+     *
+     *
+     * @param assignee
+     * @return
+     */
+    public String getTaskByAssignee(String assignee) {
+
+        List<Task> taskList = taskService.createTaskQuery()
+                .processDefinitionKey("myEvection") // 流程Key
+                .taskAssignee(assignee) // 要查询的负责人
+                .list();
+
+        for (Task task : taskList) {
+            log.info("流程实例ID：{}", task.getProcessInstanceId());
+            log.info("任务ID：{}", task.getId());
+            log.info("任务负责人：{}", task.getAssignee());
+            log.info("任务名称：{}", task.getName());
+        }
         return "success";
     }
 }

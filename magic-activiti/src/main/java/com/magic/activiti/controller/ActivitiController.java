@@ -25,4 +25,9 @@ public class ActivitiController {
     public String startProcess(){
         return activitiService.startProcess();
     }
+
+    @GetMapping("/getTaskByAssignee")
+    public String getTaskByAssignee(String assignee){
+        return activitiService.getTaskByAssignee(assignee);
+    }
 }
