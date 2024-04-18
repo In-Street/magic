@@ -2,6 +2,7 @@ package com.magic.dao.model;
 
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
 @Data
@@ -36,4 +37,11 @@ public class Framework  {
 	private Integer defaultId;
 
 	private Integer frameworkType;
+
+	public Framework() {
+	}
+
+	public Framework(String frameworkName) {
+		this.frameworkName = frameworkName;
+	}
 }
