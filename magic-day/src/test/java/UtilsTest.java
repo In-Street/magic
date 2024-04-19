@@ -4,6 +4,12 @@ import com.magic.dao.model.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.BitSet;
+import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Phaser;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Cheng Yufei
@@ -42,7 +48,7 @@ public class UtilsTest {
     @Test
     public void bitSet() {
 
-        // 创建一个BitSet实例
+        // 创建一个BitSet实例  【非线程安全】
         BitSet bitmap = new BitSet();
 
         // 设置第5个位置为1，表示第5个元素存在
@@ -66,5 +72,69 @@ public class UtilsTest {
         boolean isEmpty = bitmap.isEmpty();
         System.out.println("Is the bitset empty after clearing some bits?" + isEmpty);
 
+    }
+
+    @Test
+    public void phaserEx1() {
+
+        Phaser phaser = new Phaser(10);
+        Runnable r = () -> {
+            System.out.println(Thread.currentThread().getName() + "  >> AAAA");
+            //线程执行到此开始等待，满足条件(任务数满足)则继续执行
+            phaser.arriveAndAwaitAdvance();
+            System.out.println(Thread.currentThread().getName() + "  >> BBBB");
+        };
+
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 10; i++) {
+            executorService.execute(r);
+        }
+
+    }
+
+    /**
+     * 有问题，待处理
+     */
+    @Test
+    public void phaserEx2() {
+
+        Phaser phaser = new Phaser(10){
+            @Override
+            protected boolean onAdvance(int phase, int registeredParties) {
+                if (Objects.equals(phase,1)) {
+                    System.out.println("<< 所有线程都到达");
+                }else if (Objects.equals(phase,2)) {
+                    System.out.println("<< 所有线程均已完成任务");
+                }
+                return super.onAdvance(phase, registeredParties);
+            }
+        };
+
+        Random random = new Random();
+
+        Runnable runnable = () -> {
+            try {
+                // int time = ThreadLocalRandom.current().nextInt(4000);
+                int time = random.nextInt(4000);
+                Thread.sleep(time);
+                System.out.println(Thread.currentThread().getName() + "  >>到达了A，耗时: " + time);
+                phaser.arriveAndAwaitAdvance();
+
+                //全部到达后，开始任务B，每个人完成时间不一样
+                int timeCom = random.nextInt(5000);
+                Thread.sleep(timeCom);
+                System.out.println(Thread.currentThread().getName() + "  >> 完成了任务B，耗时: " + timeCom);
+                phaser.arriveAndAwaitAdvance();
+
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 10; i++) {
+            executorService.execute(runnable);
+        }
     }
 }
