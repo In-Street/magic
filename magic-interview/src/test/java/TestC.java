@@ -1080,7 +1080,7 @@ public class TestC {
             }
         };
 
-        // private <E> void removeIf(List<E> list, Filter< E> filter) {}，编译报错
+        // private <E> void removeIf(List<E> list, Filter< E> filter) {}，编译报错， Incompatible equality constraint: Number and Integer
         // private <E> void removeIf(List<E> list, Filter<? super E> filter) {}，编译成功
         removeIf(integers, numberFilter);
         removeIf(doubles, numberFilter);
@@ -1142,19 +1142,20 @@ public class TestC {
     @Test
     public void generic2() {
 
-        //new ArrayList 实例化时的类，只能是定义时所指定的类及其子类，此处定义时指定的类为Fruit
-        //1.  实例化Fruit
+        // new ArrayList 实例化时的类，只能是定义时所指定的类及其子类，此处定义时指定的类为Fruit
+        // 1.  实例化Fruit
         List<? extends Fruit> list = new ArrayList<Fruit>();
-        //报错，不能进行add操作
+        // 报错，不能进行add操作
         // list.add(new Fruit());
+        list.add(null);
 
-        //2.  实例化Apple
+        // 2.  实例化Apple
         List<? extends Fruit> list2 = new ArrayList<Apple>();
 
-        //3.  实例化Food，报错
+        // 3.  实例化Food，报错
         // List<? extends Fruit> list3 = new ArrayList<Food>();
 
-        //能放进去的对象是看实例化时指定的类，而不是看定义时T的指定类
+        // 能放进去的对象是看实例化时指定的类，而不是看定义时T的指定类
         List<? extends Fruit> list4 = new ArrayList<Fruit>() {
             {
                 add(new Fruit());
@@ -1164,9 +1165,9 @@ public class TestC {
         };
         Fruit fruit = list4.get(0);
         Fruit fruit1 = list4.get(1);
-        System.out.println(fruit.getName()+">>>"+fruit1.getName());
+        System.out.println(fruit.getName() + ">>>" + fruit1.getName());
 
-        //实例化时添加元素
+        // 实例化时添加元素
         List<? extends Fruit> list4_2 = new ArrayList<Apple>() {
             {
                 // add(new Fruit()); // 报错，实例化指定类为Apple，只能放入Apple及其子类，和定义的Fruit无关
@@ -1177,10 +1178,22 @@ public class TestC {
         };
         // get 出来非Object类型
         Fruit fruit2 = list4_2.get(0);
+        System.out.println(fruit2.getName());
+
+        List<? extends Apple> apples = new ArrayList<Apple>() {
+            {
+                add(new Apple());
+                add(new AppleSon());
+                // add(new Fruit());
+            }
+        };
+        Apple apple = apples.get(1);
+        System.out.println(apple.getName());
+
 
         ////////////////////////////////////////////////////////////
 
-        //new ArrayList 实例化时的类，只能是定义时所指定的类及其父类，此处定义时指定的类为Fruit，T是下界
+        // new ArrayList 实例化时的类，只能是定义时所指定的类及其父类，此处定义时指定的类为Fruit，T是下界
         List<? super Fruit> list5 = new ArrayList<Fruit>();
         list5.add(new Fruit());
         list5.add(new Apple());
@@ -1194,7 +1207,7 @@ public class TestC {
         // List<? super Fruit> list7 = new ArrayList<Apple>(); //报错
 
 
-        //1. 实例化时添加对象，上界为实例化时指定的对象Food，
+        // 1. 实例化时添加对象，上界为实例化时指定的对象Food，
         List<? super Fruit> list7 = new ArrayList<Food>() {
             {
                 add(new Fruit());
@@ -1203,9 +1216,21 @@ public class TestC {
                 add(new Meat());
             }
         };
+        Object object1 = list7.get(1);
+        Fruit fruit3 = (Fruit) list7.get(1);
+        System.out.println(fruit3.getName());
+        Apple apple1 = (Apple) list7.get(1);
+        System.out.println(apple1.getName());
+
+        Meat meat = (Meat) list7.get(3);
+        System.out.println(meat.getName());
+
+        list7.add(new Fruit());
+        list7.add(new Apple());
+        // list7.add(new Food()); //报错
 
 
-        //1. 实例化时添加对象，上界为实例化时指定的对象Fruit，所以无法add(new Food())、add(new Meat())
+        // 1. 实例化时添加对象，上界为实例化时指定的对象Fruit，所以无法add(new Food())、add(new Meat())
         List<? super Fruit> list8 = new ArrayList<Fruit>() {
             {
                 add(new Fruit());
