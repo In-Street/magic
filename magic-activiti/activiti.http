@@ -5,6 +5,11 @@ GET {{url}}/activiti/deploy
 Accept: */*
 Cache-Control: no-cache
 
+### 部署流程 - 通过zip包
+GET {{url}}/activiti/deployByZip
+Accept: */*
+Cache-Control: no-cache
+
 
 ### 启动流程
 GET {{url}}/activiti/startProcess
@@ -13,5 +18,10 @@ Cache-Control: no-cache
 
 ### 查询个人待执行的任务
 GET {{url}}/activiti/getTaskByAssignee?assignee=zhangsan
+Accept: */*
+Cache-Control: no-cache
+
+### 完成个人任务
+GET {{url}}/activiti/completeTask?taskId=3dd14fc3-e9d4-11ee-a514-0a656abf4572
 Accept: */*
 Cache-Control: no-cache

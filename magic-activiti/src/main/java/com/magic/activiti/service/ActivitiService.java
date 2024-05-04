@@ -11,9 +11,13 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author Cheng Yufei
@@ -49,6 +53,27 @@ public class ActivitiService {
         return "success";
     }
 
+    /**
+     *  将多个bpmn打zip包，一次部署多个流程
+     * @return
+     * @throws IOException
+     */
+    public String deployByZip() throws IOException {
+
+        PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
+        InputStream inputStream = patternResolver.getResource("bpmn/Aevection.zip").getInputStream();
+
+        // InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("bpmn/Aevection.zip");
+
+        ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+        Deployment deploy = repositoryService.createDeployment()
+                .addZipInputStream(zipInputStream)
+                .deploy();
+
+        log.info("通过zip包进行流程部署，id:{}",deploy.getId());
+        return "success";
+    }
+
 
     /**
      * 启动流程实例，参与表：
@@ -79,6 +104,13 @@ public class ActivitiService {
 
     /**
      * 查询个人待执行的任务：
+     *     select distinct RES.*
+     *   from ACT_RU_TASK RES
+     *          inner join ACT_RE_PROCDEF D on RES.PROC_DEF_ID_ = D.ID_
+     * WHERE RES.ASSIGNEE_ = 'zhangsan'
+     *   and D.KEY_ = 'myEvection'
+     * order by RES.ID_ asc
+     * LIMIT 2147483647 OFFSET 0
      *
      *
      * @param assignee
@@ -97,6 +129,19 @@ public class ActivitiService {
             log.info("任务负责人：{}", task.getAssignee());
             log.info("任务名称：{}", task.getName());
         }
+        return "success";
+    }
+
+    /**
+     * 完成个人任务
+     * @param taskId
+     * @return
+     */
+    public String completeTask(String taskId) {
+        taskService.complete(taskId);
+        // taskService.delegateTask(); //委托任务给其它人
+        //TODO BY Cheng Yufei <-2024-05-04 20:18->
+        //  如何驳回？
         return "success";
     }
 }
