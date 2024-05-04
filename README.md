@@ -12,3 +12,7 @@ It's an exercise on leetcode,include: 链表反转、链表有环判断、相邻
 
 magic-rabbit module:
 Practice for rabbit mq knowledge points.
+
+magic-day module:
+1. 树形组织机构获取方式
+2. UtilsTest:
