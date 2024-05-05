@@ -120,7 +120,7 @@ public class ActivitiService {
 
         List<Task> taskList = taskService.createTaskQuery()
                 .processDefinitionKey("myEvection") // 流程Key
-                .taskAssignee(assignee) // 要查询的负责人
+                // .taskAssignee(assignee) // 要查询的负责人
                 .list();
 
         for (Task task : taskList) {
@@ -142,6 +142,21 @@ public class ActivitiService {
         // taskService.delegateTask(); //委托任务给其它人
         //TODO BY Cheng Yufei <-2024-05-04 20:18->
         //  如何驳回？
+        return "success";
+    }
+
+    /**
+     *  删除流程部署
+     *
+     *   delete from ACT_RU_IDENTITYLINK where PROC_DEF_ID_ =
+     *   delete from ACT_RE_PROCDEF where DEPLOYMENT_ID_ = ，若 act_ru_execution 中有关联的数据，会删除失败，因为两者有外键约束。 若部署ID对应的流程节点均已完成，则可以完成删除
+     *   delete from ACT_GE_BYTEARRAY where DEPLOYMENT_ID_ =
+     *   delete from ACT_RE_DEPLOYMENT where ID_ = ?
+     * @param deploymentId
+     * @return
+     */
+    public String deleteDeploymentById(String deploymentId) {
+        repositoryService.deleteDeployment(deploymentId);
         return "success";
     }
 }

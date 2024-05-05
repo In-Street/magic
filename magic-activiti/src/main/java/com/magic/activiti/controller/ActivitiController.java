@@ -42,4 +42,9 @@ public class ActivitiController {
     public String completeTask(String taskId){
         return activitiService.completeTask(taskId);
     }
+
+    @GetMapping("/deleteDeploymentById")
+    public String deleteDeploymentById(String  deploymentId){
+        return activitiService.deleteDeploymentById(deploymentId);
+    }
 }

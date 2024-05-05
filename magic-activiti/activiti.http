@@ -22,6 +22,11 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 完成个人任务
-GET {{url}}/activiti/completeTask?taskId=3dd14fc3-e9d4-11ee-a514-0a656abf4572
+GET {{url}}/activiti/completeTask?taskId=9910bcdb-0ad4-11ef-988e-fab59dec6700
+Accept: */*
+Cache-Control: no-cache
+
+### 删除流程部署
+GET {{url}}/activiti/deleteDeploymentById?deploymentId=98c57507-cb30-11ee-9be1-eab5f5d53d10
 Accept: */*
 Cache-Control: no-cache
