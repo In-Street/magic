@@ -95,5 +95,8 @@ public class UtilsTest {
 
         FrameworkVo2 vo3 = vo.withFrameworkName("蒲公英");
         System.out.println(vo3);
+
+        //TODO BY Cheng Yufei <-2024-06-28 18:46->
+        // https://cloud.tencent.com/developer/article/1532393
     }
 }
