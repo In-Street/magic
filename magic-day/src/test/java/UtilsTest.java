@@ -1,20 +1,26 @@
 import com.google.common.collect.*;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.magic.base.dto.FrameworkVo2;
 import com.magic.dao.model.Framework;
 import com.magic.dao.model.User;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.jupiter.api.Test;
 
-import java.util.BitSet;
-import java.util.Objects;
-import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Phaser;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Cheng Yufei
  * @create 2024-04-18 18:25
  **/
+@Slf4j
 public class UtilsTest {
 
 
@@ -75,66 +81,19 @@ public class UtilsTest {
     }
 
     @Test
-    public void phaserEx1() {
+    public void lombok() {
+        FrameworkVo2 vo = FrameworkVo2.builder()
+                .frameworkId(1L)
+                .frameworkName("技术部")
+                .aliasNameList(Lists.newArrayList("A","B"))
+                .S1("C")
+                .clearAliasNameList()
+                .S1("D")
+                .S1("E")
+                .build();
+        System.out.println(vo);
 
-        Phaser phaser = new Phaser(10);
-        Runnable r = () -> {
-            System.out.println(Thread.currentThread().getName() + "  >> AAAA");
-            //线程执行到此开始等待，满足条件(任务数满足)则继续执行
-            phaser.arriveAndAwaitAdvance();
-            System.out.println(Thread.currentThread().getName() + "  >> BBBB");
-        };
-
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 10; i++) {
-            executorService.execute(r);
-        }
-
-    }
-
-    /**
-     * 有问题，待处理
-     */
-    @Test
-    public void phaserEx2() {
-
-        Phaser phaser = new Phaser(10){
-            @Override
-            protected boolean onAdvance(int phase, int registeredParties) {
-                if (Objects.equals(phase,1)) {
-                    System.out.println("<< 所有线程都到达");
-                }else if (Objects.equals(phase,2)) {
-                    System.out.println("<< 所有线程均已完成任务");
-                }
-                return super.onAdvance(phase, registeredParties);
-            }
-        };
-
-        Random random = new Random();
-
-        Runnable runnable = () -> {
-            try {
-                // int time = ThreadLocalRandom.current().nextInt(4000);
-                int time = random.nextInt(4000);
-                Thread.sleep(time);
-                System.out.println(Thread.currentThread().getName() + "  >>到达了A，耗时: " + time);
-                phaser.arriveAndAwaitAdvance();
-
-                //全部到达后，开始任务B，每个人完成时间不一样
-                int timeCom = random.nextInt(5000);
-                Thread.sleep(timeCom);
-                System.out.println(Thread.currentThread().getName() + "  >> 完成了任务B，耗时: " + timeCom);
-                phaser.arriveAndAwaitAdvance();
-
-
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        };
-
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 10; i++) {
-            executorService.execute(runnable);
-        }
+        FrameworkVo2 vo3 = vo.withFrameworkName("蒲公英");
+        System.out.println(vo3);
     }
 }
