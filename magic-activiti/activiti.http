@@ -17,7 +17,7 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 查询个人待执行的任务
-GET {{url}}/activiti/getTaskByAssignee?assignee=zhangsan
+GET {{url}}/activiti/getTaskByAssignee?assignee=
 Accept: */*
 Cache-Control: no-cache
 
@@ -27,6 +27,11 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 删除流程部署
-GET {{url}}/activiti/deleteDeploymentById?deploymentId=98c57507-cb30-11ee-9be1-eab5f5d53d10
+GET {{url}}/activiti/deleteDeploymentById?deploymentId=89dc5fb5-0a35-11ef-8fc0-ba9f1015d021
+Accept: */*
+Cache-Control: no-cache
+
+### 资源文件下载
+GET {{url}}/activiti/getResource?deploymentId=1bd6573e-cb2e-11ee-9ac9-eab5f5d53d10
 Accept: */*
 Cache-Control: no-cache

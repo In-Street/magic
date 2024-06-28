@@ -7,15 +7,20 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.xml.ws.Response;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -98,6 +103,7 @@ public class ActivitiService {
         //与 getProcessInstanceId 一样， ACT_RU_TASK # PROC_INST_ID_ 字段
         log.info("流程实例ID：{}",myEvectionProcessInstance.getId());
         log.info("流程实例ID：{}",myEvectionProcessInstance.getProcessInstanceId());
+        log.info("流程部署ID：{}",myEvectionProcessInstance.getDeploymentId());
 
         return "success";
     }
@@ -128,6 +134,9 @@ public class ActivitiService {
             log.info("任务ID：{}", task.getId());
             log.info("任务负责人：{}", task.getAssignee());
             log.info("任务名称：{}", task.getName());
+            ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(task.getProcessDefinitionId()).singleResult();
+            String deploymentId = processDefinition.getDeploymentId();
+            log.info("流程部署ID：{}", deploymentId);
         }
         return "success";
     }
@@ -146,17 +155,58 @@ public class ActivitiService {
     }
 
     /**
-     *  删除流程部署
+     *  删除流程部署，不会删除已完成任务的hi 相关表数据
      *
      *   delete from ACT_RU_IDENTITYLINK where PROC_DEF_ID_ =
-     *   delete from ACT_RE_PROCDEF where DEPLOYMENT_ID_ = ，若 act_ru_execution 中有关联的数据，会删除失败，因为两者有外键约束。 若部署ID对应的流程节点均已完成，则可以完成删除
+     *   delete from ACT_RE_PROCDEF where DEPLOYMENT_ID_ = ，若 act_ru_execution 中有关联的数据，会删除失败，因为两者有外键约束。 若部署ID对应的流程节点均已完成，则可以完成删除。有正在进行中的任务是无法deleteDeployment()方法删除的
      *   delete from ACT_GE_BYTEARRAY where DEPLOYMENT_ID_ =
      *   delete from ACT_RE_DEPLOYMENT where ID_ = ?
+     *
+     *   有在进行中任务时，可采用 deleteDeployment(deploymentId,true) 级联删除的方式进行流程部署的删除，同时会删除 ru 和 hi 相关表数据；
+     *
      * @param deploymentId
      * @return
      */
     public String deleteDeploymentById(String deploymentId) {
-        repositoryService.deleteDeployment(deploymentId);
+        // repositoryService.deleteDeployment(deploymentId);
+        repositoryService.deleteDeployment(deploymentId,true);
         return "success";
+    }
+
+    /**
+     * 流程资源文件下载：
+     *
+     *
+     * @param deploymentId
+     * @return
+     */
+    public String getResource(String deploymentId)  {
+
+        // 1. 获取资源文件名.  ACT_RE_PROCDEF 表中存有 DEPLOYMENT_ID_ 对应的资源名
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deploymentId).singleResult();
+        String bpmnName = processDefinition.getResourceName();
+        String pngName = processDefinition.getDiagramResourceName();
+
+        String result = StringUtils.EMPTY;
+        try (
+                // 2.  根据流程部署ID+资源名，获取存在库表【ACT_GE_BYTEARRAY】里的资源
+                InputStream bpmnInputStream = repositoryService.getResourceAsStream(deploymentId, bpmnName);
+                InputStream pngInputStream = repositoryService.getResourceAsStream(deploymentId, pngName);
+
+                //3. 构建输出流
+                OutputStream pngOutputStream = Files.newOutputStream(new File("/Users/chengyufei/Downloads/project/self/evection.png").toPath());
+                FileOutputStream bpmnOutputStream = new FileOutputStream(new File("/Users/chengyufei/Downloads/project/self/evection.bpmn20.xml"));
+        ) {
+
+            //4. 输入流 输出流转换
+            int pngResult = StreamUtils.copy(pngInputStream, pngOutputStream);
+            int bpmnResult = StreamUtils.copy(bpmnInputStream, bpmnOutputStream);
+            result = String.valueOf(pngResult) + String.valueOf(bpmnResult);
+
+        } catch (IOException e) {
+
+        }
+        return result;
+
     }
 }

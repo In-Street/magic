@@ -47,4 +47,10 @@ public class ActivitiController {
     public String deleteDeploymentById(String  deploymentId){
         return activitiService.deleteDeploymentById(deploymentId);
     }
+
+    @GetMapping("/getResource")
+    public String getResource(String  deploymentId){
+        return activitiService.getResource(deploymentId);
+    }
+
 }
