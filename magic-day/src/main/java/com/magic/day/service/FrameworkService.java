@@ -1,5 +1,6 @@
 package com.magic.day.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magic.base.dto.FrameworkVo;
 import com.magic.dao.mapper.FrameworkMapper;
 import com.magic.dao.model.Framework;
@@ -27,6 +28,7 @@ public class FrameworkService {
     private FrameworkMapper frameworkMapper;*/
 
     private final FrameworkMapper frameworkMapper;
+    private final ObjectMapper objectMapper;
 
     public List<FrameworkVo> listFrameworkTree() {
 
@@ -52,29 +54,6 @@ public class FrameworkService {
 
     public List<FrameworkVo> listFrameworkTreeV2() {
 
-        Phaser phaser = new Phaser(3){
-            @Override
-            protected boolean onAdvance(int phase, int registeredParties) {
-                if (Objects.equals(0,phase)) {
-
-                }
-                return super.onAdvance(phase, registeredParties);
-            }
-        };
-
-        Callable<FrameworkVo> callable = () -> {
-            List<FrameworkVo> frameworkVos = listFrameworkTree();
-            int i = phaser.arriveAndAwaitAdvance();
-            log.info(Thread.currentThread().getName(),"第  {} 批处理完成",i);
-            return frameworkVos.get(1);
-
-
-        };
-
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-        for (int i = 0; i < 2; i++) {
-            Future<FrameworkVo> future = executorService.submit(callable);
-        }
 
         return null;
     }

@@ -1,9 +1,6 @@
 package com.magic.base.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.magic.dao.model.Framework;
 import lombok.Data;
-import lombok.Singular;
 
 import java.util.List;
 

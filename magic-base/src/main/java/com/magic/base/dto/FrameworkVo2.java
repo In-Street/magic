@@ -1,15 +1,17 @@
 package com.magic.base.dto;
 
-import com.magic.dao.model.Framework;
 import lombok.*;
 
 import java.util.List;
 
 @With
 @Builder
-@ToString
+@Data
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FrameworkVo2 {
-	private String name;
+	@Builder.Default
+	private String name = "一首歌的时间";
 	private long frameworkId;
 	private Long parentId;
 	private String frameworkName;
