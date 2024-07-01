@@ -19,6 +19,6 @@ magic-day module:
    * TreeRangeMap：key为一个范围
    * MutableClassToInstanceMap：key为class
    * Phaser
-   * lombok：@Singular+@Builder、@With+@Builder
+   * lombok：@Singular+@Builder、@With+@Builder、@Builder+@Accessors 序列化/反序列化失败的问题
 
 3. PhaserTest:   java.util.concurrent.Phaser 测验   
