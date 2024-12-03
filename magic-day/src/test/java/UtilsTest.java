@@ -149,5 +149,43 @@ public class UtilsTest {
         System.out.println(" >> 反序列化 :  "+deserializationFrameworkVo3);
 
     }
+    
+    @Test
+    public void transfer() {
+        // 值传递的概念也很简单，即形参会将传入的实参的值拷贝一份作为自己调用的样本，无论怎么改变都不会影响到实参的值
+        // 对于基本类型直接拷贝值.而对于引用类型，拷贝的是引用变量存储的地址
+        int a = 10;
+        int b = 20;
+        System.out.println("a="+a);// 10
+        System.out.println("b="+b);// 20
+
+        User userA = new User("BonusA");
+        User userB = new User("BonusB");
+        System.out.println("userA="+userA);
+        System.out.println("userB="+userB);
+
+        swap(a, b);
+        swapReference(userA, userB);
+
+        System.out.println("a="+a); // 10
+        System.out.println("b="+b); // 20
+
+        System.out.println("userA="+userA); // BonusA
+        System.out.println("userB="+userB); // BonusB
+    }
+
+    private void swap(int param1,int param2){
+        int temp = param1;
+        param1 = param2;
+        param2 = temp;
+        System.out.println("swap:  " + param1 + " --> " + param2); // 20 --> 10
+    }
+
+    private void swapReference(User param1,User param2){
+        User temp = param1;
+        param1 = param2;
+        param2 = temp;
+        System.out.println("swap:  " + param1 + " --> " + param2); // BonusB   --> BonusA
+    }
 }
 
