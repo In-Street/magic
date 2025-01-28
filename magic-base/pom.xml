@@ -11,5 +11,18 @@
 
     <artifactId>magic-base</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.magic</groupId>
+            <artifactId>magic-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
+    </dependencies>
 </project>

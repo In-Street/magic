@@ -1,6 +1,5 @@
 package com.magic.base.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +11,6 @@ public class FrameworkVo {
 	private Long parentId;
 	private String frameworkName;
 	private String treeName;
-	// @JsonBackReference
+	// @JsonBackReference  ： 解决无限递归问题，标注的属性在序列化时会被忽略
 	private List<FrameworkVo> childrenList;
 }

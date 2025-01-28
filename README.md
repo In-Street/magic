@@ -16,3 +16,9 @@ Practice for rabbit mq knowledge points.
 magic-day module:
 1. 树形组织机构获取方式
 2. UtilsTest:
+   * TreeRangeMap：key为一个范围
+   * MutableClassToInstanceMap：key为class
+   * Phaser
+   * lombok：@Singular+@Builder、@With+@Builder、@Builder+@Accessors 序列化/反序列化失败的问题
+
+3. PhaserTest:   java.util.concurrent.Phaser 测验   

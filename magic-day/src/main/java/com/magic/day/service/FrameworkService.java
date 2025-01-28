@@ -1,14 +1,18 @@
 package com.magic.day.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magic.base.dto.FrameworkVo;
 import com.magic.dao.mapper.FrameworkMapper;
 import com.magic.dao.model.Framework;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,10 +21,14 @@ import java.util.stream.Collectors;
  **/
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class FrameworkService {
 
-    @Autowired
-    private FrameworkMapper frameworkMapper;
+   /* @Autowired
+    private FrameworkMapper frameworkMapper;*/
+
+    private final FrameworkMapper frameworkMapper;
+    private final ObjectMapper objectMapper;
 
     public List<FrameworkVo> listFrameworkTree() {
 
@@ -42,5 +50,11 @@ public class FrameworkService {
         List<FrameworkVo> res = voList.stream().filter(v -> v.getParentId() == 0L).collect(Collectors.toList());
 
         return res;
+    }
+
+    public List<FrameworkVo> listFrameworkTreeV2() {
+
+
+        return null;
     }
 }
