@@ -3,6 +3,7 @@ package com.magic.time.service.jvm.reflect;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -36,7 +37,7 @@ public class ReflectTest {
         // -Dsun.reflect.inflationThreshold=15    反射调用超过15次，委托实现转为动态实现
         //  -Dsun.reflect.noInflation=true , 首次调用就开始动态实现
         for (int i = 0; i < 15; i++) {
-             Object invokeResult = parentMethod.invoke(child, "反射调用方法"+i);
+             // Object invokeResult = parentMethod.invoke(child, "反射调用方法"+i);
         }
 
         System.out.println(" >>>>  MethodHandles <<<<");
@@ -46,11 +47,12 @@ public class ReflectTest {
         MethodHandle parentMethodPublic = lookup.findVirtual(Child.class, "parentMethodPublic", MethodType.methodType(String.class,String.class));
         for (int i = 0; i < 16; i++) {
             // 调用方法
-            parentMethodPublic.invoke(child,"反射方法调用");
+            // parentMethodPublic.invoke(child,"反射方法调用");
         }
 
 
 
+        // MethodHandles: 访问公共成员变量
         Parent parent = new Parent();
         parent.setP2(123);
         MethodHandle p1 = lookup.findGetter(Parent.class, "p2", int.class);
@@ -60,5 +62,16 @@ public class ReflectTest {
         MethodHandle p2 = lookup.findSetter(Parent.class, "p2", int.class);
         p2.invoke(parent, 567);
         System.out.println(parent.getP2());
+
+
+        // MethodHandles: 访问private成员变量
+        Class<Parent> parentClass = Parent.class;
+        Field privateField = parentClass.getDeclaredField("p1");
+        privateField.setAccessible(true);
+
+        MethodHandle getterPrivate = lookup.unreflectGetter(privateField);
+        MethodHandle setterPrivate = lookup.unreflectSetter(privateField);
+        setterPrivate.invoke(parent, 666);
+        System.out.println(">> 私有成员变量："+getterPrivate.invoke(parent));
     }
 }
