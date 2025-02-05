@@ -94,3 +94,8 @@ GET {{url}}/ttt/q?
     token={{token}}
 Accept: */*
 Cache-Control: no-cache
+
+###
+GET {{url}}/redis/test1
+Accept: */*
+Cache-Control: no-cache

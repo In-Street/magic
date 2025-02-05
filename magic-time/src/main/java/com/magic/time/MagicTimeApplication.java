@@ -23,7 +23,11 @@ public class MagicTimeApplication {
 
 
     public static void main(String[] args) {
+        try {
         SpringApplication.run(MagicTimeApplication.class, args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //@Bean(name = "objectMapper")
