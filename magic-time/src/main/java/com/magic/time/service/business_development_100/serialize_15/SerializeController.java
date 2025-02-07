@@ -165,39 +165,6 @@ public class SerializeController {
         return build -> build.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
     }
 
-    @Bean(name = "objectRedisTemplate")
-    public <T> RedisTemplate<String, T> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, T> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(factory);
-
-        Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        //objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
-        objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-        //objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
-        serializer.setObjectMapper(objectMapper);
-
-        redisTemplate.setKeySerializer(RedisSerializer.string());
-        redisTemplate.setValueSerializer(serializer);
-        redisTemplate.setHashKeySerializer(RedisSerializer.string());
-        redisTemplate.setHashValueSerializer(serializer);
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
-    }
-
-
-    @Bean(name = "objectRedisTemplate2")
-    public <T> RedisTemplate<String, T> redisTemplate2(RedisConnectionFactory factory) {
-        RedisTemplate<String, T> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(factory);
-
-        redisTemplate.setKeySerializer(RedisSerializer.string());
-        redisTemplate.setValueSerializer(RedisSerializer.json());
-        redisTemplate.setHashKeySerializer(RedisSerializer.string());
-        redisTemplate.setHashValueSerializer(RedisSerializer.json());
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
-    }
 
 
     //@Bean("serialRest")
