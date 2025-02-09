@@ -2,6 +2,8 @@ package com.magic.time.service.jvm.class_load;
 
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Cheng Yufei
@@ -32,6 +34,17 @@ public class TestClassLoad {
 
         //会触发类的初始化
         Class<?> aClass = Class.forName("com.magic.time.service.jvm.class_load.Child");
+
+
+        System.out.println("------------------------------------------------------------------------------");
+        Child child = new Child();
+        String[] strArray = child.getStrArray();
+        Arrays.stream(strArray).forEach(System.out::println);
+        strArray = new String[]{"CC"};
+        Arrays.stream(strArray).forEach(System.out::println);
+
+        child.getStrList().add("List");
+        System.out.println(child.getStrList());
 
 
     }
