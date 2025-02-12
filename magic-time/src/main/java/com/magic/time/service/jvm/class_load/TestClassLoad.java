@@ -4,6 +4,7 @@ package com.magic.time.service.jvm.class_load;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * @author Cheng Yufei
@@ -46,6 +47,17 @@ public class TestClassLoad {
         child.getStrList().add("List");
         System.out.println(child.getStrList());
 
+        // 十进制 -> 二进制
+        System.out.println(Integer.toBinaryString(5)); // 101
+
+        // 二进制 -> 十进制
+        System.out.println(Integer.parseInt("101",2)); //  1*2^0 + 0 + 1*2^2 = 5
+
+        String key = "A"; int h;
+        int hashCode  = (h = key.hashCode()) ^ (h >>> 16); // HashMap计算hash值
+        System.out.println(">> hashCode:  "+hashCode);
+        System.out.println(hashCode%16);
+        System.out.println((hashCode&16) == 0 ); // HashMap扩容：  元素hash值 & oldCapacity ==0 则 新位置=原索引，否则 新位置 = 原索引 + oldCapacity
 
     }
 }
