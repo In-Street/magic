@@ -1,16 +1,25 @@
 package com.magic.time.service.jvm.class_load;
 
 
+import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Cheng Yufei
  * @create 2025-01-27 17:25
  **/
+
 public class TestClassLoad {
+
+    @Setter@Getter
+    private List<String> li  =Lists.newArrayList("AA");
+
 
     public static void main(String[] args) throws NoSuchFieldException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         // 访问final修饰的 基本类型/字符串 不会触发类的初始化
@@ -19,21 +28,21 @@ public class TestClassLoad {
         // 子类访问父类的非 final静态变量会触发父类的初始化，不会触发子类的初始化
         // System.out.println(Child.no_final_parent_param);
 
-        //数组定义类，不会触发类的初始化
+        // 数组定义类，不会触发类的初始化
         Child[] childArray = new Child[2];
 
-        //单纯的获取Field 不会触发初始化。 调用get访问静态字段会触发初始化【即使是final修饰的基本类型/字符串静态字段】
+        // 单纯的获取Field 不会触发初始化。 调用get访问静态字段会触发初始化【即使是final修饰的基本类型/字符串静态字段】
         Field declaredField = Parent.class.getDeclaredField("no_final_parent_param");
         // System.out.println(declaredField.get(null));
 
-        //单纯的获取引用，不会触发初始化
+        // 单纯的获取引用，不会触发初始化
         Class<Parent> parentClass = Parent.class;
         System.out.println(parentClass.getName());
 
         // newInstance： 会触发类的初始化
         // Parent parent = parentClass.newInstance();
 
-        //会触发类的初始化
+        // 会触发类的初始化
         Class<?> aClass = Class.forName("com.magic.time.service.jvm.class_load.Child");
 
 
@@ -58,6 +67,27 @@ public class TestClassLoad {
         System.out.println(">> hashCode:  "+hashCode);
         System.out.println(hashCode%16);
         System.out.println((hashCode&16) == 0 ); // HashMap扩容：  元素hash值 & oldCapacity ==0 则 新位置=原索引，否则 新位置 = 原索引 + oldCapacity
+
+
+        System.out.println("------------------------------------------------------------------------------");
+        int a = 20;
+        boolean b = false;
+        TestClassLoad testClassLoad = new TestClassLoad();
+        testClassLoad.t1(a, b, testClassLoad);
+        System.out.println(a + "  --原始方法--  " + b);
+        System.out.println(testClassLoad);
+        System.out.println(testClassLoad.getLi());
+
+
+    }
+
+    public void t1(int paraInt, boolean paraBoolean, TestClassLoad testClassLoad) {
+        paraInt = 10;
+        paraBoolean = true;
+        testClassLoad.getLi().add("BB");
+        testClassLoad = new TestClassLoad();
+        System.out.println(paraInt + " --调用方法修改--  " + paraBoolean);
+        System.out.println(testClassLoad);
 
     }
 }
