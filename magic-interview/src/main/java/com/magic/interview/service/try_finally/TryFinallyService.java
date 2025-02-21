@@ -41,7 +41,7 @@ public class TryFinallyService {
 
     /**
      * 2. finally中的return覆盖try中的return
-     * @return
+     * @return  12
      */
     public static int t2() {
         int a = 0;
@@ -50,7 +50,7 @@ public class TryFinallyService {
         } catch (Exception e) {
 
         }finally {
-            return a += 20;
+            return a += 2;
         }
     }
 
@@ -58,7 +58,7 @@ public class TryFinallyService {
 
     /**
      * 3. 如果finally语句中没有return语句覆盖返回值，那么原来的返回值可能因为finally里的修改而改变也可能不变
-     * finally中对a的赋值无效
+     * finally中对a的赋值无效，返回 10
      * @return
      */
     public static int t3() {
@@ -66,7 +66,6 @@ public class TryFinallyService {
         try {
             return a += 10;
         } catch (Exception e) {
-
         }finally {
             System.out.println(a);
             a =20;
@@ -82,8 +81,7 @@ public class TryFinallyService {
      *      a. 实参在栈中，直接拷贝该值，操作不影响实参值；
      *      b。在堆中，拷贝引用地址，但对堆中的操作是可见的
      *
-     *
-     * @return
+     * @return  返回 D
      */
     public static Map t4() {
         HashMap<String, String> map = new HashMap<>();
@@ -92,7 +90,6 @@ public class TryFinallyService {
             map.put("AA", "C");
             return map;
         } catch (Exception e) {
-
         }finally {
             map.put("AA", "D");
             map = null;
@@ -101,7 +98,8 @@ public class TryFinallyService {
     }
 
     public static void main(String[] args) {
-        //System.out.println(t3());
-        System.out.println(t4().get("AA"));
+        System.out.println(t2());
+        // System.out.println(t3());
+        // System.out.println(t4().get("AA"));
     }
 }

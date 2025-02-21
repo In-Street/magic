@@ -24,9 +24,9 @@ public class ListTest {
         ArrayList<String> strings = new ArrayList<>();
         strings.add("aaa");
         Iterator<String> iterator1 = strings.iterator();
-        strings.add("bbb"); // 抛异常：java.util.ConcurrentModificationException
+        // strings.add("bbb"); // 抛异常：java.util.ConcurrentModificationException
         while (iterator1.hasNext()) {
-            strings.add("bbb"); // java.util.ConcurrentModificationException
+            // strings.add("bbb"); // java.util.ConcurrentModificationException
             System.out.println(iterator1.next());
         }
 
