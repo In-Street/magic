@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @author
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @SpringBootApplication(scanBasePackages = {"com.magic.time"}, exclude = {RabbitAutoConfiguration.class})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @Slf4j
+@EnableAsync
 public class MagicTimeApplication {
 
 
