@@ -14,6 +14,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
+ * 自定义 @Async 执行的线程池
  * @author Cheng Yufei
  * @create 2025-02-22 18:40
  **/
