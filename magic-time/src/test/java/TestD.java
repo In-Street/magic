@@ -1,18 +1,22 @@
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.Test;
 
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- *   两个线程交替打印
- *
  * @author Cheng Yufei
  * @create 2025-02-24 11:28
  **/
 public class TestD {
 
+    /**
+     *  两个线程交替打印:  t1 、t2、 t3、t4
+     */
     /**
      *  失败示例
      */
@@ -180,6 +184,44 @@ public class TestD {
 
         threadF.join();
         threadS.join();
+
+    }
+
+
+    /**
+     *  滑动窗口
+     */
+    @Test
+    public void t5() {
+        long currentTime = System.currentTimeMillis();
+        // long currentTime = System.nanoTime();
+        System.out.println("当前时间："+currentTime);
+
+        int windowSizeMs = 1000; // 总窗口时间，1000ms
+        int subWindowCount = 4; // 子窗口数量，3个
+        int subWindowMs = 1000/4; // 子窗口长度
+        long[] subWindowRequest = new long[subWindowCount]; // 存储每个子窗口的请求数
+        AtomicLong totalRequest = new AtomicLong(); // 总请求数
+
+        int currentWindowIndex = (int) ((currentTime / subWindowMs) % subWindowCount); // 当前时间处在哪个窗口
+        System.out.println("处于第  "+currentWindowIndex +"  个窗口期");
+
+        long validTime = currentTime - windowSizeMs; // 过期时间  =  当前时间 - 总窗口时间
+        System.out.println("过期时间："+validTime);
+
+        for (int i = 0; i < subWindowCount; i++) {
+            //子窗口开始时间
+            long subWindowStart = currentTime - (subWindowCount - i) * subWindowMs;
+            System.out.println(">> 子窗口 "+i+" ,开始时间："+ subWindowStart+"  , 结束时间："+ (subWindowStart+subWindowMs));
+
+
+            if (subWindowStart < validTime) {
+                totalRequest.addAndGet(-subWindowRequest[i]);
+                subWindowRequest[i] = 0;
+            }
+            subWindowRequest[currentWindowIndex]++;
+            totalRequest.incrementAndGet();
+        }
 
     }
 }
