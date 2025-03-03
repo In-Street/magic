@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,12 @@ public class DbConfig {
     @ConfigurationProperties(prefix = "spring.datasource.druid.third")
     public DruidDataSource thirdDataSource() {
         DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return dataSource;
+    }
+
+    @Bean
+    public DataSource dataSource(DataSourceProperties properties){
+        DruidDataSource dataSource = properties.initializeDataSourceBuilder().type(DruidDataSource.class).build();
         return dataSource;
     }
 
