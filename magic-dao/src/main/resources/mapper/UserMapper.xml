@@ -227,5 +227,10 @@
     </foreach>
   </insert>
 
-  <!--<cache type="cyf.gradle.dao.cache.MyBatisRedisCache" />-->
+<!--  Mapper 级缓存设置 -->
+  <cache type="org.apache.ibatis.cache.decorators.LruCache"
+          size="1024"
+         flushInterval="60000"
+         readOnly="true"
+  />
 </mapper>
