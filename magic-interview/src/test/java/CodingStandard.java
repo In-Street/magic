@@ -69,7 +69,7 @@ public class CodingStandard {
 	 * List.subList 后 返回ArrayList内部类SubList：
 	 * <p>
 	 * 1.不可强转为ArrayList【ClassCastException】
-	 * 2. 原集合list 不能 add 、remove 【ConcurrentModificationException】
+	 * 2. 原集合list 不能 add 、remove 【需要看原集合add remove后，后续是否有对子集合的操作，若有报 ConcurrentModificationException。 若没有，是可以操作的】
 	 * 3. 子集合的 add 、remove 操作反映到原集合上
 	 * 4. list.addAll 时，要对传入集合非空判断，addAll时会对传入集合 toArray 处理，所以 NPE
 	 */
@@ -83,13 +83,16 @@ public class CodingStandard {
 		//不可强转ArrayList
 		//ArrayList<Pair<String, String>> pairs = (ArrayList<Pair<String, String>>) list.subList(0, 2);
 
-		//不可操作原集合
+		//不可操作原集合，因为后续还有对子集合的操作。子集合操作时，会调用 checkForComodification 校验modCount
 		list.add(Pair.of("version", "A"));
 
 		//可反映到原集合
 		pairs.remove(1);
 		pairs.add(Pair.of("version3", "D"));
 		System.out.println(pairs);
+
+		//后续不在有子集合的操作是，是可以操作原集合的
+		list.add(Pair.of("version3", "A"));
 		System.out.println(list);
 
 		List addLIst = null;
