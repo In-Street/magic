@@ -7,6 +7,9 @@
     <result column="pwd" jdbcType="VARCHAR" property="pwd" />
     <result column="pub_platform" jdbcType="VARCHAR" property="pubPlatform" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
+
+<!-- 单个关联关系指定延迟加载   -->
+    <!--    <association property="user" fetchType="lazy" column="user_id" select="com.example.UserMapper.selectById"></association>-->
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
