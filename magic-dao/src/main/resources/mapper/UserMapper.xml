@@ -8,6 +8,14 @@
     <result column="pub_platform" jdbcType="VARCHAR" property="pubPlatform" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
 
+<!--  嵌套查询，导致N+1问题，每获取一个用户，就要查询一次Order。若N个用户，就会执行N+1次查询  -->
+<!--    <collection property="order" column="order_id" ofType="Order" select="com.example.OrderMapper.selectById" />-->
+
+<!--    N+1问题，可优化为 join -->
+    <!--<collection property="order" ofType="Order" >
+       <id column="order_id" property="id" />
+    </collection>-->
+
 <!-- 单个关联关系指定延迟加载   -->
     <!--    <association property="user" fetchType="lazy" column="user_id" select="com.example.UserMapper.selectById"></association>-->
   </resultMap>
