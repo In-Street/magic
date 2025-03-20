@@ -22,3 +22,11 @@ magic-day module:
    * lombok：@Singular+@Builder、@With+@Builder、@Builder+@Accessors 序列化/反序列化失败的问题
 
 3. PhaserTest:   java.util.concurrent.Phaser 测验   
+
+magic-time module:
+1. 使用Spring Boot Actuator 对ThreadPoolTaskExecutor 线程池监控
+2.  synchronized+wait/notify、Lock+Condition 对多线程的调度
+3. 时间滑动窗口的实现
+4. 单切面执行顺序、不同优先级切面执行顺序的验证
+5. MyBatis的 XML中延迟加载、二级缓存、嵌套映射关系、集合映射关系的实现
+6. 线程interrupt机制执行验证
