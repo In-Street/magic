@@ -10,6 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -27,6 +28,9 @@ public class PoolConfig implements AsyncConfigurer {
         ThreadPoolTaskExecutor poolTaskExecutor = new ThreadPoolTaskExecutor();
         poolTaskExecutor.setCorePoolSize(5);
         poolTaskExecutor.setMaxPoolSize(30);
+        poolTaskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+        poolTaskExecutor.setAwaitTerminationSeconds(30); // 等待30s 处理线程池中的任务
+        poolTaskExecutor.setAllowCoreThreadTimeOut(true); // 允许核心线程回收
         poolTaskExecutor.setKeepAliveSeconds(30);
         poolTaskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         poolTaskExecutor.setQueueCapacity(100);
@@ -56,7 +60,8 @@ public class PoolConfig implements AsyncConfigurer {
         poolTaskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         poolTaskExecutor.setQueueCapacity(110);
         poolTaskExecutor.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("other_task_demo_pool_%d")
-                .setUncaughtExceptionHandler((thread,throwable)->{log.error(String.format(">>自定义线程池异常，thread:%s", thread), throwable);}).build());
+                .setUncaughtExceptionHandler((thread,throwable)->{log.error(String.format(">>customOtherThreadPool线程池异常，thread:%s", thread), throwable);})
+                .build());
         poolTaskExecutor.initialize();
         return poolTaskExecutor;
     }

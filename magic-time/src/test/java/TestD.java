@@ -1,7 +1,7 @@
-import org.apache.commons.lang3.time.FastDateFormat;
+import com.magic.time.dao.mapper.UserInfoMapper;
 import org.junit.Test;
 
-import java.time.format.DateTimeFormatter;
+import java.security.SecureRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -223,5 +223,23 @@ public class TestD {
             totalRequest.incrementAndGet();
         }
 
+        System.out.println(UserInfoMapper.class.getName());
+
+    }
+
+    @Test
+    public void t6() {
+
+        // 子线程仅继承父线程的初始值，后续修改仍相互隔离
+        InheritableThreadLocal<Integer> local = new InheritableThreadLocal<>();
+        local.set(101);
+        Runnable runnable = () -> {
+            local.set(202);
+            System.out.println(Thread.currentThread().getId()+" : "+ local.get());
+        };
+        new Thread(runnable).start(); // 202
+        new Thread(runnable).start();
+
+        System.out.println(local.get()); // 101
     }
 }
