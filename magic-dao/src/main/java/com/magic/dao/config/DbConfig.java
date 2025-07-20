@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -47,10 +49,14 @@ public class DbConfig {
         return dataSource;
     }
 
-    @Bean
+    /*@Bean
     public DataSource dataSource(DataSourceProperties properties){
         DruidDataSource dataSource = properties.initializeDataSourceBuilder().type(DruidDataSource.class).build();
         return dataSource;
+    }*/
+    @Bean(name="thirdPlatformTransactionManager")
+    public PlatformTransactionManager thirdPlatformTransactionManager(@Qualifier("third") DataSource dataSource){
+        return new DataSourceTransactionManager(dataSource);
     }
 
     /**

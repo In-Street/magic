@@ -1,6 +1,7 @@
 package com.magic.activiti.controller;
 
 import com.magic.activiti.service.ActivitiService;
+import com.magic.activiti.service.AssigneeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,9 @@ public class ActivitiController {
 
     @Autowired
     private ActivitiService activitiService;
+    @Autowired
+    private AssigneeService assigneeService;
+    
     @GetMapping("/deploy")
     public String deploy(){
         return activitiService.deploy();
@@ -34,8 +38,8 @@ public class ActivitiController {
     }
 
     @GetMapping("/getTaskByAssignee")
-    public String getTaskByAssignee(String assignee){
-        return activitiService.getTaskByAssignee(assignee);
+    public String getTaskByAssignee(String assignee,String procDefKey){
+        return activitiService.getTaskByAssignee(assignee,procDefKey);
     }
 
     @GetMapping("/completeTask")
@@ -53,4 +57,34 @@ public class ActivitiController {
         return activitiService.getResource(deploymentId);
     }
 
+
+    @GetMapping("/setUpBusinessKey")
+    public String setUpBusinessKey(){
+        return activitiService.setUpBusinessKey();
+    }
+
+    /**
+     * 流程定义被挂起 、激活
+     * @return
+     */
+    @GetMapping("/suspendAndActivate")
+    public String suspendAndActivate (){
+        return activitiService.suspendAndActivate();
+    }
+
+
+        @GetMapping("/deployment")
+        public String deployment(){
+            return assigneeService.uelAssigneeProcDef();
+        }
+        
+        @GetMapping("/startProcInst")
+        public String startProcInst(String deploymentId){
+            return assigneeService.uelAssigneeProcInst(deploymentId);
+        }
+    @GetMapping("/startProcInstForListener")
+    public String startProcInstForListener(String deploymentId){
+        return assigneeService.listenerAssigneeProcInst(deploymentId);
+    }
+    
 }

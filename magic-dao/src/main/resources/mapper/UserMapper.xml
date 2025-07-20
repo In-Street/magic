@@ -103,7 +103,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_user_1
     where id = #{id,jdbcType=INTEGER}
@@ -119,9 +119,9 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.magic.dao.model.User" useGeneratedKeys="true">
-    insert into t_user_1 (username, pwd, pub_platform, 
+    insert into t_user_1 (username, pwd, pub_platform,
       summary)
-    values (#{username,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{pubPlatform,jdbcType=VARCHAR}, 
+    values (#{username,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{pubPlatform,jdbcType=VARCHAR},
       #{summary,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.magic.dao.model.User" useGeneratedKeys="true">
@@ -239,9 +239,19 @@
   </insert>
 
 <!--  Mapper 级缓存设置 -->
-  <cache type="org.apache.ibatis.cache.decorators.LruCache"
+  <cache
+          eviction="LRU"
           size="1024"
          flushInterval="60000"
          readOnly="true"
   />
+
+  <!--<cache type="org.apache.ibatis.cache.decorators.LruCache">
+    <property name="delegate"
+              value="org.apache.ibatis.cache.impl.PerpetualCache"/>
+    <property name="size" value="1024"/>
+    <property name="flushInterval" value="60000"/>
+    <property name="readOnly" value="true"/>
+  </cache>-->
+
 </mapper>

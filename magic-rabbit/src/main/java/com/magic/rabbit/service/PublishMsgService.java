@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * @author Cheng Yufei
  * @create 2020-01-16 10:49
  **/
-@Service
+// @Service
 @Slf4j
 public class PublishMsgService {
 

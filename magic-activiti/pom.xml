@@ -60,6 +60,13 @@
 
         <!--        activiti end-->
 
+        <!-- https://mvnrepository.com/artifact/com.intellij/openapi -->
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>openapi</artifactId>
+            <version>7.0.3</version>
+        </dependency>
+
 
     </dependencies>
     <build>

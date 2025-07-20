@@ -17,12 +17,12 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 查询个人待执行的任务
-GET {{url}}/activiti/getTaskByAssignee?assignee=
+GET {{url}}/activiti/getTaskByAssignee?assignee=&procDefKey=listener-evection
 Accept: */*
 Cache-Control: no-cache
 
 ### 完成个人任务
-GET {{url}}/activiti/completeTask?taskId=9910bcdb-0ad4-11ef-988e-fab59dec6700
+GET {{url}}/activiti/completeTask?taskId=76976e04-6550-11f0-9f28-6e7170d0beb2
 Accept: */*
 Cache-Control: no-cache
 
@@ -33,5 +33,25 @@ Cache-Control: no-cache
 
 ### 资源文件下载
 GET {{url}}/activiti/getResource?deploymentId=1bd6573e-cb2e-11ee-9ac9-eab5f5d53d10
+Accept: */*
+Cache-Control: no-cache
+
+### 流程实例设置业务ID
+GET {{url}}/activiti/setUpBusinessKey
+Accept: */*
+Cache-Control: no-cache
+
+### 部署uel表达式的流程定义
+GET {{url}}/activiti/deployment
+Accept: */*
+Cache-Control: no-cache
+
+### 开启uel表达式 / 监听器 的流程实例
+GET {{url}}/activiti/startProcInst?deploymentId=183106de-60a2-11f0-aa4b-2e6d3e4fd0c0
+Accept: */*
+Cache-Control: no-cache
+
+### 开启监听器 的流程实例
+GET {{url}}/activiti/startProcInstForListener?deploymentId=183106de-60a2-11f0-aa4b-2e6d3e4fd0c0
 Accept: */*
 Cache-Control: no-cache

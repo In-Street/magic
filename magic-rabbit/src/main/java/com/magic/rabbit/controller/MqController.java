@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class MqController {
 
 
-    @Autowired
-    private PublishMsgService publishMsgService;
+    // @Autowired
+    private  PublishMsgService publishMsgService;
 
     @GetMapping("/send")
     public String send()  {
         return publishMsgService.send();
     }
 
+    public MqController(PublishMsgService publishMsgService) {
+        this.publishMsgService = publishMsgService;
+    }
 }

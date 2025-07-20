@@ -23,10 +23,19 @@ management:
   endpoints:
     web:
       exposure:
-        include: shutdown
+        include: "shutdown,health,threadpools"
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
 ---
-spring.profiles: dev
-spring.profiles.include: dao-dev
+spring:
+  config:
+    activate:
+      on-profile:
+      - dev
+      - dao-dev
+#spring.profiles.include: dao-dev   不支持这种写法了
 
 sms:
   ali:

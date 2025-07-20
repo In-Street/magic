@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class ConsumeMsg {
 
 
-    @RabbitListener(queues = {Constant.COMMON_QUEUE})
+    @RabbitListener(queues = {Constant.COMMON_QUEUE},concurrency ="1" )
     public void consume(CommonMessage commonMessage) throws Exception {
 
         log.info(">>>接受消息:{}", commonMessage.toString());

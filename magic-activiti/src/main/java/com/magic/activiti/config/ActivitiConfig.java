@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 public class ActivitiConfig {
 
     @Autowired
+    @Qualifier("thirdPlatformTransactionManager")
     private PlatformTransactionManager platformTransactionManager;
 
     /**

@@ -5,12 +5,20 @@ import com.magic.dao.config.DataSourceType;
 import com.magic.dao.model.User;
 import com.magic.dao.model.UserExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultType;
-import org.apache.ibatis.annotations.Select;
+
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.cache.decorators.LruCache;
 
 @Mapper
+/*@CacheNamespace(
+        implementation = LruCache.class,
+        properties = {
+                @Property(name = "id" ,value = "com.magic.dao.mapper.UserMapper"),
+                @Property(name = "size" ,value = "1024"),
+                @Property(name = "flushInterval" ,value = "60000"),
+                @Property(name = "readOnly" ,value = "true")
+        }
+)*/
 public interface UserMapper {
     long countByExample(UserExample example);
 

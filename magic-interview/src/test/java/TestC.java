@@ -1275,4 +1275,26 @@ public class TestC {
     class AppleSon extends Apple {
         private String name = "AppleSon";
     }
+
+    class G1<T extends Number>{
+        private T t;
+
+        public G1(T t) {
+            this.t = t;
+        }
+
+        public String getName(){
+            return t.getClass().getName();
+        }
+    }
+
+
+    
+    @Test
+    public void testG1() {
+        G1<Integer> integerG1 = new G1<>(1);
+        G1<Double> doubleG1 = new G1<>(2D);
+        System.out.println(integerG1.getName());
+        System.out.println(doubleG1.getName());
+    }
 }

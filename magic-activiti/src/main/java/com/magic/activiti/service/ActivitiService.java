@@ -2,10 +2,14 @@ package com.magic.activiti.service;
 
 
 import cn.anony.annotations.ElementVersion;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricActivityInstance;
+import org.activiti.engine.history.HistoricActivityInstanceQuery;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -21,6 +25,7 @@ import org.springframework.util.StreamUtils;
 import javax.xml.ws.Response;
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -30,18 +35,13 @@ import java.util.zip.ZipInputStream;
  **/
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ ={ @Autowired,@Lazy})
 public class ActivitiService {
 
-    @Autowired
-    @Lazy
-    private RepositoryService repositoryService;
-    @Autowired
-    @Lazy
-    private RuntimeService runtimeService;
-
-    @Autowired
-    @Lazy
-    private TaskService taskService;
+    private final RepositoryService repositoryService;
+    private final RuntimeService runtimeService;
+    private final TaskService taskService;
+    private final HistoryService historyService;
 
 
     @ElementVersion
@@ -91,6 +91,9 @@ public class ActivitiService {
      *  act_ru_identitylink：流程的参与用户信息
      *  act_ru_task:   流程正在执行的任务信息
      *
+     *
+     *  startProcessInstanceByKey(processDefinitionKey,businessKey): 将业务ID绑定到activiti，act_ru_execution
+     *
      * @return
      */
     public String startProcess() {
@@ -122,10 +125,10 @@ public class ActivitiService {
      * @param assignee
      * @return
      */
-    public String getTaskByAssignee(String assignee) {
+    public String getTaskByAssignee(String assignee,String procDefKey) {
 
         List<Task> taskList = taskService.createTaskQuery()
-                .processDefinitionKey("myEvection") // 流程Key
+                .processDefinitionKey(procDefKey) // 流程Key
                 // .taskAssignee(assignee) // 要查询的负责人
                 .list();
 
@@ -208,5 +211,66 @@ public class ActivitiService {
         }
         return result;
 
+    }
+
+    public String getHistory(String processInstanceId){
+
+        // historyService.createHistoricTaskInstanceQuery()
+
+        // 获取 ACT_HI_ACTINST 表查询对象
+        HistoricActivityInstanceQuery activityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId);
+        activityInstanceQuery.orderByHistoricActivityInstanceStartTime().asc();
+
+        List<HistoricActivityInstance> list = activityInstanceQuery.list();
+
+        for (HistoricActivityInstance historicActivityInstance : list) {
+            System.out.println(historicActivityInstance.getActivityName()+"：开始于 ");
+        }
+
+        return "success";
+    }
+
+    /**
+     *  流程实例启动时，关联 业务ID【businessKey】
+     *
+     *   ACT_RU_EXECUTION 、ACT_HI_PROCINST  两张表中均存有 businessKey
+     * @return
+     */
+    public String setUpBusinessKey(){
+
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("myEvection").singleResult();
+
+        String businessKey = "123-456";
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinition.getKey(), businessKey);
+        return processInstance.getId();
+
+    }
+
+    /**
+     * 流程定义被挂起、激活
+     *  场景：月底不处理出差审批，但有人提交了申请。该申请被挂起后，流程不能被继续处理，只有被激活后才能处理
+     *
+     * @return
+     */
+    public String suspendAndActivate(){
+
+        ProcessDefinition myEvectionDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionKey("myEvection")
+                .singleResult();
+
+        // 流程定义挂起
+        repositoryService.suspendProcessDefinitionById(myEvectionDefinition.getId(),true,new Date());
+
+        boolean processDefinitionSuspended = repositoryService.isProcessDefinitionSuspended(myEvectionDefinition.getId());
+        log.info(myEvectionDefinition.getName()+"流程定义是否被挂起：{}",processDefinitionSuspended);
+
+        //流程实例挂起、激活
+        List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
+        for (ProcessInstance processInstance : processInstances) {
+            runtimeService.suspendProcessInstanceById(processInstance.getId());
+            runtimeService.activateProcessInstanceById(processInstance.getId());
+
+        }
+        return "success";
     }
 }
