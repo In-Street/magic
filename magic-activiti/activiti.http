@@ -22,7 +22,7 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 完成个人任务
-GET {{url}}/activiti/completeTask?taskId=b30174e6-6627-11f0-a394-8a8fb35f39f0
+GET {{url}}/activiti/completeTask?taskId=8e8dc29d-67b2-11f0-9665-6ad9acffcf36
 Accept: */*
 Cache-Control: no-cache
 
@@ -47,11 +47,26 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 开启uel表达式 / 监听器 的流程实例
-GET {{url}}/activiti/startProcInst?deploymentId=0eee213f-6627-11f0-a394-8a8fb35f39f0&day=5
+GET {{url}}/activiti/startProcInst?deploymentId=&day=&candidateUser=经理C
 Accept: */*
 Cache-Control: no-cache
 
 ### 开启监听器 的流程实例
 GET {{url}}/activiti/startProcInstForListener?deploymentId=183106de-60a2-11f0-aa4b-2e6d3e4fd0c0
+Accept: */*
+Cache-Control: no-cache
+
+### 认领任务
+GET {{url}}/activiti/claimTask?taskId=a9413d6f-67b2-11f0-9665-6ad9acffcf36&user=经理B
+Accept: */*
+Cache-Control: no-cache
+
+### 归还任务
+GET {{url}}/activiti/returnTask?taskId=a9413d6f-67b2-11f0-9665-6ad9acffcf36&user=经理C
+Accept: */*
+Cache-Control: no-cache
+
+### 交接任务
+GET {{url}}/activiti/transferTask?taskId=a9413d6f-67b2-11f0-9665-6ad9acffcf36&assign=经理B&user=经理A
 Accept: */*
 Cache-Control: no-cache

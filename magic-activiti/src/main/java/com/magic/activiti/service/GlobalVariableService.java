@@ -29,10 +29,6 @@ public class GlobalVariableService {
     @Autowired
     @Lazy
     private RuntimeService runtimeService;
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private HistoryService historyService;
 
     public String deploymentGlobal(){
 
