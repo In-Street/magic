@@ -2,9 +2,11 @@ package com.magic.activiti.controller;
 
 import com.magic.activiti.service.ActivitiService;
 import com.magic.activiti.service.AssigneeService;
+import com.magic.activiti.service.GlobalVariableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -21,6 +23,8 @@ public class ActivitiController {
     private ActivitiService activitiService;
     @Autowired
     private AssigneeService assigneeService;
+    @Autowired
+    private GlobalVariableService globalVariableService;
     
     @GetMapping("/deploy")
     public String deploy(){
@@ -75,12 +79,14 @@ public class ActivitiController {
 
         @GetMapping("/deployment")
         public String deployment(){
-            return assigneeService.uelAssigneeProcDef();
+            // return assigneeService.uelAssigneeProcDef();
+            return globalVariableService.deploymentGlobal();
         }
         
         @GetMapping("/startProcInst")
-        public String startProcInst(String deploymentId){
-            return assigneeService.uelAssigneeProcInst(deploymentId);
+        public String startProcInst(String deploymentId,@RequestParam(required = false) Double day){
+            // return assigneeService.uelAssigneeProcInst(deploymentId);
+            return globalVariableService.startProcessInstanceGlobal(deploymentId, day);
         }
     @GetMapping("/startProcInstForListener")
     public String startProcInstForListener(String deploymentId){
