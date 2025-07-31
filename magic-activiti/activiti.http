@@ -22,12 +22,12 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 完成个人任务
-GET {{url}}/activiti/completeTask?taskId=8e8dc29d-67b2-11f0-9665-6ad9acffcf36
+GET {{url}}/activiti/completeTask?day=&taskId=56b32d83-6dfa-11f0-94a0-22a80755a01c
 Accept: */*
 Cache-Control: no-cache
 
 ### 删除流程部署
-GET {{url}}/activiti/deleteDeploymentById?deploymentId=89dc5fb5-0a35-11ef-8fc0-ba9f1015d021
+GET {{url}}/activiti/deleteDeploymentById?deploymentId=da3ca022-690e-11f0-9497-f223f1d9de0d
 Accept: */*
 Cache-Control: no-cache
 
@@ -68,5 +68,10 @@ Cache-Control: no-cache
 
 ### 交接任务
 GET {{url}}/activiti/transferTask?taskId=a9413d6f-67b2-11f0-9665-6ad9acffcf36&assign=经理B&user=经理A
+Accept: */*
+Cache-Control: no-cache
+
+### 部署
+GET {{url}}/activiti/deploymentGateway?whetherDeployment=true&day=6&gatewayType=gateway-inclusive
 Accept: */*
 Cache-Control: no-cache

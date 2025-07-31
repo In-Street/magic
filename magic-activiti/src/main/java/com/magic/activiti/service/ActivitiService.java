@@ -2,6 +2,8 @@ package com.magic.activiti.service;
 
 
 import cn.anony.annotations.ElementVersion;
+import com.google.common.collect.ImmutableMap;
+import com.magic.activiti.config.Evection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.HistoryService;
@@ -27,6 +29,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -149,7 +152,13 @@ public class ActivitiService {
      * @param taskId
      * @return
      */
-    public String completeTask(String taskId) {
+    public String completeTask(String taskId,Double day) {
+        if (Objects.nonNull(day)) {
+            Evection evection = new Evection();
+            evection.setDay(7d);
+            taskService.complete(taskId, ImmutableMap.of("evection", evection));
+            return "success";
+        }
         taskService.complete(taskId);
         // taskService.delegateTask(); //委托任务给其它人
         //TODO BY Cheng Yufei <-2024-05-04 20:18->

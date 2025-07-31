@@ -1,9 +1,6 @@
 package com.magic.activiti.controller;
 
-import com.magic.activiti.service.ActivitiService;
-import com.magic.activiti.service.AssigneeService;
-import com.magic.activiti.service.CandidateService;
-import com.magic.activiti.service.GlobalVariableService;
+import com.magic.activiti.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +25,8 @@ public class ActivitiController {
     private GlobalVariableService globalVariableService;
     @Autowired
     private CandidateService candidateService;
+    @Autowired
+    private GatewayService gatewayService;
     
     @GetMapping("/deploy")
     public String deploy(){
@@ -50,8 +49,8 @@ public class ActivitiController {
     }
 
     @GetMapping("/completeTask")
-    public String completeTask(String taskId){
-        return activitiService.completeTask(taskId);
+    public String completeTask(String taskId,@RequestParam(required = false) Double day){
+        return activitiService.completeTask(taskId,day);
     }
 
     @GetMapping("/deleteDeploymentById")
@@ -111,6 +110,11 @@ public class ActivitiController {
     @GetMapping("/transferTask")
     public String transferTask(String taskId,String assign,String user){
         return candidateService.transferTask(taskId, assign,user);
+    }
+    
+    @GetMapping("/deploymentGateway")
+    public String deploymentGateway(boolean whetherDeployment, Double day, String gatewayType){
+        return gatewayService.deploymentAndStartProc(whetherDeployment, day, gatewayType);
     }
 
 }
