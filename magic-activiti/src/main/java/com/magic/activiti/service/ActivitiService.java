@@ -12,6 +12,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricActivityInstanceQuery;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -24,12 +25,15 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.Response;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -38,7 +42,6 @@ import java.util.zip.ZipInputStream;
  **/
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ ={ @Autowired,@Lazy})
 public class ActivitiService {
 
     private final RepositoryService repositoryService;
@@ -46,6 +49,13 @@ public class ActivitiService {
     private final TaskService taskService;
     private final HistoryService historyService;
 
+    @Autowired
+    public ActivitiService(@Lazy RepositoryService repositoryService, @Lazy RuntimeService runtimeService, @Lazy TaskService taskService, @Lazy HistoryService historyService) {
+        this.repositoryService = repositoryService;
+        this.runtimeService = runtimeService;
+        this.taskService = taskService;
+        this.historyService = historyService;
+    }
 
     @ElementVersion
     private static final String version = "";
@@ -152,11 +162,16 @@ public class ActivitiService {
      * @param taskId
      * @return
      */
-    public String completeTask(String taskId,Double day) {
+    public String completeTask(String taskId,Double day,String assignee) {
         if (Objects.nonNull(day)) {
             Evection evection = new Evection();
             evection.setDay(7d);
             taskService.complete(taskId, ImmutableMap.of("evection", evection));
+            return "success";
+        }
+        if (StringUtils.isNoneBlank(assignee)) {
+            // 完成当前任务的同时，设置下一个任务的责任人变量值
+            taskService.complete(taskId, ImmutableMap.of("assignee3", assignee));
             return "success";
         }
         taskService.complete(taskId);
@@ -278,6 +293,34 @@ public class ActivitiService {
         for (ProcessInstance processInstance : processInstances) {
             runtimeService.suspendProcessInstanceById(processInstance.getId());
             runtimeService.activateProcessInstanceById(processInstance.getId());
+
+        }
+        return "success";
+    }
+
+    public String getHis(String taskId){
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().processInstanceId(task.getProcessInstanceId())
+                .orderByHistoricTaskInstanceEndTime().asc()
+                .list();
+
+        Optional<HistoricTaskInstance> first = list.stream().filter(h -> h.getTaskDefinitionKey().equals(taskId)).findFirst();
+        if (!first.isPresent()) {
+            return "未找到任务";
+        }
+        HistoricTaskInstance current = first.get();
+        List<HistoricTaskInstance> completeTask = list.stream().filter(h -> Objects.nonNull(h.getEndTime())).collect(Collectors.toList());
+
+        for (int i = 0; i < completeTask.size(); i++) {
+
+        }
+
+
+        for (int i = 0; i < list.size(); i++) {
+            String tId = list.get(i).getId();
+            System.out.println(tId +" "+list.get(i).getName());
+
 
         }
         return "success";

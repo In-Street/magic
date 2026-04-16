@@ -1,6 +1,7 @@
 package com.magic.activiti.controller;
 
 import com.magic.activiti.service.*;
+import org.activiti.engine.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,8 @@ public class ActivitiController {
     private CandidateService candidateService;
     @Autowired
     private GatewayService gatewayService;
+    @Autowired
+    private RejectService rejectService;
     
     @GetMapping("/deploy")
     public String deploy(){
@@ -42,6 +45,11 @@ public class ActivitiController {
     public String startProcess(){
         return activitiService.startProcess();
     }
+    
+    @GetMapping("/startProcByDeployment")
+    public String startProcByDeployment(String deploymentId,Double day){
+        return globalVariableService.startProcessInstanceGlobal(deploymentId, day);
+    }
 
     @GetMapping("/getTaskByAssignee")
     public String getTaskByAssignee(String assignee,String procDefKey){
@@ -49,8 +57,8 @@ public class ActivitiController {
     }
 
     @GetMapping("/completeTask")
-    public String completeTask(String taskId,@RequestParam(required = false) Double day){
-        return activitiService.completeTask(taskId,day);
+    public String completeTask(String taskId,@RequestParam(required = false) Double day,@RequestParam(required = false) String assignee){
+        return activitiService.completeTask(taskId,day,assignee);
     }
 
     @GetMapping("/deleteDeploymentById")
@@ -115,6 +123,16 @@ public class ActivitiController {
     @GetMapping("/deploymentGateway")
     public String deploymentGateway(boolean whetherDeployment, Double day, String gatewayType){
         return gatewayService.deploymentAndStartProc(whetherDeployment, day, gatewayType);
+    }
+
+    @GetMapping("/getPreviousActivityId")
+    public String getPreviousActivityId(String taskId,Boolean pre){
+        return rejectService.getPreviousActivityId(taskId,pre);
+    }
+
+    @GetMapping("/rejectPre")
+    public String rejectPre(String taskId){
+        return rejectService.rejectPre(taskId);
     }
 
 }

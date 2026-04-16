@@ -22,7 +22,7 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 完成个人任务
-GET {{url}}/activiti/completeTask?day=&taskId=56b32d83-6dfa-11f0-94a0-22a80755a01c
+GET {{url}}/activiti/completeTask?day=&assignee=周2&taskId=3c24da36-3979-11f1-944e-c24224cdce13
 Accept: */*
 Cache-Control: no-cache
 
@@ -51,6 +51,11 @@ GET {{url}}/activiti/startProcInst?deploymentId=&day=&candidateUser=经理C
 Accept: */*
 Cache-Control: no-cache
 
+###
+GET {{url}}/activiti/startProcByDeployment?deploymentId=0eee213f-6627-11f0-a394-8a8fb35f39f0&day=4.0
+Accept: */*
+Cache-Control: no-cache
+
 ### 开启监听器 的流程实例
 GET {{url}}/activiti/startProcInstForListener?deploymentId=183106de-60a2-11f0-aa4b-2e6d3e4fd0c0
 Accept: */*
@@ -72,6 +77,16 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 部署
-GET {{url}}/activiti/deploymentGateway?whetherDeployment=true&day=6&gatewayType=gateway-inclusive
+GET {{url}}/activiti/deploymentGateway?whetherDeployment=true&day=3&gatewayType=gateway-exclusive
+Accept: */*
+Cache-Control: no-cache
+
+### 获取taskId 的上一个已完成节点
+GET {{url}}/activiti/getPreviousActivityId?taskId=7be5eabe-3978-11f1-944e-c24224cdce13&pre=false
+Accept: */*
+Cache-Control: no-cache
+
+### 回退到上一个节点
+GET {{url}}/activiti/rejectPre?taskId=7be5eabe-3978-11f1-944e-c24224cdce13
 Accept: */*
 Cache-Control: no-cache

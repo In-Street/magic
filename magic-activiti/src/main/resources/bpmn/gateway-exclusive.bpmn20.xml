@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
-  <process id="gateway-exclusive" name="排他网关" isExecutable="true">
+  <process id="gateway-exclusive" name="排他网关-2" isExecutable="true">
     <startEvent id="sid-9299309b-1819-4a88-8d67-ff79a4a44b4b"/>
     <userTask id="sid-b7a44659-7f8f-42af-8735-04e6fc0bff58" name="填写出差申请" activiti:assignee="A"/>
-    <userTask id="sid-e1f17041-732c-4613-8edc-3421b411c1e4" name="部门经理审批" activiti:assignee="B"/>
-    <userTask id="_1500" name="总经理审批" activiti:assignee="C"/>
-    <userTask id="_8000" name="财务审批" activiti:assignee="D"/>
+    <userTask id="sid-e1f17041-732c-4613-8edc-3421b411c1e4" name="部门经理审批" activiti:assignee="${assignee1}"/>
+    <userTask id="_1500" name="总经理审批" activiti:assignee="${assignee2}"/>
+    <userTask id="_8000" name="财务审批" activiti:assignee="${assignee3}"/>
     <sequenceFlow id="sid-c8f6ce16-3920-4ce7-9411-a8bc297902e1" sourceRef="sid-9299309b-1819-4a88-8d67-ff79a4a44b4b" targetRef="sid-b7a44659-7f8f-42af-8735-04e6fc0bff58"/>
     <sequenceFlow id="sid-f23c2fe3-2518-4d75-97e5-8955038f8847" sourceRef="sid-b7a44659-7f8f-42af-8735-04e6fc0bff58" targetRef="sid-e1f17041-732c-4613-8edc-3421b411c1e4"/>
-
     <exclusiveGateway id="sid-6044c32f-0c1a-47bc-a7fd-f6406f80912f" name="出差天数判断"/>
     <sequenceFlow id="sid-b01c0d70-cdfa-4c4f-8ea7-87f2c747dcb0" sourceRef="sid-e1f17041-732c-4613-8edc-3421b411c1e4" targetRef="sid-6044c32f-0c1a-47bc-a7fd-f6406f80912f"/>
     <sequenceFlow id="sid-f956d0b4-a44a-414e-86b0-ad113f51ddec" sourceRef="_1500" targetRef="_8000"/>
     <endEvent id="sid-c7f7d579-bbf5-4fe6-b850-48434b972107"/>
     <sequenceFlow id="sid-bb6bb2df-130e-4637-b218-d07972dad1c2" sourceRef="_8000" targetRef="sid-c7f7d579-bbf5-4fe6-b850-48434b972107"/>
-
-      <!--    财务审批-->
+    <!--    财务审批-->
     <sequenceFlow id="sid-4eb068f9-6314-4bab-a7c3-7d3e1f152380" sourceRef="sid-6044c32f-0c1a-47bc-a7fd-f6406f80912f" targetRef="_8000">
       <conditionExpression xsi:type="tFormalExpression">${evection.day&gt;=2}</conditionExpression>
     </sequenceFlow>
-
     <!--    总经理审批-->
     <sequenceFlow id="sid-e12bb256-86ff-4681-82a2-2c66e6fc1668" sourceRef="sid-6044c32f-0c1a-47bc-a7fd-f6406f80912f" targetRef="_1500">
       <conditionExpression xsi:type="tFormalExpression">${evection.day&gt;=5}</conditionExpression>
     </sequenceFlow>
-
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_gateway-exclusive">
     <bpmndi:BPMNPlane bpmnElement="gateway-exclusive" id="BPMNPlane_gateway-exclusive">

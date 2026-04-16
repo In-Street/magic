@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/rejectdemo">
+  <!-- 信号定义 -->
+  <signal id="rejectSignal" name="rejectSignal"/>
+  <process id="approvalProcess" name="审批流程" isExecutable="true">
+    <!-- 开始事件 -->
+    <startEvent id="startEvent" name="开始">
+      <extensionElements>
+        <activiti:formProperty id="applicant" name="申请人" type="string" required="true"/>
+      </extensionElements>
+      <outgoing>flowToTaskA</outgoing>
+    </startEvent>
+    <!-- 初审任务 -->
+    <userTask id="taskA" name="初审" activiti:assignee="${initiator}">
+      <incoming>rejectFlow</incoming>
+      <incoming>flowToTaskA</incoming>
+      <outgoing>flowToTaskB</outgoing>
+      <extensionElements>
+        <activiti:taskListener event="create" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
+          <activiti:field name="script">
+            <activiti:string>execution.setVariable('taskA_assignee', task.assignee);</activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <!-- 复审任务 -->
+    <userTask id="taskB" name="复审" activiti:candidateGroups="reviewers">
+      <incoming>flowToTaskB</incoming>
+      <outgoing>flowToRejectEvent</outgoing>
+      <outgoing>flowToTaskC</outgoing>
+      <extensionElements>
+        <!-- 回退信号监听器 -->
+        <activiti:executionListener event="start" class="com.magic.activiti.listener.RejectSignalListener"/>
+        <!-- 退回选项表单 -->
+        <activiti:formProperty id="reject" name="是否退回" type="enum">
+          <activiti:value id="true" name="退回初审"/>
+          <activiti:value id="false" name="通过"/>
+        </activiti:formProperty>
+        <activiti:formProperty id="rejectReason" name="退回原因" type="string"/>
+      </extensionElements>
+    </userTask>
+    <!-- 终审任务 -->
+    <userTask id="taskC" name="终审" activiti:assignee="manager">
+      <incoming>flowToTaskC</incoming>
+      <outgoing>flowToEnd</outgoing>
+    </userTask>
+    <!-- 结束事件 -->
+    <endEvent id="endEvent" name="结束">
+      <incoming>flowToEnd</incoming>
+    </endEvent>
+    <!-- 回退信号事件 -->
+    <intermediateThrowEvent id="rejectEvent" name="退回事件">
+      <signalEventDefinition signalRef="rejectSignal"/>
+      <incoming>flowToRejectEvent</incoming>
+      <outgoing>rejectFlow</outgoing>
+    </intermediateThrowEvent>
+    <!-- ====== 正常流转路径 ====== -->
+    <sequenceFlow id="flowToTaskA" sourceRef="startEvent" targetRef="taskA"/>
+    <sequenceFlow id="flowToTaskB" sourceRef="taskA" targetRef="taskB"/>
+    <sequenceFlow id="flowToTaskC" sourceRef="taskB" targetRef="taskC">
+      <conditionExpression xsi:type="tFormalExpression">${reject == false}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flowToEnd" sourceRef="taskC" targetRef="endEvent"/>
+    <!-- ====== 回退路径 ====== -->
+    <!-- 从复审任务到回退事件 -->
+    <sequenceFlow id="flowToRejectEvent" sourceRef="taskB" targetRef="rejectEvent">
+      <conditionExpression xsi:type="tFormalExpression">${reject == true}</conditionExpression>
+    </sequenceFlow>
+    <!-- 从回退事件到初审任务 -->
+    <sequenceFlow id="rejectFlow" sourceRef="rejectEvent" targetRef="taskA"/>
+  </process>
+  <!-- BPMN 图形布局 -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_approvalProcess">
+    <bpmndi:BPMNPlane bpmnElement="approvalProcess" id="BPMNPlane_approvalProcess">
+      <!-- 开始事件 -->
+      <bpmndi:BPMNShape bpmnElement="startEvent" id="BPMNShape_startEvent">
+        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"/>
+      </bpmndi:BPMNShape>
+      <!-- 初审任务 -->
+      <bpmndi:BPMNShape bpmnElement="taskA" id="BPMNShape_taskA">
+        <omgdc:Bounds height="80.0" width="100.0" x="200.0" y="138.0"/>
+      </bpmndi:BPMNShape>
+      <!-- 复审任务 -->
+      <bpmndi:BPMNShape bpmnElement="taskB" id="BPMNShape_taskB">
+        <omgdc:Bounds height="80.0" width="100.0" x="350.0" y="138.0"/>
+      </bpmndi:BPMNShape>
+      <!-- 终审任务 -->
+      <bpmndi:BPMNShape bpmnElement="taskC" id="BPMNShape_taskC">
+        <omgdc:Bounds height="80.0" width="100.0" x="500.0" y="138.0"/>
+      </bpmndi:BPMNShape>
+      <!-- 结束事件 -->
+      <bpmndi:BPMNShape bpmnElement="endEvent" id="BPMNShape_endEvent">
+        <omgdc:Bounds height="28.0" width="28.0" x="650.0" y="164.0"/>
+      </bpmndi:BPMNShape>
+      <!-- 回退事件 -->
+      <bpmndi:BPMNShape bpmnElement="rejectEvent" id="BPMNShape_rejectEvent">
+        <omgdc:Bounds height="40.0" width="40.0" x="300.0" y="250.0"/>
+      </bpmndi:BPMNShape>
+      <!-- ====== 正常流转连线 ====== -->
+      <bpmndi:BPMNEdge bpmnElement="flowToTaskA" id="BPMNEdge_flowToTaskA">
+        <omgdi:waypoint x="130.0" y="178.0"/>
+        <omgdi:waypoint x="200.0" y="178.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flowToTaskB" id="BPMNEdge_flowToTaskB">
+        <omgdi:waypoint x="300.0" y="178.0"/>
+        <omgdi:waypoint x="350.0" y="178.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flowToTaskC" id="BPMNEdge_flowToTaskC">
+        <omgdi:waypoint x="450.0" y="178.0"/>
+        <omgdi:waypoint x="500.0" y="178.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flowToEnd" id="BPMNEdge_flowToEnd">
+        <omgdi:waypoint x="600.0" y="178.0"/>
+        <omgdi:waypoint x="664.0" y="178.0"/>
+      </bpmndi:BPMNEdge>
+      <!-- ====== 回退路径连线 ====== -->
+      <bpmndi:BPMNEdge bpmnElement="flowToRejectEvent" id="BPMNEdge_flowToRejectEvent">
+        <omgdi:waypoint x="400.0" y="218.0"/>
+        <!-- 从taskB底部 -->
+        <omgdi:waypoint x="400.0" y="250.0"/>
+        <!-- 垂直向下 -->
+        <omgdi:waypoint x="320.0" y="250.0"/>
+        <!-- 水平向左 -->
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="rejectFlow" id="BPMNEdge_rejectFlow">
+        <omgdi:waypoint x="280.0" y="250.0"/>
+        <!-- 从rejectEvent左侧 -->
+        <omgdi:waypoint x="250.0" y="250.0"/>
+        <!-- 继续向左 -->
+        <omgdi:waypoint x="250.0" y="218.0"/>
+        <!-- 垂直向上 -->
+        <omgdi:waypoint x="250.0" y="218.0"/>
+        <omgdi:waypoint x="250.0" y="178.0"/>
+        <!-- 连接到taskA -->
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
