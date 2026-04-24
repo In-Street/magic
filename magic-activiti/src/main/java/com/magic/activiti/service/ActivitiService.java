@@ -162,7 +162,7 @@ public class ActivitiService {
      * @param taskId
      * @return
      */
-    public String completeTask(String taskId,Double day,String assignee) {
+    public String completeTask(String taskId,Double day,String assignee,String source) {
         if (Objects.nonNull(day)) {
             Evection evection = new Evection();
             evection.setDay(7d);
@@ -172,6 +172,10 @@ public class ActivitiService {
         if (StringUtils.isNoneBlank(assignee)) {
             // 完成当前任务的同时，设置下一个任务的责任人变量值
             taskService.complete(taskId, ImmutableMap.of("assignee3", assignee));
+            return "success";
+        }
+        if (StringUtils.isNoneBlank(source)) {
+            taskService.complete(taskId, ImmutableMap.of("source", "flow"));
             return "success";
         }
         taskService.complete(taskId);

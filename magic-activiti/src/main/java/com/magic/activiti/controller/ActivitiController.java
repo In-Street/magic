@@ -30,7 +30,9 @@ public class ActivitiController {
     private GatewayService gatewayService;
     @Autowired
     private RejectService rejectService;
-    
+    @Autowired
+    private FyService fyService;
+
     @GetMapping("/deploy")
     public String deploy(){
         return activitiService.deploy();
@@ -57,8 +59,8 @@ public class ActivitiController {
     }
 
     @GetMapping("/completeTask")
-    public String completeTask(String taskId,@RequestParam(required = false) Double day,@RequestParam(required = false) String assignee){
-        return activitiService.completeTask(taskId,day,assignee);
+    public String completeTask(String taskId,@RequestParam(required = false) Double day,@RequestParam(required = false) String assignee,@RequestParam(required = false) String source){
+        return activitiService.completeTask(taskId,day,assignee,source);
     }
 
     @GetMapping("/deleteDeploymentById")
@@ -133,6 +135,11 @@ public class ActivitiController {
     @GetMapping("/rejectPre")
     public String rejectPre(String taskId){
         return rejectService.rejectPre(taskId);
+    }
+
+    @GetMapping("/deploymentFy")
+    public String deploymentFy(Integer level,String areaId){
+        return fyService.deploymentAndStartProc(level, areaId);
     }
 
 }

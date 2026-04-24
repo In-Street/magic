@@ -110,7 +110,7 @@ public class RejectService {
         }
 
         // 获取上一步activityId
-        String previousActivityId = getPreviousActivityId(taskId,false);
+        String previousActivityId = getPreviousActivityId(taskId,true);
 
         ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(task.getProcessDefinitionId());
 

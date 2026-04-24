@@ -30,7 +30,7 @@ public class ActivitiConfig {
      * @return
      */
     @Bean(name="processEngineConfiguration")
-    public ProcessEngineConfiguration processEngineConfiguration(@Qualifier("third")DataSource thirdDataSource){
+    public SpringProcessEngineConfiguration processEngineConfiguration(@Qualifier("third")DataSource thirdDataSource){
         SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
         configuration.setDataSource(thirdDataSource);
         configuration.setTransactionManager(platformTransactionManager);

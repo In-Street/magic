@@ -22,7 +22,7 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 完成个人任务
-GET {{url}}/activiti/completeTask?day=&assignee=周2&taskId=3c24da36-3979-11f1-944e-c24224cdce13
+GET {{url}}/activiti/completeTask?day=&assignee=&source=flow&taskId=a300e903-3f08-11f1-9c4d-420c35f2ec3b
 Accept: */*
 Cache-Control: no-cache
 
@@ -82,11 +82,16 @@ Accept: */*
 Cache-Control: no-cache
 
 ### 获取taskId 的上一个已完成节点
-GET {{url}}/activiti/getPreviousActivityId?taskId=7be5eabe-3978-11f1-944e-c24224cdce13&pre=false
+GET {{url}}/activiti/getPreviousActivityId?taskId=f12e4bf0-3f07-11f1-9c4d-420c35f2ec3b&pre=true
 Accept: */*
 Cache-Control: no-cache
 
 ### 回退到上一个节点
-GET {{url}}/activiti/rejectPre?taskId=7be5eabe-3978-11f1-944e-c24224cdce13
+GET {{url}}/activiti/rejectPre?taskId=f12e4bf0-3f07-11f1-9c4d-420c35f2ec3b
+Accept: */*
+Cache-Control: no-cache
+
+### 非遗审批流创建
+GET {{url}}/activiti/deploymentFy?level=3&areaId=14
 Accept: */*
 Cache-Control: no-cache
