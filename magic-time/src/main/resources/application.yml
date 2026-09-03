@@ -1,21 +1,24 @@
 server:
   port: 9090
+  tomcat:
+    threads:
+      max: 201
 spring:
   application.name: time
   profiles.active: dev
   redis:
     host: 127.0.0.1
     port: 6383
-#  datasource:
-##    type: com.zaxxer.hikari.HikariDataSource
-#    hikari:
-#      jdbc-url: jdbc:mysql://127.0.0.1:3310/test?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
-#      username: root
-#      password: 123456
-#       #通过 JMX MBean 注册连接池相关统计信息，观察连接池情况
-#      register-mbeans: true
-#      pool-name: connect-count-test
-#      maximum-pool-size: 11
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+      username: root
+      password: taylor18
+       #通过 JMX MBean 注册连接池相关统计信息，观察连接池情况
+      register-mbeans: true
+      pool-name: connect-count-test
+      maximum-pool-size: 11
 
     #在实现了 implements WebMvcConfigurer接口时，此配置是无效的
   jackson:
@@ -62,8 +65,6 @@ ribbon.ReadTimeout: 3000
 ribbon.MaxAutoRetriesNextServer: 0
 
 ---
-spring.profiles: dev
-
 # 指定log4j2作为日志记录
 logging:
   config: classpath:logback-spring.xml
@@ -79,3 +80,11 @@ test:
 
   list: aaa,bbb,vvv
   map: '{"id": 12, "name": "zhangsan", "sex": "male"}'
+
+spring:
+  aop:
+    auto:
+  config:
+    activate:
+      on-profile:
+      - dev

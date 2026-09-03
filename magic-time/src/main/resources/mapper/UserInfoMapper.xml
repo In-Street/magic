@@ -4,10 +4,12 @@
   <resultMap id="BaseResultMap" type="com.magic.time.dao.model.UserInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+<!--    <result column="avatar" jdbcType="VARCHAR" property="avatar" />-->
+<!--    <result column="address" jdbcType="VARCHAR" property="address" />-->
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+<!--    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />-->
+<!--    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />-->
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, avatar, address, create_time, update_time
+    id, username, age,gender
   </sql>
   <select id="selectByExample" parameterType="com.magic.time.dao.model.UserInfoExample" resultMap="BaseResultMap">
     select
@@ -76,7 +78,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user_info
+    from t_user_1
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,35 +97,41 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user_info
+    from t_user_1
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user_info
+    delete from t_user_1
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.magic.time.dao.model.UserInfoExample">
-    delete from user_info
+    delete from t_user_1
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.magic.time.dao.model.UserInfo" useGeneratedKeys="true">
-    insert into user_info (username, avatar, address, 
+    insert into t_user_info (username, avatar, addr1
       create_time, update_time)
     values (#{username,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.magic.time.dao.model.UserInfo" useGeneratedKeys="true">
-    insert into user_info
+    insert into t_user_1
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="username != null">
         username,
       </if>
-      <if test="avatar != null">
+      <!--<if test="avatar != null">
         avatar,
+      </if>-->
+      <if test="age != null">
+        age,
       </if>
-      <if test="address != null">
+      <if test="gender != null">
+        gender,
+      </if>
+      <!--<if test="address != null">
         address,
       </if>
       <if test="createTime != null">
@@ -131,13 +139,19 @@
       </if>
       <if test="updateTime != null">
         update_time,
-      </if>
+      </if>-->
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="avatar != null">
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+     <!-- <if test="avatar != null">
         #{avatar,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
@@ -148,17 +162,17 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      </if>-->
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.magic.time.dao.model.UserInfoExample" resultType="java.lang.Long">
-    select count(*) from user_info
+    select count(*) from t_user_1
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update user_info
+    update t_user_1
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -184,7 +198,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update user_info
+    update t_user_1
     set id = #{record.id,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
       avatar = #{record.avatar,jdbcType=VARCHAR},
@@ -196,7 +210,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.magic.time.dao.model.UserInfo">
-    update user_info
+    update t_user_1
     <set>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
@@ -217,7 +231,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.magic.time.dao.model.UserInfo">
-    update user_info
+    update t_user_1
     set username = #{username,jdbcType=VARCHAR},
       avatar = #{avatar,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},

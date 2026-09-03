@@ -28,6 +28,8 @@ public class Result<T> implements Serializable {
 
 	private String msg;
 
+	private Integer total;
+
 	public Result(Integer code, String msg) {
 		this.code = code;
 		this.msg = msg;

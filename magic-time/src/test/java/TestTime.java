@@ -1,4 +1,5 @@
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.crypto.digest.MD5;
 import cn.hutool.http.HtmlUtil;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -14,14 +15,15 @@ import org.apache.commons.collections4.PredicateUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.checkerframework.checker.units.qual.min;
 import org.junit.Test;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StopWatch;
 
 import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -122,9 +124,10 @@ public class TestTime {
         HashMap<String, Integer> map4 = new HashMap<>();
 
 
-        int start = 679092, end = 679151;
-        ;
-        String host = "";
+
+        int start = 737906, end = 737916;
+        String host = "https://cdn77.91p49.com/m3u8/";
+        // String host = "https://la.killcovid2023.com/m3u8/";
         for (int i = start; i <= end; i++) {
             String url = host + i + "/" + i + ".m3u8";
             String v = "/Users/chengyufei/Downloads/dmg/common/edge_download/" + i + ".m3u8";
@@ -132,6 +135,7 @@ public class TestTime {
             try {
                 FileUtils.copyURLToFile(new URL(url), file);
             } catch (Exception e) {
+                System.out.println(e);
                 continue;
             }
             long count = Files.lines(Paths.get(v)).count();
@@ -183,8 +187,8 @@ public class TestTime {
         }
         map.forEach((str, index) -> {
             System.out.println(Thread.currentThread().getId() + ">>正在处理：" + str);
-
-            String host = "";
+            String host = "https://cdn77.91p49.com/m3u8/";
+            //String host = "https://la.killcovid2021.com/m3u8/";
             File result = new File("/Users/chengyufei/Downloads/dmg/common/edge_download/" + str + ".txt");
             for (int i = 0; i <= index; i++) {
                 String v = "/Users/chengyufei/Downloads/dmg/common/edge_download/" + str + i + ".ts";
@@ -203,6 +207,35 @@ public class TestTime {
         });
 
     }
+
+    @Test
+    public void xx() throws UnsupportedEncodingException {
+
+        String name = "1727054870";
+
+        /*String host = "https://tm.kekecdn.com/Xxep_UGxmlveEWIvBiUMpA==,1727054870/66d3bb6f40988ca75da32287";
+        File result = new File("/Users/chengyufei/Downloads/dmg/common/edge_download/" + name + ".txt");
+        for (int i = 0; i <= 118; i++) {
+            String v = "/Users/chengyufei/Downloads/dmg/common/edge_download/" + name+"_" + i + ".ts";
+            try {
+                String s = StringUtils.leftPad(i + "", 3, "00");
+                FileUtils.copyURLToFile(new URL(host + "/" + s + ".ts"), new File(v));
+                FileUtils.write(result, "file '" + v + "'\n", "utf-8", true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
+
+
+        try {
+            Process exec = Runtime.getRuntime().exec("/Users/chengyufei/Downloads/dmg/common/edge_download/未命名文件夹/com.sh " +name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     @Test
     public void fileLineCount() throws IOException {
@@ -427,7 +460,7 @@ public class TestTime {
     }
 
     @Test
-    public void lb() {
+    public void lb() throws UnsupportedEncodingException {
         LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
         linkedHashMap.put("B", "b");
         linkedHashMap.put("A", "a");
@@ -472,5 +505,9 @@ public class TestTime {
     public void ddd(String integer) {
         integer = "3";
         System.out.println(integer);
+        System.out.println(integer);
+        System.out.println(integer);
+        System.out.println(integer);
+        System.out.println(integer );
     }
 }

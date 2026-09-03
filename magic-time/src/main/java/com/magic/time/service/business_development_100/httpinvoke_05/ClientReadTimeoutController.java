@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+// import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -25,10 +25,10 @@ import java.util.stream.IntStream;
 @Slf4j
 @RestController
 @RequestMapping("/clientReadTimeout")
-@EnableFeignClients
+// @EnableFeignClients
 public class ClientReadTimeoutController {
 
-    @Autowired
+    // @Autowired
     private Client client;
     @Autowired
     private RestTemplate restTemplate;

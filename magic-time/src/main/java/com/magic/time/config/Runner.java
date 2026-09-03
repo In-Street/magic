@@ -16,11 +16,11 @@ import java.util.concurrent.TimeUnit;
  * @author Cheng Yufei
  * @create 2021-12-19 6:43 PM
  **/
-@Component
+// @Component
 @Slf4j
 public class Runner implements ApplicationRunner {
 
-    @Autowired
+    // @Autowired
     private HikariDataSource hikariDataSource;
 
     /**

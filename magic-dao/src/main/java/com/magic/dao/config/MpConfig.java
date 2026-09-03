@@ -2,6 +2,9 @@ package com.magic.dao.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+// import com.baomidou.mybatisplus.core.config.GlobalConfig;
+// import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+// import org.apache.ibatis.session.SqlSessionFactory;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -20,8 +23,8 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
  * @author Cheng Yufei
  * @create 2022-02-16 3:58 PM
  **/
-@Configuration
-@MapperScan(basePackages = {"com.magic.dao.mp"}, sqlSessionFactoryRef = "mybatisSqlSessionFactoryBean", sqlSessionTemplateRef = "mpSqlSessionTemplate")
+// @Configuration
+// @MapperScan(basePackages = {"com.magic.dao.mp"}, sqlSessionFactoryRef = "mybatisSqlSessionFactoryBean", sqlSessionTemplateRef = "mpSqlSessionTemplate")
 public class MpConfig {
 
 
@@ -32,7 +35,7 @@ public class MpConfig {
         return mp;
     }*/
 
-    @Bean(name = "mybatisSqlSessionFactoryBean")
+    // @Bean(name = "mybatisSqlSessionFactoryBean")
     public SqlSessionFactory mybatisSqlSessionFactoryBean(@Qualifier("first") DruidDataSource dataSource) throws Exception {
         MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
@@ -49,7 +52,7 @@ public class MpConfig {
         return globalConfig;
     }
 
-    @Bean(name = "mpSqlSessionTemplate")
+    // @Bean(name = "mpSqlSessionTemplate")
     public SqlSessionTemplate sqlSessionTemplate(@Qualifier("mybatisSqlSessionFactoryBean") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }

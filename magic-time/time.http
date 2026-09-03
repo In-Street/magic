@@ -99,3 +99,28 @@ Cache-Control: no-cache
 GET {{url}}/redis/test1
 Accept: */*
 Cache-Control: no-cache
+
+###
+GET {{url}}/async/a
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/async/dynamicPool?corePoolSize=7&maxPoolSize=41
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/actuator/health
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/frontEnd/getAllStudent
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET {{url}}/frontEnd/getStudentList?name=说&gender=&pageNum=1&pageSize=10
+Accept: */*
+Cache-Control: no-cache

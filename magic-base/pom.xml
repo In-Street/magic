@@ -12,12 +12,12 @@
     <artifactId>magic-base</artifactId>
 
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>com.magic</groupId>
             <artifactId>magic-dao</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

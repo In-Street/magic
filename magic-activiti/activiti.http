@@ -95,3 +95,18 @@ Cache-Control: no-cache
 GET {{url}}/activiti/deploymentFy?level=3&areaId=14
 Accept: */*
 Cache-Control: no-cache
+
+### 非遗审批流创建 - 多实例用户任务
+GET {{url}}/activiti/deploymentFyMulti?level=1&areaId=143568
+Accept: */*
+Cache-Control: no-cache
+
+### 完成任务 - 多实例用户任务
+GET {{url}}/activiti/completeTaskFy?source=flow&taskId=71750d23-4188-11f1-b1d8-f64ace7c262c
+Accept: */*
+Cache-Control: no-cache
+
+###  驳回 - 多实例用户任务
+GET {{url}}/activiti/rejectMulti?taskId=34b35c5b-4168-11f1-860d-c2dd9789759a
+Accept: */*
+Cache-Control: no-cache

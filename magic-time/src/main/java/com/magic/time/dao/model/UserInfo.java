@@ -14,9 +14,13 @@ public class UserInfo implements Serializable {
 
     private String username;
 
-    private String avatar;
+    // private String avatar;
 
-    private String address;
+    // private String address;
+
+    private Integer age;
+
+    private Integer gender;
 
    /* private Date createTime;
 

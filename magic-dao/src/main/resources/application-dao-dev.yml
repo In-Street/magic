@@ -125,6 +125,6 @@ spring:
           config.decrypt: true
           #指定公钥，配置在程序启动参数中 --datasource.key
           config.decrypt.key: ${datasource.key}
-mybatis-plus:
-  mapper-locations: classpath*:/
-  type-aliases-package: com.
+#mybatis-plus:
+#  mapper-locations: classpath*:/
+#  type-aliases-package: com.

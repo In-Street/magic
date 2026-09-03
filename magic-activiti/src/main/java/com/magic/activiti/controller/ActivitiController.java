@@ -32,6 +32,8 @@ public class ActivitiController {
     private RejectService rejectService;
     @Autowired
     private FyService fyService;
+    @Autowired
+    private RejectForMultiTaskService rejectForMultiTaskService;
 
     @GetMapping("/deploy")
     public String deploy(){
@@ -140,6 +142,21 @@ public class ActivitiController {
     @GetMapping("/deploymentFy")
     public String deploymentFy(Integer level,String areaId){
         return fyService.deploymentAndStartProc(level, areaId);
+    }
+
+    @GetMapping("/deploymentFyMulti")
+    public String deploymentFyMulti(Integer level,String areaId){
+        return fyService.deploymentAndStartProcMulti(level, areaId);
+    }
+
+    @GetMapping("/completeTaskFy")
+    public String completeTaskFy(String taskId,@RequestParam(required = false) String source){
+        return fyService.completeMultiInstanceTask(taskId,source);
+    }
+    
+    @GetMapping("/rejectMulti")
+    public String rejectMulti(String taskId){
+        return rejectForMultiTaskService.reject(taskId);
     }
 
 }

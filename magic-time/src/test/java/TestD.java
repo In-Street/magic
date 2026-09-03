@@ -1,5 +1,6 @@
 import com.magic.time.dao.mapper.UserInfoMapper;
 import org.junit.Test;
+import sun.misc.Launcher;
 
 import java.security.SecureRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -241,5 +242,6 @@ public class TestD {
         new Thread(runnable).start();
 
         System.out.println(local.get()); // 101
+
     }
 }

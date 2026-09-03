@@ -13,6 +13,7 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.google.gson.JsonObject;
@@ -117,7 +118,6 @@ public class TestC {
         checkElementIndex(3, strings.size());
         //[0,size]
         checkPositionIndex(3, strings.size());
-
     }
 
     /**
@@ -1297,4 +1297,37 @@ public class TestC {
         System.out.println(integerG1.getName());
         System.out.println(doubleG1.getName());
     }
+
+    @Test
+    public void order() {
+        ArrayList<Integer> list = Lists.newArrayList(4, 2, 5, 1, 3, 2);
+
+        //倒序
+        list.sort(Collections.reverseOrder());
+
+        //升序
+        list.stream().sorted().forEach(System.out::print);
+        System.out.println(list);
+    }
+    
+    @Test
+    public void outResult() {
+        boolean flag;
+        int i = 0;
+        do {
+            flag = false;
+            // System.out.println(i++);
+            System.out.println(++i);
+            flag = i < 10;
+            continue;
+        } while (flag);
+    }
+
+    @Test
+    public void ttt() {
+        short i =1;
+        i+=1;
+        System.out.println(i);
+    }
+
 }
