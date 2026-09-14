@@ -121,11 +121,21 @@
             <artifactId>leaf-boot-starter</artifactId>
             <groupId>com.sankuai.inf.leaf</groupId>
             <version>1.0.1-RELEASE</version>
-        </dependency>
+        </dependency>-->
+
+        <!--leaf 分布式ID，源替换-->
         <dependency>
-            <artifactId>leaf-core</artifactId>
-            <groupId>com.sankuai.inf.leaf</groupId>
+            <groupId>com.tencent.devops.leaf</groupId>
+            <artifactId>leaf-boot-starter</artifactId>
             <version>1.0.1-RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tencent.devops.leaf</groupId>
+            <artifactId>leaf-core</artifactId>
+            <version>1.0.1-RELEASE</version>
+            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>com.alibaba</groupId>
