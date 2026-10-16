@@ -510,4 +510,9 @@ public class TestTime {
         System.out.println(integer);
         System.out.println(integer );
     }
+    
+    @Test
+    public void t66() {
+        
+    }
 }
